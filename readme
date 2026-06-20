@@ -1,1 +1,222 @@
-test
+# 📚 Sketchbook Universe — Project Repository
+
+> **Simulasi Interaktif Literasi AI untuk Siswa SMP Kelas 7-9**  
+> Tugas Akhir D4 TRM — Politeknik Elektronika Negeri Surabaya (PENS)  
+> **Status:** Proposal ✅ Selesai | Review 🔜 Next | Development 📋 Planned
+
+---
+
+## 👥 Tim & Pembagian Kerja
+
+| Anggota | NIM | Scope | Warna | Fokus Utama |
+|---------|-----|-------|-------|-------------|
+| **Farchan Deano Muhammad (Can)** | 31226000xx | Frontend / UI·UX / HITL | 🔵 BIRU | Kaplay.js, MediaPipe, Maskot Momo, Gameplay, Narrative Engine, Probe UI, Animation |
+| **Muhammad Dias Al-Izzat** | 31226000xx | Backend / AI / Data | 🟢 HIJAU | CNN MobileNet, TensorFlow.js, REST API, SQLite, K-Means Clustering, Dashboard |
+
+---
+
+## 🎯 Konsep Inti Project
+
+### "Controlled Ambiguity" — Human-in-the-Loop (HITL)
+AI **sengaja tidak sempurna** agar momen HITL terjadi secara natural. Siswa tidak sekadar mengamati AI — mereka **harus mengevaluasi, mengoreksi, dan mengambil keputusan** atas output AI.
+
+### Arsitektur Hybrid
+- **Browser-Based Inference** — TensorFlow.js + MobileNet untuk klasifikasi sketsa real-time di browser
+- **Server-Side Active Services** — REST API untuk data logging (SQLite) + K-Means clustering analisis pola keputusan
+
+### Desain 3 Level
+
+| Level | Nama | Confidence Range | Mekanisme HITL |
+|-------|------|------------------|----------------|
+| **L1** | Trust Building | >85% | AI akurat → siswa belajar mempercayai AI |
+| **L2** | Ambiguous Choice | 55-70% | AI ragu (Top-3 predictions) → siswa harus mengevaluasi |
+| **L3** | Risk & Override | 35-51% | AI overconfident tapi salah → siswa HARUS override |
+
+### Metodologi Penelitian
+- **Mixed Methods** (Kuantitatif + Kualitatif)
+- **R&D** (Research & Development)
+- **SDLC Waterfall + Prototype**
+- **Fishbone Diagram (Ishikawa 6M)** — Teknik analisis data kualitatif
+- **SUS (System Usability Scale)** — Pengujian usability
+- **Black-Box Testing** — Pengujian fungsionalitas
+- **K-Means Clustering** — Analisis pola keputusan siswa (Trust Acceptor, Critical Operator, Fast Decider)
+- **Paired t-test** — Pengujian signifikansi
+
+---
+
+## 📁 Struktur Folder
+
+```
+/workspace/
+│
+├── readme                              ← You are here (README utama project)
+├── transcript/                         ← Chat history & file manifest
+│   ├── chat_transcript.txt             ← Riwayat diskusi lengkap dengan AI
+│   └── files_manifest.txt              ← Daftar 184 file di workspace
+│
+├── workspace_files/                    ← STRUKTUR LAMA (masih ada untuk backup)
+│   ├── escape-the-sketchbook/          ← Deprecated structure (jangan dipakai)
+│   ├── sketchbook-universe-ta/         ← STRUKTUR BARU (RECOMMENDED)
+│   │   ├── upload/                     ← FILE DARI USER — JANGAN DI-EDIT
+│   │   │   ├── notulensi_bu_hesti_15jun26.md     ← MASTER REFERENCE
+│   │   │   ├── contoh_daffa.pdf                   ← Format proposal kating
+│   │   │   ├── contoh_harun.pdf                   ← Format proposal kating
+│   │   │   └── reference_images/                  ← Gambar referensi
+│   │   │
+│   │   └── generate/                   ← HASIL KERJA AGENT — BOLEH DI-UPDATE
+│   │       ├── MEMORY.md               ← ⚡ INGATAN OPERASIONAL — BACA DULU!
+│   │       ├── CHANGELOG.md            ← Riwayat perubahan file
+│   │       │
+│   │       ├── 01_proposal/            ← Dokumen proposal LaTeX
+│   │       │   ├── can/                ← Bagian Can (Frontend/HITL)
+│   │       │   │   ├── proposal-can.tex
+│   │       │   │   ├── bab1_can_v1.tex
+│   │       │   │   ├── bab2_can_v1.tex
+│   │       │   │   └── bab3_can_v1.tex
+│   │       │   └── dias/               ← Bagian Dias (Backend/CNN)
+│   │       │       ├── proposal-dias.tex
+│   │       │       ├── bab1_dias_v1.tex
+│   │       │       ├── bab2_dias_v1.tex
+│   │       │       └── bab3_dias_v1.tex
+│   │       │
+│   │       ├── 02_desain_sistem/       ← ⭐ DESAIN SISTEM GLOBAL
+│   │       │   ├── desain_sistem_global_v2.md     ← 1 global diagram (779 lines)
+│   │       │   └── api_data_log_spec.md           ← API endpoint spec (1077 lines)
+│   │       │
+│   │       ├── 03_maskot/              ← ⭐ RISET MASKOT MOMO
+│   │       │   └── maskot_concept.md              ← Konsep visual + behavior (1295 lines)
+│   │       │
+│   │       ├── 04_game_design/         ← ⭐ GAME DESIGN
+│   │       │   ├── game_design_document.md        ← GDD lengkap (717 lines)
+│   │       │   ├── hitl_loophole_analysis.md      ← Analisis mekanisme HITL
+│   │       │   ├── quickdraw_category_analysis.md ← Kurasi dataset QuickDraw
+│   │       │   └── discussion_notes_16jun26.md    ← Notulensi diskusi tim
+│   │       │
+│   │       ├── 05_metodologi/          ← ⭐ FISHBONE + METOPEN
+│   │       │   └── mixed_method_integration.md    ← MIX methodology (1284 lines)
+│   │       │
+│   │       ├── 06_diagram/             ← Visual outputs (PNG + HTML sources)
+│   │       │   ├── 01_global_ipo.png
+│   │       │   ├── 02_game_loop.png
+│   │       │   ├── 03_arsitektur_hybrid.png
+│   │       │   ├── 04_level_progression.png
+│   │       │   ├── fishbone_6m.png
+│   │       │   └── sources/            ← Mermaid source files (.mmd, .html)
+│   │       │
+│   │       ├── 07_scripts/             ← Utility scripts
+│   │       │   ├── capture_cnn_behavior.js
+│   │       │   ├── capture_level_design.js
+│   │       │   ├── generate_pdf_body.py
+│   │       │   └── render_flow.py
+│   │       │
+│   │       └── 08_cache/               ← Temporary/raw files (boleh dihapus)
+│   │           ├── api_spec_raw.md
+│   │           ├── metodologi_raw.md
+│   │           └── search_*.json       ← Hasil riset web (10 files)
+│   │
+│   ├── 01_Desain_Level_Escape_the_Sketchbook.md     ← Deprecated (backup)
+│   ├── 02_Desain_Sistem_Escape_the_Sketchbook.md    ← Deprecated (backup)
+│   ├── 03_Riset_Arsitektur_Escape_the_Sketchbook.md ← Deprecated (backup)
+│   ├── Riset_Metode_Penelitian.md                   ← Deprecated (backup)
+│   └── Brief_PPT_Escape_the_Sketchbook.md           ← Deprecated (backup)
+│
+└── Merged Context.txt                    ← Histori reasoning & evolusi desain (~75 KB)
+```
+
+---
+
+## 🚨 Rules Mutlak (Dari MEMORY.md)
+
+### 1. Scope Pemisahan
+- **File di `upload/`** = Sacred. Jangan edit, hanya baca sebagai reference.
+- **File di `generate/`** = Hasil kerjamu. Boleh update, tapi backup versi lama.
+
+### 2. Warna Kode Scope
+Saat bikin diagram/desain:
+- 🔵 **BIRU** = Scope CAN (Frontend, Maskot, HITL, UI/UX)
+- 🟢 **HIJAU** = Scope DIAS (Backend, CNN, K-Means, API)
+- ⚪ **ABU-ABU** = Shared/Bersama (Database, Comms)
+
+### 3. Nama Project
+- **RESMI**: Sketchbook Universe
+- **DEPRECATED**: "Escape the Sketchbook" — jangan dipakai lagi
+
+### 4. Arahan Bu Hesti (16/6/26) — PIVOT DECISIONS
+1. **Login WAJIB** — Pakai nomor absen + superadmin (DEPRECATED: gesture MediaPipe)
+2. **Top-6 Check Mechanism** — Override elegant dengan auto-accept jika label di Top-6
+3. **Timer Display** — Waktu reaksi jadi parameter log admin
+4. **Resize & Rotate Buttons** — Manipulasi canvas pakai toolbar UI (bukan gesture)
+5. **3 Level Saja** — Tanpa decorative elements, tinggal solid & danger
+6. **Use Case = Aktor + Aktivitas** — Bukan flow
+7. **Metodologi MIX + Fishbone Wajib** — Muncul sebelum implementasi
+8. **Data Log = Matriks + Kesimpulan Kalimat**
+9. **Maskot = Text Bubble Saja** — Tanpa suara/NLP
+
+---
+
+## 📊 Roadmap (Fase Project)
+
+| Fase | Status | Deskripsi |
+|------|--------|-----------|
+| **Riset & Proposal** | ✅ Selesai | Bab 1-3 + Daftar Pustaka terima jadi |
+| **Review Proposal** | 🔜 Next | Sidang proposal di PENS |
+| **Development** | 📋 Planned | Implementasi kode (frontend + backend) |
+| **Testing** | 📋 Planned | SUS, Black-Box, K-Means clustering |
+| **Laporan Akhir** | 📋 Planned | Thesis / TA report |
+
+---
+
+## 🔗 Quick Access
+
+| Butuh... | Buka... |
+|----------|---------|
+| **Baca ingatan project** | `workspace_files/sketchbook-universe-ta/generate/MEMORY.md` |
+| **Lihat desain sistem baru** | `workspace_files/sketchbook-universe-ta/generate/02_desain_sistem/desain_sistem_global_v2.md` |
+| **Cek API specification** | `workspace_files/sketchbook-universe-ta/generate/02_desain_sistem/api_data_log_spec.md` |
+| **Baca konsep maskot Momo** | `workspace_files/sketchbook-universe-ta/generate/03_maskot/maskot_concept.md` |
+| **Baca game design** | `workspace_files/sketchbook-universe-ta/generate/04_game_design/game_design_document.md` |
+| **Baca metodologi + fishbone** | `workspace_files/sketchbook-universe-ta/generate/05_metodologi/mixed_method_integration.md` |
+| **Baca notulensi Bu Hesti** | `workspace_files/sketchbook-universe-ta/upload/notulensi_bu_hesti_15jun26.md` |
+| **Compile proposal Can** | `workspace_files/sketchbook-universe-ta/generate/01_proposal/can/proposal-can.tex` |
+| **Compile proposal Dias** | `workspace_files/sketchbook-universe-ta/generate/01_proposal/dias/proposal-dias.tex` |
+| **Lihat diagram arsitektur** | `workspace_files/sketchbook-universe-ta/generate/06_diagram/03_arsitektur_hybrid.png` |
+| **Edit diagram (Mermaid)** | `workspace_files/sketchbook-universe-ta/generate/06_diagram/sources/` |
+| **Contoh format kating** | `workspace_files/sketchbook-universe-ta/upload/contoh_daffa.pdf` / `contoh_harun.pdf` |
+
+---
+
+## 📝 Sumber Kebenaran Tertinggi
+
+1. **Notulensi Bimbingan** (`upload/notulensi_bu_hesti_15jun26.md`) — Master reference dari dosen pembimbing
+2. **Merged Context** (`/workspace/Merged Context.txt`) — Evolusi arsitektur & reasoning (~75 KB)
+3. **Proposal Original** (`upload/Proposal_PA_*.docx`) — Bab 1 original (TIDAK diubah)
+4. **MEMORY.md** (`generate/MEMORY.md`) — Ingatan operasional agent dengan rules mutlak
+
+---
+
+## 🧠 Recursive Self-Improvement (RSI)
+
+### RSI Iteration #1 — 16/6/26 — OVER-INCLUSIVENESS BIAS
+**Trigger**: User angry karena Quick Draw analysis terlalu over-inclusive (masukin semua hewan, geometric primitive, landmark kompleks).
+
+**Rule Baru (WAJIB DITERAPKAN)**:
+> **RULE RSI-1: SWEET SPOT FILTER** — HANYA include medium difficulty objects:
+> - ❌ **Bukan geometric primitive**: line, circle, square, triangle → HAPUS TOTAL
+> - ❌ **Bukan animal**: Semua hewan (cat, dog, elephant, dll) → BANNED
+> - ❌ **Bukan landmark/kompleks ekstrem**: Eiffel Tower, Mona Lisa, aircraft carrier → BANNED
+> - ✅ **FOKUS**: Everyday objects (clock, cup, hat, key, umbrella) + simple food (apple, donut, pizza) + nature (sun, moon, star, tree, flower, cloud) + basic vehicles (car, bus, bicycle)
+
+---
+
+## 📞 Kontak & Dokumentasi Tambahan
+
+- **Chat Transcript**: `/workspace/transcript/chat_transcript.txt` — Riwayat lengkap diskusi dengan AI assistant
+- **Files Manifest**: `/workspace/transcript/files_manifest.txt` — Daftar 184 file di workspace (49.4 MB total)
+- **Audit File**: `workspace_files/escape-the-sketchbook/02_riset/00_Audit_File.md` — Klasifikasi file upload & cleanup recommendations
+
+---
+
+*Last updated: 2026-06-17*  
+*Project Name: Sketchbook Universe (formerly "Escape the Sketchbook")*  
+*Institution: Politeknik Elektronika Negeri Surabaya (PENS) — D4 Teknik Multimedia Broadcasting*
+
