@@ -1,0 +1,621 @@
+% ============================================================
+% PROPOSAL PROYEK AKHIR — FARCHAN DEANO MUHAMMAD (CAN)
+% PENGEMBANGAN SIMULASI INTERAKTIF BERLEVEL DENGAN MEKANISME
+% HUMAN-IN-THE-LOOP PADA SISTEM LITERASI KECERDASAN BUATAN
+% UNTUK SISWA SMP
+%
+% Format: PENS Standard (A4, 12pt TNR, 1.5 spacing, 4cm/3cm margin)
+% Mengikuti pola format Izzah (PilAItes 2025)
+% Skeleton file — empty sections siap diisi Phase 2
+% ============================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[top=4cm,left=4cm,right=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+
+% Times New Roman (pdflatex standard)
+\usepackage{times}
+\renewcommand{\rmdefault}{ptm}
+
+% ============================================================
+% LINE SPACING 1.5
+% ============================================================
+\setstretch{1.5}
+
+% ============================================================
+% PARAGRAPH INDENT (1.25 cm, PENS standard)
+% ============================================================
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% ============================================================
+% CHAPTER / SECTION / SUBSECTION FORMATTING
+% ============================================================
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{14pt}{16.8pt}\selectfont\bfseries\centering}
+  {BAB \thechapter}
+  {12pt}
+  {\MakeUppercase}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries\itshape}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\section}{0pt}{18pt}{12pt}
+\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+
+% ============================================================
+% CAPTION FORMATTING (Pola Izzah)
+% - Tabel: caption DI ATAS, font 11pt, label bold
+% - Gambar: caption DI BAWAH, font 11pt, label bold
+% ============================================================
+\captionsetup[table]{font=small,labelfont=bf,name={Tabel},labelsep=period,justification=centering,aboveskip=6pt,belowskip=0pt,position=top}
+\captionsetup[figure]{font=small,labelfont=bf,name={Gambar},labelsep=period,justification=centering,aboveskip=0pt,belowskip=6pt,position=bottom}
+
+% ============================================================
+% HEADER / FOOTER (page number top-right)
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% ============================================================
+% BLANK PAGE COMMAND
+% ============================================================
+\newcommand{\blankpage}{%
+  \afterpage{%
+    \null
+    \vfill
+    \begin{center}
+      {\small Halaman ini sengaja dikosongkan}
+    \end{center}
+    \vfill
+    \thispagestyle{plain}
+    \newpage
+  }%
+}
+
+% ============================================================
+% CUSTOM COMMANDS
+% ============================================================
+% \gbr{filename}{caption}{label}
+\newcommand{\gbr}[3]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{#1}
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+% \gbrsrc{filename}{caption}{label}{source}
+\newcommand{\gbrsrc}[4]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{#1}
+    \caption{#2}
+    \label{#3}
+    \begin{center}\small (Sumber: #4)\end{center}
+  \end{figure}
+}
+
+% \tabel{caption}{content}{label}
+\newcommand{\tabel}[3]{%
+  \begin{table}[H]
+    \centering
+    \caption{#1}
+    \label{#3}
+    #2
+  \end{table}
+}
+
+% ============================================================
+% TOC FORMATTING
+% ============================================================
+\renewcommand{\contentsname}{DAFTAR ISI}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ============================================================
+% 1. COVER PAGE
+% ============================================================
+\begin{titlepage}
+\centering
+\vspace*{1cm}
+
+{\fontsize{14pt}{16pt}\selectfont PROPOSAL PROYEK AKHIR}
+
+\vspace{2cm}
+
+{\fontsize{14pt}{18pt}\selectfont\bfseries\MakeUppercase{Pengembangan Simulasi Interaktif Berlevel dengan Mekanisme Human-in-the-Loop pada Sistem Literasi Kecerdasan Buatan untuk Siswa SMP}}
+
+\vspace{3cm}
+
+{\fontsize{12pt}{14pt}\selectfont Oleh:}\\[0.3cm]
+{\fontsize{12pt}{14pt}\selectfont\bfseries Farchan Deano Muhammad}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont NRP. 53226000xx}
+
+\vspace{3cm}
+
+{\fontsize{12pt}{14pt}\selectfont Dosen Pembimbing:}\\[0.3cm]
+{\fontsize{12pt}{14pt}\selectfont [Nama Dosen Pembimbing]}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont NIP. [NIP]}
+
+\vspace{3cm}
+
+{\fontsize{12pt}{14pt}\selectfont PROGRAM STUDI SARJANA TERAPAN TEKNOLOGI REKAYASA MULTIMEDIA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont JURUSAN TEKNOLOGI MULTIMEDIA DAN JARINGAN}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont POLITEKNIK ELEKTRONIKA NEGERI SURABAYA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont 2025}
+
+\end{titlepage}
+
+% ============================================================
+% 2. BLANK PAGE
+% ============================================================
+\blankpage
+
+% ============================================================
+% 3. HALAMAN PENGESAHAN
+% ============================================================
+\chapter*{HALAMAN PENGESAHAN}
+\addcontentsline{toc}{chapter}{HALAMAN PENGESAHAN}
+
+Proposal Proyek Akhir ini disusun dan diajukan oleh:
+
+\vspace{0.4cm}
+
+\begin{tabular}{ll}
+Nama & : Farchan Deano Muhammad \\
+NRP & : 53226000xx \\
+Program Studi & : Sarjana Terapan Teknologi Rekayasa Multimedia \\
+Jurusan & : Teknologi Multimedia dan Jaringan \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+Telah diperiksa dan disahkan oleh Dosen Pembimbing pada tanggal: \underline{\hspace{3cm}}
+
+\vspace{1.5cm}
+
+\begin{tabular}{ll}
+Dosen Pembimbing, & \\
+\\
+\\
+\\
+\underline{\hspace{5cm}} & \\
+[Nama Dosen Pembimbing] & \\
+NIP. \underline{\hspace{3cm}} & \\
+\end{tabular}
+
+\blankpage
+
+% ============================================================
+% 4. ABSTRAK
+% ============================================================
+\chapter*{ABSTRAK}
+\addcontentsline{toc}{chapter}{ABSTRAK}
+
+% TODO Phase 2: Isi abstrak 200-250 kata + kata kunci
+% Template: konteks → masalah → solusi → metode → hasil yang diharapkan
+%
+% [ABSTRAK — ISI DI SINI]
+
+\vspace{0.5cm}
+
+\noindent\textbf{Kata Kunci}: % [kata kunci 1, kata kunci 2, ...]
+
+\blankpage
+
+% ============================================================
+% 5. ABSTRACT (English)
+% ============================================================
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+% TODO Phase 2: English version of abstrak
+% [ABSTRACT — ISI DI SINI]
+
+\vspace{0.5cm}
+
+\noindent\textbf{Keywords}: % [keywords in English]
+
+\blankpage
+
+% ============================================================
+% 6. DAFTAR ISI
+% ============================================================
+\chapter*{DAFTAR ISI}
+\addcontentsline{toc}{chapter}{DAFTAR ISI}
+
+\tableofcontents
+\clearpage
+
+% ============================================================
+% 7. DAFTAR GAMBAR
+% ============================================================
+\chapter*{DAFTAR GAMBAR}
+\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+
+\listoffigures
+\clearpage
+
+% ============================================================
+% 8. DAFTAR TABEL
+% ============================================================
+\chapter*{DAFTAR TABEL}
+\addcontentsline{toc}{chapter}{DAFTAR TABEL}
+
+\listoftables
+\clearpage
+
+% ============================================================
+% BAB 1 — PENDAHULUAN
+% (UNCHANGED from existing proposal — JANGAN diubah, hanya format convert)
+% Total target: ~5 halaman
+% ============================================================
+\chapter{PENDAHULUAN}
+\label{chap:bab1}
+
+% ------------------------------------------------------------
+\section{LATAR BELAKANG}
+\label{sec:latar-belakang}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.1 dari proposal-can.tex existing
+% Estimasi: ~2 halaman, 5-6 paragraf
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{PERMASALAHAN}
+\label{sec:permasalahan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.2 dari proposal-can.tex existing
+% Estimasi: ~0.5 halaman, 1 paragraf
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{BATASAN MASALAH}
+\label{sec:batasan-masalah}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.3 dari proposal-can.tex existing
+% Estimasi: ~0.5 halaman, bullet list 4-5 poin
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{TUJUAN}
+\label{sec:tujuan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.4 dari proposal-can.tex existing
+% Estimasi: ~0.5 halaman
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{MANFAAT}
+\label{sec:manfaat}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.5 dari proposal-can.tex existing
+% Estimasi: ~0.5 halaman, bullet 4 poin
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{SISTEMATIKA PENULISAN}
+\label{sec:sistematika-penulisan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.6 dari proposal-can.tex existing
+% Estimasi: ~0.5 halaman, paragraf per BAB
+% [ISI DI SINI]
+
+% ============================================================
+% BAB 2 — KAJIAN PUSTAKA
+% BEDA Can vs Dias — Can fokus Frontend/HITL/UI-UX
+% Total target: ~8-10 halaman
+% Pola Izzah: ringkas, detail di Bab 3
+% ============================================================
+\chapter{KAJIAN PUSTAKA}
+\label{chap:bab2}
+
+% Paragraf pembuka bab — TODO Phase 2
+% [PARAGRAF PEMBUKA BAB 2]
+
+% ------------------------------------------------------------
+\section{DESKRIPSI PERMASALAHAN}
+\label{sec:deskripsi-permasalahan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy dari proposal-can.tex existing + ringkas
+% Estimasi: ~1 halaman, 3 paragraf
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{TEORI PENUNJANG}
+\label{sec:teori-penunjang}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy dari proposal-can.tex existing + ringkas (detail di Bab 3)
+% Estimasi: ~5-6 halaman total, 0.5-1 hal per teori
+% Format pola Izzah: definisi → penjelasan → posisi dalam penelitian
+
+\subsection{Literasi Kecerdasan Buatan}
+\label{subsec:literasi-ai}
+% [ISI DI SINI]
+
+\subsection{Human-in-the-Loop}
+\label{subsec:hitl}
+% [ISI DI SINI]
+
+\subsection{Explainable Interface dan Confidence Score}
+\label{subsec:xai-confidence}
+% [ISI DI SINI]
+
+\subsection{Game-Based Learning dan Scaffolding}
+\label{subsec:gbl-scaffolding}
+% [ISI DI SINI]
+
+\subsection{Pedagogical Agent}
+\label{subsec:pedagogical-agent}
+% [ISI DI SINI]
+
+\subsection{Child-Computer Interaction untuk Siswa SMP}
+\label{subsec:cci}
+% [ISI DI SINI]
+
+\subsection{System Usability Scale}
+\label{subsec:sus}
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{PENELITIAN TERKAIT}
+\label{sec:penelitian-terkait}
+% ------------------------------------------------------------
+% TODO Phase 2: 4 penelitian terkait + Tabel State of the Art
+% Estimasi: ~2-3 halaman
+
+\subsection{AI Literacy in K-12}
+\label{subsec:penelitian-1}
+% [ISI DI SINI]
+
+\subsection{Human-in-the-Loop Machine Learning}
+\label{subsec:penelitian-2}
+% [ISI DI SINI]
+
+\subsection{Game-Based Learning in Computer Science}
+\label{subsec:penelitian-3}
+% [ISI DI SINI]
+
+\subsection{Real-Time Hand Gesture Monitoring}
+\label{subsec:penelitian-4}
+% [ISI DI SINI — NOTE: revisi karena finger tracking login DEPRECATED]
+
+\subsection{State of the Art}
+\label{subsec:state-of-the-art}
+% TODO Phase 2: Tabel 2.1 State of the Art (POLosan, format Izzah)
+% Kolom: No | Penelitian | Metode/Fokus | Temuan | Celah yang Diisi
+% [ISI DI SINI + Tabel 2.1]
+
+% ============================================================
+% BAB 3 — DESKRIPSI SISTEM
+% BEDA Can vs Dias — DETAIL, scope Frontend/HITL/UI-UX
+% Total target: ~18-22 halaman
+% Urutan pola Izzah: Deskripsi Solusi → Metodologi → Desain Sistem → Jadwal
+% ============================================================
+\chapter{DESKRIPSI SISTEM}
+\label{chap:bab3}
+
+% Paragraf pembuka bab — TODO Phase 2
+% [PARAGRAF PEMBUKA BAB 3]
+
+% ------------------------------------------------------------
+\section{DESKRIPSI SOLUSI}
+\label{sec:deskripsi-solusi}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy dari proposal-can.tex existing Bab 3.1
+% Estimasi: ~1-2 halaman
+% Konten: 4 prinsip akademis + 3 level progresi + Momo + tech stack ringkas
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{METODOLOGI PENELITIAN}
+\label{sec:metodologi-penelitian}
+% ------------------------------------------------------------
+% TODO Phase 2: PINDAH dari posisi akhir (existing 3.4) ke sini (3.2)
+% Estimasi: ~2-3 halaman
+% Konten WAJIB: Waterfall (SDLC) 5 tahap + Fishbone 6M + SUS + Black-Box
+% [ISI DI SINI]
+
+\subsection{Pendekatan dan Jenis Penelitian}
+\label{subsec:pendekatan-penelitian}
+% [ISI DI SINI — Mixed Methods + R&D]
+
+\subsection{Metode Pengembangan}
+\label{subsec:metode-pengembangan}
+% [ISI DI SINI — SDLC Waterfall 5 tahap]
+
+\subsection{Analisis Masalah (Fishbone 6M)}
+\label{subsec:analisis-masalah}
+% [ISI DI SINI — Fishbone 6M: Man, Machine, Method, Material, Measurement, Environment]
+% TODO: Tambahkan Gambar Fishbone Diagram
+
+\subsection{Teknik Pengumpulan Data}
+\label{subsec:teknik-pengumpulan-data}
+% [ISI DI SINI — Data Log + Kuesioner SUS + Observasi]
+
+\subsection{Teknik Analisis Data}
+\label{subsec:teknik-analisis-data}
+% [ISI DI SINI — Statistik Deskriptif + Fishbone + Thematic Analysis]
+
+\subsection{Metode Pengujian}
+\label{subsec:metode-pengujian}
+% [ISI DI SINI — Black-Box + SUS]
+
+% ------------------------------------------------------------
+\section{DESAIN SISTEM}
+\label{sec:desain-sistem}
+% ------------------------------------------------------------
+% TODO Phase 2: Sub-sections detail scope Can
+% Estimasi: ~12-15 halaman total
+
+\subsection{Kebutuhan Pengguna dan Use Case}
+\label{subsec:kebutuhan-pengguna}
+% TODO Phase 2: Tabel kebutuhan pengguna (POLosan, format Izzah)
+% TODO: Use case diagram dengan 3 aktor: Siswa, Admin/Guru, SUPERADMIN (pivot #1)
+% Estimasi: ~2 halaman
+% [ISI DI SINI + Tabel 3.1 Kebutuhan Pengguna]
+
+\subsection{Alur Pengguna (User Flow)}
+\label{subsec:alur-pengguna}
+% TODO Phase 2: User flow placement — CAN ISI SENDIRI
+% Estimasi: ~1.5 halaman
+% [ISI DI SINI + Gambar 3.x User Flow]
+
+\subsection{Desain Level}
+\label{subsec:desain-level}
+% TODO Phase 2: 3 level — Trust Building, Ambiguous Choice, Risk & Override
+% Estimasi: ~3 halaman
+% Format: Tabel spesifikasi teknis per level (POLosan)
+
+\subsubsection{Level 1 --- Guided Recognition (Trust Building)}
+% [ISI DI SINI + Tabel 3.x Spesifikasi Level 1]
+
+\subsubsection{Level 2 --- Ambiguous Choice (Doubt \& Calibration)}
+% [ISI DI SINI + Tabel 3.x Spesifikasi Level 2]
+
+\subsubsection{Level 3 --- Risk \& Override (Human Agency)}
+% [ISI DI SINI + Tabel 3.x Spesifikasi Level 3]
+
+\subsection{Mekanisme Human-in-the-Loop (Top-6 Check)}
+\label{subsec:hitl-mekanisme}
+% TODO Phase 2: REVISE dari existing — Top-6 check (PIVOT #2 16/6/26)
+% BUKAN Override Budget lagi
+% Estimasi: ~2 halaman
+% Konten: Top-3 tampil, Top-6 cek backend, override flow, anti-cheat
+% [ISI DI SINI + Gambar 3.x Top-6 Check Flow]
+
+\subsection{Maskot Momo}
+\label{subsec:maskot-momo}
+% TODO Phase 2: ADD section baru — deskripsi tekstual konsep maskot
+% Estimasi: ~1 halaman
+% Pilih dari OPSI E "Doodle Cube" atau OPSI G "Eraser Ghost"
+% Konten WAJIB: konsep, 5 state ekspresi, prinsip 8-bit geometric,
+% text bubble only, NO voice/NLP, NO legs/wings, float only
+% [ISI DI SINI + Gambar 3.x Placeholder Sketsa Momo]
+
+\subsection{Wireframe Antarmuka}
+\label{subsec:wireframe}
+% TODO Phase 2: 4-6 wireframe dengan keterangan fungsi
+% Estimasi: ~2.5 halaman
+% Minimum: Onboarding, Main Gameplay, Probe UI, Result & Feedback
+
+\subsubsection{Wireframe Onboarding}
+% [ISI DI SINI + Gambar 3.x Wireframe Onboarding]
+
+\subsubsection{Wireframe Main Gameplay}
+% [ISI DI SINI + Gambar 3.x Wireframe Main Gameplay]
+
+\subsubsection{Wireframe Probe UI (Top-3 + Top-6 Check)}
+% [ISI DI SINI + Gambar 3.x Wireframe Probe UI]
+
+\subsubsection{Wireframe Result dan Feedback}
+% [ISI DI SINI + Gambar 3.x Wireframe Result]
+
+\subsection{Rancangan Pengujian}
+\label{subsec:rancangan-pengujian}
+% TODO Phase 2: Black-Box + SUS questionnaire + prosedur pengujian
+% Estimasi: ~1.5 halaman
+% [ISI DI SINI]
+
+\subsection{Pembagian Tugas dan Alur Pengerjaan}
+\label{subsec:pembagian-tugas}
+% TODO Phase 2: DUO PATTERN (dari Daffa 3.2.2)
+% Estimasi: ~1 halaman
+% Diagram pembagian tugas (BIRU=Can, ABU=Dias)
+% Narasi: penulis (Can) ↔ rekan (Dias)
+% [ISI DI SINI + Gambar 3.x Pembagian Tugas]
+
+% ------------------------------------------------------------
+\section{JADWAL PENELITIAN}
+\label{sec:jadwal-penelitian}
+% ------------------------------------------------------------
+% TODO Phase 2: Tabel timeline SINKRON dengan Dias
+% Estimasi: ~1 halaman
+% Format: 1 tabel shared, kolom Bulan 1-12, rows kegiatan + inisial C/D
+% Lihat Style_Guide_v1.md Section 7.3 untuk daftar kegiatan
+%
+% [ISI DI SINI + Tabel 3.x Timeline]
+
+% ============================================================
+% DAFTAR PUSTAKA
+% ============================================================
+\chapter*{DAFTAR PUSTAKA}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+
+% TODO Phase 2: Daftar Pustaka format PENS-IEEE
+% Urut by nomor [1], [2], ... sesuai urutan muncul
+% Format: Author. (Year). Title. Venue, vol. X, no. Y, pp. Z-W. doi: ...
+%
+% Referensi Can (22 total — lihat proposal-can.tex existing):
+% [1] Ng et al. - AI literacy
+% [2] Casal-Otero et al. - AI literacy K-12
+% [3] Khosravi et al. - XAI in education
+% [4] Mosqueira-Rey et al. - HITL ML state of the art
+% [5] Memarian & Doleck - HITL in AIED
+% [6] Videnovik et al. - GBL CS education
+% [7] Chan, Wan & King - Flow Theory
+% [8] Schroeder et al. - Pedagogical agents
+% [9] Karran et al. - Confidence visualization
+% [10] Pressman - Software Engineering
+% [11] Sommerville - Software Engineering
+% [12] Sugiyono - R&D
+% [13] Creswell - Mixed Methods
+% [14] Ishikawa - Quality Control
+% [15] Brooke - SUS
+% [16] Bangor et al. - SUS empirical
+% ... + tambahan Waterfall SDLC reference
+% [ISI DI SINI]
+
+\end{document}

@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escape the Sketchbook — Level Layout Diagrams</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0a0f;
+    color: #e2e8f0;
+    width: 1600px;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .main-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 3px solid #6366f1;
+    padding: 48px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .main-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(99,102,241,0.06) 39px, rgba(99,102,241,0.06) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(99,102,241,0.06) 39px, rgba(99,102,241,0.06) 40px);
+    pointer-events: none;
+  }
+  .main-header h1 {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+  }
+  .main-header .subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    margin-top: 12px;
+    font-weight: 400;
+    position: relative;
+  }
+  .main-header .badge-row {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+  }
+  .badge .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .badge.green .dot { background: #10B981; }
+  .badge.amber .dot { background: #F59E0B; }
+  .badge.red .dot { background: #EF4444; }
+
+  /* ─── LEVEL SECTION ─── */
+  .level-section {
+    padding: 56px 64px;
+    position: relative;
+  }
+  .level-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 64px; right: 64px; bottom: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px);
+    pointer-events: none;
+  }
+
+  /* Level 1 — Green */
+  .level-1 { background: linear-gradient(180deg, #064e3b15 0%, #0a0a0f 100%); }
+  .level-1 .level-border { border-color: #10B981; }
+  .level-1 .accent { color: #10B981; }
+  .level-1 .accent-bg { background: #10B981; }
+  .level-1 .accent-bg-subtle { background: rgba(16,185,129,0.12); }
+  .level-1 .accent-border { border-color: #10B981; }
+  .level-1 .accent-glow { box-shadow: 0 0 20px rgba(16,185,129,0.2); }
+
+  /* Level 2 — Amber */
+  .level-2 { background: linear-gradient(180deg, #78350f15 0%, #0a0a0f 100%); }
+  .level-2 .level-border { border-color: #F59E0B; }
+  .level-2 .accent { color: #F59E0B; }
+  .level-2 .accent-bg { background: #F59E0B; }
+  .level-2 .accent-bg-subtle { background: rgba(245,158,11,0.12); }
+  .level-2 .accent-border { border-color: #F59E0B; }
+  .level-2 .accent-glow { box-shadow: 0 0 20px rgba(245,158,11,0.2); }
+
+  /* Level 3 — Red */
+  .level-3 { background: linear-gradient(180deg, #7f1d1d15 0%, #0a0a0f 100%); }
+  .level-3 .level-border { border-color: #EF4444; }
+  .level-3 .accent { color: #EF4444; }
+  .level-3 .accent-bg { background: #EF4444; }
+  .level-3 .accent-bg-subtle { background: rgba(239,68,68,0.12); }
+  .level-3 .accent-border { border-color: #EF4444; }
+  .level-3 .accent-glow { box-shadow: 0 0 20px rgba(239,68,68,0.2); }
+
+  /* Level Title Bar */
+  .level-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .level-number {
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 900;
+    color: #0a0a0f;
+    flex-shrink: 0;
+  }
+  .level-title-text h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #f1f5f9;
+    line-height: 1.2;
+  }
+  .level-title-text .meta-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 6px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  /* ─── DIAGRAM CONTAINER ─── */
+  .diagram-container {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 32px;
+    position: relative;
+  }
+
+  /* Blueprint area */
+  .blueprint {
+    background: #0c0c14;
+    border: 2px solid;
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .blueprint::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.02) 19px, rgba(255,255,255,0.02) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.02) 19px, rgba(255,255,255,0.02) 20px);
+    pointer-events: none;
+  }
+
+  .blueprint-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    opacity: 0.5;
+  }
+
+  /* ─── LEVEL 1 LAYOUT ─── */
+  .l1-layout {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+    min-height: 380px;
+    position: relative;
+  }
+  .l1-cliff {
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .cliff-block {
+    flex: 1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    position: relative;
+    min-height: 140px;
+  }
+  .cliff-solid {
+    background: linear-gradient(180deg, #10B98120, #10B98108);
+    border: 2px solid #10B98160;
+  }
+  .cliff-solid .cliff-text {
+    color: #10B981;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .l1-gap {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .gap-top {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gap-middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 160px;
+  }
+  .gap-empty-indicator {
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 13px;
+    font-style: italic;
+  }
+  .gap-bottom {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .l1-drawn {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .drawn-object {
+    background: rgba(16,185,129,0.15);
+    border: 2px solid #10B981;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .drawn-object .emoji { font-size: 28px; }
+  .drawn-object .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #10B981;
+    margin-top: 4px;
+  }
+  .drawn-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: #10B981;
+    color: #0a0a0f;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  /* Stickman */
+  .stickman-start {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .stickman-figure {
+    font-size: 36px;
+    line-height: 1;
+  }
+  .stickman-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    color: #0a0a0f;
+  }
+  .goal-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .goal-flag { font-size: 36px; line-height: 1; }
+
+  /* Flow arrows */
+  .flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: rgba(255,255,255,0.3);
+  }
+  .flow-arrow .arrow-line {
+    width: 2px;
+    height: 40px;
+    position: relative;
+  }
+  .flow-arrow .arrow-head {
+    font-size: 14px;
+  }
+
+  /* ─── LEVEL 2 LAYOUT ─── */
+  .l2-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    min-height: 400px;
+    position: relative;
+  }
+  .l2-start-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .l2-fork {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+  }
+  .l2-path {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid;
+    position: relative;
+  }
+  .l2-path.trap {
+    background: rgba(239,68,68,0.06);
+    border-color: rgba(239,68,68,0.3);
+  }
+  .l2-path.safe {
+    background: rgba(16,185,129,0.06);
+    border-color: rgba(16,185,129,0.3);
+  }
+  .path-label {
+    font-size: 14px;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .path-label.danger-label {
+    background: rgba(239,68,68,0.15);
+    color: #EF4444;
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+  .path-label.safe-label {
+    background: rgba(16,185,129,0.15);
+    color: #10B981;
+    border: 1px solid rgba(16,185,129,0.3);
+  }
+  .door-icon {
+    font-size: 48px;
+    line-height: 1;
+  }
+  .path-result {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .path-result.fail {
+    background: rgba(239,68,68,0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239,68,68,0.4);
+  }
+  .path-result.success {
+    background: rgba(16,185,129,0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16,185,129,0.4);
+  }
+  .fork-connector {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ─── LEVEL 3 LAYOUT ─── */
+  .l3-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 380px;
+    position: relative;
+  }
+  .l3-path-straight {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+  }
+  .l3-segment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .l3-road {
+    height: 12px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), rgba(255,255,255,0.08), transparent);
+    width: 100px;
+    position: relative;
+  }
+  .l3-obstacle {
+    background: rgba(239,68,68,0.1);
+    border: 2px solid rgba(239,68,68,0.4);
+    border-radius: 16px;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+  .l3-obstacle .emoji { font-size: 48px; }
+  .l3-obstacle .name {
+    font-weight: 800;
+    font-size: 16px;
+    color: #EF4444;
+  }
+  .l3-obstacle .desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+  .l3-block-line {
+    width: 4px;
+    height: 100px;
+    background: repeating-linear-gradient(180deg, #EF4444, #EF4444 6px, transparent 6px, transparent 12px);
+    border-radius: 2px;
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .sidebar-card {
+    background: #0c0c14;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sidebar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(255,255,255,0.01) 19px, rgba(255,255,255,0.01) 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(255,255,255,0.01) 19px, rgba(255,255,255,0.01) 20px);
+    pointer-events: none;
+  }
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 14px; }
+
+  /* Momo Dialog */
+  .momo-dialog {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .momo-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .momo-bubble {
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+    flex: 1;
+  }
+  .momo-bubble.green-bubble {
+    background: rgba(16,185,129,0.12);
+    border: 1px solid rgba(16,185,129,0.3);
+    color: #6ee7b7;
+  }
+  .momo-bubble.yellow-bubble {
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.3);
+    color: #fcd34d;
+  }
+  .momo-bubble.red-bubble {
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5;
+  }
+  .confidence-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .confidence-badge.high {
+    background: rgba(16,185,129,0.2);
+    color: #10B981;
+  }
+  .confidence-badge.medium {
+    background: rgba(245,158,11,0.2);
+    color: #F59E0B;
+  }
+  .confidence-badge.low {
+    background: rgba(239,68,68,0.2);
+    color: #EF4444;
+  }
+
+  /* Prompt card */
+  .prompt-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-style: italic;
+    font-size: 15px;
+    color: #cbd5e1;
+    text-align: center;
+  }
+
+  /* Decision Flow */
+  .decision-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .decision-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .decision-label {
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+  }
+  .decision-label.accept {
+    background: rgba(16,185,129,0.2);
+    color: #10B981;
+    border: 1px solid rgba(16,185,129,0.3);
+  }
+  .decision-label.correct {
+    background: rgba(59,130,246,0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59,130,246,0.3);
+  }
+  .decision-label.override {
+    background: rgba(239,68,68,0.2);
+    color: #EF4444;
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+  .decision-label.wrong {
+    background: rgba(239,68,68,0.2);
+    color: #fca5a5;
+    border: 1px solid rgba(239,68,68,0.3);
+  }
+  .decision-arrow { color: rgba(255,255,255,0.3); font-size: 16px; }
+  .decision-outcome {
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  .decision-outcome.success-outcome { color: #6ee7b7; }
+  .decision-outcome.fail-outcome { color: #fca5a5; }
+
+  /* Behavior Map Table */
+  .behavior-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .behavior-table th {
+    text-align: left;
+    padding: 8px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .behavior-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+  .type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .type-badge.solid { background: rgba(16,185,129,0.2); color: #10B981; }
+  .type-badge.danger { background: rgba(239,68,68,0.2); color: #EF4444; }
+  .type-badge.decoration { background: rgba(168,85,247,0.2); color: #a855f7; }
+
+  /* Data Logging */
+  .data-logging {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .data-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .data-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+  .data-value {
+    color: #64748b;
+    font-size: 12px;
+  }
+
+  /* Separator */
+  .level-separator {
+    height: 2px;
+    margin: 0 64px;
+    position: relative;
+  }
+  .level-separator::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  /* Footer */
+  .diagram-footer {
+    background: #0c0c14;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 32px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-text {
+    font-size: 12px;
+    color: #475569;
+  }
+
+  /* Flow indicator arrows (SVG-like) */
+  .flow-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 20px;
+  }
+
+  /* Object legend */
+  .object-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+  }
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+  .legend-swatch.pre-placed {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.2);
+  }
+  .legend-swatch.user-drawn {
+    border-style: dashed;
+  }
+
+  /* Fail path highlight */
+  .fail-highlight {
+    position: relative;
+  }
+  .fail-highlight::after {
+    content: 'FAIL';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+    color: #EF4444;
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.3);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* Arrow connectors */
+  .arrow-connector {
+    color: rgba(255,255,255,0.2);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .arrow-connector.down { transform: rotate(90deg); }
+  .arrow-connector.right { }
+
+  /* Level-specific drawn object styles */
+  .drawn-object-l2 {
+    background: rgba(245,158,11,0.1);
+    border: 2px dashed #F59E0B;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .drawn-object-l2 .emoji { font-size: 24px; }
+  .drawn-object-l2 .label { font-size: 12px; font-weight: 700; color: #F59E0B; margin-top: 2px; }
+
+  .drawn-object-l3 {
+    background: rgba(239,68,68,0.1);
+    border: 2px dashed #EF4444;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .drawn-object-l3 .emoji { font-size: 24px; }
+  .drawn-object-l3 .label { font-size: 12px; font-weight: 700; color: #EF4444; margin-top: 2px; }
+
+  /* Additional flow paths for Level 2 */
+  .l2-drawn-area {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    justify-content: center;
+  }
+
+  /* Paper tear effect */
+  .paper-tear {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #EF4444;
+    background: rgba(239,68,68,0.1);
+    border: 1px dashed rgba(239,68,68,0.4);
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Level 3 specific — two outcome paths */
+  .l3-outcomes {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: center;
+  }
+  .l3-outcome-box {
+    flex: 1;
+    max-width: 320px;
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid;
+    text-align: center;
+  }
+  .l3-outcome-box.accept-path {
+    background: rgba(239,68,68,0.06);
+    border-color: rgba(239,68,68,0.3);
+  }
+  .l3-outcome-box.override-path {
+    background: rgba(16,185,129,0.06);
+    border-color: rgba(16,185,129,0.3);
+  }
+  .outcome-title {
+    font-weight: 800;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .outcome-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: left;
+  }
+  .outcome-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- MAIN HEADER                             -->
+<!-- ═══════════════════════════════════════ -->
+<div class="main-header">
+  <h1>ESCAPE THE SKETCHBOOK</h1>
+  <div class="subtitle">Level Layout Diagrams — Blueprint &amp; Interaction Flow</div>
+  <div class="badge-row">
+    <div class="badge green"><span class="dot"></span>Level 1: Trust Building</div>
+    <div class="badge amber"><span class="dot"></span>Level 2: Ambiguity</div>
+    <div class="badge red"><span class="dot"></span>Level 3: Critical Override</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- LEVEL 1 — TURUN DARI TEBING            -->
+<!-- ═══════════════════════════════════════ -->
+<div class="level-section level-1">
+  <div class="level-title-bar">
+    <div class="level-number accent-bg">1</div>
+    <div class="level-title-text">
+      <h2>Turun dari Tebing <span class="accent" style="font-weight:400;">— Trust Building</span></h2>
+      <div class="meta-row">
+        <span class="meta-tag accent-border accent-bg-subtle accent">AI Confidence: &gt;85%</span>
+        <span class="meta-tag accent-border accent-bg-subtle accent">Momo: Percaya Diri 🟢</span>
+        <span class="meta-tag accent-border accent-bg-subtle accent">Klasifikasi: Solid Only</span>
+        <span class="meta-tag" style="border-color:rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#94a3b8;">Tidak Bisa Gagal</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-container">
+    <!-- Blueprint -->
+    <div class="blueprint level-border accent-glow">
+      <div class="blueprint-label accent">📐 Level 1 — Layout Blueprint</div>
+      
+      <div class="l1-layout">
+        <!-- Left Cliff -->
+        <div class="l1-cliff">
+          <div class="cliff-block cliff-solid" style="border-radius: 12px 12px 4px 4px;">
+            <div class="cliff-text">TEBING ATAS<br><span style="opacity:0.6;font-size:10px;">[Pre-placed: Solid]</span></div>
+          </div>
+          <div style="height: 4px; background: #10B98140; margin: 0 20px;"></div>
+          <div class="cliff-block cliff-solid" style="border-radius: 4px 4px 12px 12px;">
+            <div class="cliff-text">TEBING BAWAH<br><span style="opacity:0.6;font-size:10px;">[Pre-placed: Solid]</span></div>
+          </div>
+        </div>
+
+        <!-- Gap / Drawn Area -->
+        <div class="l1-gap">
+          <div class="gap-top">
+            <div class="stickman-start">
+              <div class="stickman-label accent-bg" style="color:#0a0a0f;">START</div>
+              <div class="stickman-figure">🚶</div>
+              <div style="font-size:11px;color:#94a3b8;font-weight:600;">Stickman</div>
+            </div>
+          </div>
+          
+          <div class="gap-middle">
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <div style="font-size:11px;color:#64748b;font-weight:600;">⬇ 150px</div>
+                <div style="width:2px;height:60px;background:repeating-linear-gradient(180deg,#10B981,#10B981 4px,transparent 4px,transparent 8px);"></div>
+                <div style="font-size:11px;color:#64748b;font-weight:600;">Jurang</div>
+              </div>
+              <div class="gap-empty-indicator" style="min-width:120px;">
+                <div style="font-size:24px;margin-bottom:4px;">🕳️</div>
+                KOSONG<br><span style="font-size:10px;">Tidak ada solid</span>
+              </div>
+            </div>
+
+            <!-- Drawn ladder overlaid -->
+            <div style="position:absolute;right:-130px;top:50%;transform:translateY(-50%);">
+              <div class="drawn-object" style="border-color:#10B981;background:rgba(16,185,129,0.1);">
+                <div class="drawn-tag" style="background:#10B981;color:#0a0a0f;">USER DRAWN</div>
+                <div class="emoji" style="font-size:32px;">🪜</div>
+                <div class="label">TANGGA</div>
+                <div style="font-size:10px;color:#10B981;opacity:0.7;margin-top:2px;">→ Solid → Walkable</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="gap-bottom">
+            <div class="goal-marker">
+              <div class="goal-flag">🚩</div>
+              <div class="stickman-label" style="background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3);">FINISH</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right info column -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:16px;padding-left:40px;">
+          <!-- Flow description -->
+          <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:16px;">
+            <div style="font-size:12px;font-weight:700;color:#10B981;margin-bottom:10px;">ALUR PERMAINAN</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#cbd5e1;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="background:#10B981;color:#0a0a0f;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;">1</span>
+                Stickman berdiri di tepi tebing atas
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="background:#10B981;color:#0a0a0f;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;">2</span>
+                User menggambar TANGGA di jurang
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="background:#10B981;color:#0a0a0f;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;">3</span>
+                AI klasifikasi: Tangga → Solid → Walkable
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="background:#10B981;color:#0a0a0f;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;">4</span>
+                Stickman berjalan menuruni tangga → FINISH ✅
+              </div>
+            </div>
+          </div>
+
+          <!-- No fail note -->
+          <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px;text-align:center;">
+            <div style="font-size:16px;margin-bottom:4px;">🛡️</div>
+            <div style="font-size:13px;font-weight:700;color:#10B981;">Level 1 Tidak Bisa Gagal</div>
+            <div style="font-size:11px;color:#64748b;margin-top:4px;">Baseline trust — semua gambar → solid → walkable</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="object-legend">
+        <div class="legend-item">
+          <div class="legend-swatch pre-placed"></div>
+          Pre-placed (sudah ada)
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch user-drawn" style="background:rgba(16,185,129,0.15);border-color:#10B981;border-style:dashed;"></div>
+          User-drawn (digambar pemain)
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Momo Dialog -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🤖 Dialog Momo</div>
+        <div class="momo-dialog">
+          <div class="momo-avatar" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);">🐱</div>
+          <div>
+            <div class="momo-bubble green-bubble">
+              "Aku 96% yakin ini tangga!"
+            </div>
+            <div class="confidence-badge high">🟢 96% — Percaya Diri</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div class="sidebar-card">
+        <div class="card-title accent">✏️ Prompt ke User</div>
+        <div class="prompt-box">"Gambar TANGGA biar Stickman bisa turun!"</div>
+        <div style="font-size:11px;color:#64748b;margin-top:8px;text-align:center;">💡 Petunjuk eksplisit diberikan</div>
+      </div>
+
+      <!-- Decision Flow -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🔀 Alur Keputusan</div>
+        <div class="decision-flow">
+          <div class="decision-row">
+            <div class="decision-label accept">ACCEPT</div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-outcome success-outcome">Tangga → Solid ✅</div>
+          </div>
+          <div style="font-size:11px;color:#475569;padding-left:90px;">Stickman turun → FINISH</div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:11px;color:#64748b;">Tidak ada jalur FAIL di Level 1</div>
+        </div>
+      </div>
+
+      <!-- Behavior Map -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🧠 Behavior Map</div>
+        <table class="behavior-table">
+          <thead>
+            <tr>
+              <th style="color:#10B981;">Label</th>
+              <th style="color:#10B981;">Tipe</th>
+              <th style="color:#10B981;">Kaplay</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>tangga/tangga</td>
+              <td><span class="type-badge solid">Solid</span></td>
+              <td style="color:#6ee7b7;">walkable</td>
+            </tr>
+            <tr>
+              <td>tangga/jembatan</td>
+              <td><span class="type-badge solid">Solid</span></td>
+              <td style="color:#6ee7b7;">walkable</td>
+            </tr>
+            <tr>
+              <td>rainbow/awan</td>
+              <td><span class="type-badge solid">Solid</span></td>
+              <td style="color:#6ee7b7;">walkable*</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:10px;color:#475569;margin-top:8px;">*Level 1: Semua klasifikasi → Solid (baseline trust)</div>
+      </div>
+
+      <!-- Data Logging -->
+      <div class="sidebar-card">
+        <div class="card-title accent">📊 Data Logging</div>
+        <div class="data-logging">
+          <div class="data-item">
+            <div class="data-key">decision_type</div>
+            <div class="data-value">= accept (baseline)</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">latency</div>
+            <div class="data-value">= 2–4 detik (referensi)</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">ai_confidence</div>
+            <div class="data-value">= &gt;85%</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">classification</div>
+            <div class="data-value">= solid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEPARATOR -->
+<div class="level-separator"></div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- LEVEL 2 — PINTU KUNCI                  -->
+<!-- ═══════════════════════════════════════ -->
+<div class="level-section level-2">
+  <div class="level-title-bar">
+    <div class="level-number accent-bg">2</div>
+    <div class="level-title-text">
+      <h2>Pintu Kunci <span class="accent" style="font-weight:400;">— Navigating Ambiguity</span></h2>
+      <div class="meta-row">
+        <span class="meta-tag accent-border accent-bg-subtle accent">AI Confidence: 45–65%</span>
+        <span class="meta-tag accent-border accent-bg-subtle accent">Momo: Bingung 🟡</span>
+        <span class="meta-tag accent-border accent-bg-subtle accent">Klasifikasi: Solid + Danger</span>
+        <span class="meta-tag" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.08);color:#fca5a5;">Bisa Gagal!</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-container">
+    <!-- Blueprint -->
+    <div class="blueprint level-border accent-glow">
+      <div class="blueprint-label accent">📐 Level 2 — Layout Blueprint</div>
+      
+      <!-- Start + Drawn objects -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:24px;">
+        <div class="stickman-start">
+          <div class="stickman-label" style="background:#F59E0B;color:#0a0a0f;">START</div>
+          <div class="stickman-figure">🚶</div>
+        </div>
+        <div class="arrow-connector">→</div>
+        <div class="drawn-object-l2">
+          <div class="drawn-tag" style="background:#F59E0B;color:#0a0a0f;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">USER DRAWN</div>
+          <div class="emoji">🔑</div>
+          <div class="label">KUNCI</div>
+        </div>
+        <div style="font-size:14px;color:#64748b;font-weight:600;">atau</div>
+        <div class="drawn-object-l2" style="border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.06);">
+          <div class="drawn-tag" style="background:#EF4444;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;">USER DRAWN</div>
+          <div class="emoji">🔨</div>
+          <div class="label" style="color:#EF4444;">PALU</div>
+        </div>
+      </div>
+
+      <!-- Forking Paths -->
+      <div class="l2-fork">
+        <!-- Path A — Trap -->
+        <div class="l2-path trap fail-highlight">
+          <div class="path-label danger-label">⚔️ PINTU A — JEBAKAN</div>
+          <div class="door-icon">🚪</div>
+          <div style="font-size:12px;color:#fca5a5;font-weight:600;">Palu membuka pintu ini</div>
+          <div class="arrow-connector" style="font-size:20px;">⬇</div>
+          <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-size:36px;">⚔️🩸</div>
+            <div style="font-weight:800;color:#EF4444;font-size:14px;margin-top:4px;">DURI!</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:4px;">Stickman terluka</div>
+          </div>
+          <div class="arrow-connector" style="font-size:20px;">⬇</div>
+          <div class="paper-tear">📜 KERTAS ROBek! 💥</div>
+          <div style="font-size:12px;color:#fca5a5;font-weight:600;margin-top:4px;">Momo panik → Ulangi gambar</div>
+        </div>
+
+        <!-- Path B — Safe -->
+        <div class="l2-path safe">
+          <div class="path-label safe-label">✅ PINTU B — AMAN</div>
+          <div class="door-icon">🚪</div>
+          <div style="font-size:12px;color:#6ee7b7;font-weight:600;">Kunci membuka pintu ini</div>
+          <div class="arrow-connector" style="font-size:20px;">⬇</div>
+          <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-size:36px;">🚩✨</div>
+            <div style="font-weight:800;color:#10B981;font-size:14px;margin-top:4px;">FINISH!</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:4px;">Stickman lolos</div>
+          </div>
+          <div style="font-size:12px;color:#6ee7b7;font-weight:600;margin-top:8px;">✅ Level selesai!</div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="object-legend">
+        <div class="legend-item">
+          <div class="legend-swatch pre-placed"></div>
+          Pre-placed (sudah ada)
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch user-drawn" style="background:rgba(245,158,11,0.15);border-color:#F59E0B;border-style:dashed;"></div>
+          User-drawn (digambar pemain)
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.4);"></div>
+          Danger zone (bisa gagal)
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Momo Dialog -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🤖 Dialog Momo</div>
+        <div class="momo-dialog">
+          <div class="momo-avatar" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);">🐱</div>
+          <div>
+            <div class="momo-bubble yellow-bubble">
+              "Hmm... 62% kunci, 58% palu"
+            </div>
+            <div class="confidence-badge medium">🟡 62%/58% — Bingung</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt -->
+      <div class="sidebar-card">
+        <div class="card-title accent">✏️ Prompt ke User</div>
+        <div class="prompt-box">"Gambar sesuatu yang bisa BUKA PINTU!"</div>
+        <div style="font-size:11px;color:#64748b;margin-top:8px;text-align:center;">⚠️ Petunjuk ambigu — banyak jawaban mungkin</div>
+      </div>
+
+      <!-- Decision Flow -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🔀 Alur Keputusan</div>
+        <div class="decision-flow">
+          <div class="decision-row">
+            <div class="decision-label correct">CORRECT</div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-outcome success-outcome">Kunci → Pintu B ✅</div>
+          </div>
+          <div style="font-size:11px;color:#475569;padding-left:90px;">Pintu B terbuka → FINISH</div>
+          <div style="height:8px;"></div>
+          <div class="decision-row">
+            <div class="decision-label wrong">ACCEPT</div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-outcome fail-outcome">Palu → Pintu A ❌</div>
+          </div>
+          <div style="font-size:11px;color:#475569;padding-left:90px;">Duri! → Kertas robek → Ulangi</div>
+        </div>
+      </div>
+
+      <!-- Behavior Map -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🧠 Behavior Map</div>
+        <table class="behavior-table">
+          <thead>
+            <tr>
+              <th style="color:#F59E0B;">Label</th>
+              <th style="color:#F59E0B;">Tipe</th>
+              <th style="color:#F59E0B;">Kaplay</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>kunci/gembok</td>
+              <td><span class="type-badge solid">Solid</span></td>
+              <td style="color:#6ee7b7;">opens safe door</td>
+            </tr>
+            <tr>
+              <td>palu/pedang</td>
+              <td><span class="type-badge danger">Danger</span></td>
+              <td style="color:#fca5a5;">triggers trap</td>
+            </tr>
+            <tr>
+              <td>kunci/pas</td>
+              <td><span class="type-badge solid">Solid</span></td>
+              <td style="color:#6ee7b7;">opens safe door</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Data Logging -->
+      <div class="sidebar-card">
+        <div class="card-title accent">📊 Data Logging</div>
+        <div class="data-logging">
+          <div class="data-item">
+            <div class="data-key">decision_type</div>
+            <div class="data-value">= correct / accept</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">confidence_gap</div>
+            <div class="data-value">= kecil (62% vs 58%)</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">correct_rate</div>
+            <div class="data-value">= terukur</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">ai_confidence</div>
+            <div class="data-value">= 45–65%</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">fail_count</div>
+            <div class="data-value">= jumlah retry</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEPARATOR -->
+<div class="level-separator"></div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- LEVEL 3 — HIASAN MEMATIKAN             -->
+<!-- ═══════════════════════════════════════ -->
+<div class="level-section level-3">
+  <div class="level-title-bar">
+    <div class="level-number accent-bg">3</div>
+    <div class="level-title-text">
+      <h2>Hiasan Mematikan <span class="accent" style="font-weight:400;">— Critical Override</span></h2>
+      <div class="meta-row">
+        <span class="meta-tag accent-border accent-bg-subtle accent">AI Confidence: &lt;40%</span>
+        <span class="meta-tag accent-border accent-bg-subtle accent">Momo: Menyerah 🔴</span>
+        <span class="meta-tag accent-border accent-bg-subtle accent">Klasifikasi: Solid + Danger + Decoration</span>
+        <span class="meta-tag" style="border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.12);color:#fca5a5;font-weight:700;">OVERRIDE DIBUTUHKAN!</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-container">
+    <!-- Blueprint -->
+    <div class="blueprint level-border accent-glow">
+      <div class="blueprint-label accent">📐 Level 3 — Layout Blueprint</div>
+      
+      <!-- Straight path layout -->
+      <div class="l3-layout">
+        <div class="l3-path-straight" style="margin-bottom:24px;">
+          <!-- Start -->
+          <div class="l3-segment">
+            <div class="stickman-label" style="background:#EF4444;color:#fff;">START</div>
+            <div class="stickman-figure">🚶</div>
+            <div style="font-size:11px;color:#94a3b8;">Stickman</div>
+          </div>
+
+          <!-- Road -->
+          <div style="display:flex;align-items:center;">
+            <div class="l3-road"></div>
+            <div class="arrow-connector" style="font-size:18px;">→</div>
+          </div>
+
+          <!-- Obstacle -->
+          <div class="l3-obstacle fail-highlight">
+            <div class="l3-block-line"></div>
+            <div style="position:absolute;top:8px;right:12px;font-size:10px;color:rgba(239,68,68,0.5);font-family:'JetBrains Mono',monospace;">PRE-PLACED</div>
+            <div class="emoji">🗿</div>
+            <div class="name">PATUNG</div>
+            <div class="desc">Menghalangi jalan<br>Tipe: Danger (solid obstacle)</div>
+          </div>
+
+          <!-- Road -->
+          <div style="display:flex;align-items:center;">
+            <div class="arrow-connector" style="font-size:18px;">→</div>
+            <div class="l3-road"></div>
+          </div>
+
+          <!-- Goal -->
+          <div class="l3-segment">
+            <div class="goal-flag">🚩</div>
+            <div class="stickman-label" style="background:rgba(16,185,129,0.2);color:#10B981;border:1px solid rgba(16,185,129,0.3);">FINISH</div>
+          </div>
+        </div>
+
+        <!-- Prompt area -->
+        <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:16px;text-align:center;margin-bottom:20px;">
+          <div style="font-size:12px;color:#EF4444;font-weight:700;margin-bottom:6px;">✏️ PROMPT:</div>
+          <div style="font-size:16px;font-style:italic;color:#e2e8f0;">"Gambar sesuatu untuk LEWAT!"</div>
+          <div style="font-size:11px;color:#64748b;margin-top:6px;">⚠️ Tidak ada petunjuk — jawaban terbuka!</div>
+        </div>
+
+        <!-- Two outcome paths -->
+        <div class="l3-outcomes">
+          <!-- ACCEPT Path (FAIL) -->
+          <div class="l3-outcome-box accept-path">
+            <div class="outcome-title" style="color:#EF4444;">
+              <span class="decision-label wrong" style="font-size:11px;">ACCEPT</span>
+              Momo Salah
+            </div>
+            
+            <div style="margin:12px 0;">
+              <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;">User menggambar palu, AI tebak:</div>
+              <div class="momo-bubble red-bubble" style="font-size:13px;margin-bottom:8px;">
+                "Aku 51% yakin ini BUNGA! 🌸"
+              </div>
+              <div class="confidence-badge low" style="font-size:11px;">🔴 51% — Salah & Percaya Diri</div>
+            </div>
+
+            <div class="outcome-steps">
+              <div class="outcome-step">
+                <span class="step-num" style="background:#EF4444;color:#fff;">1</span>
+                User ACCEPT prediksi "bunga"
+              </div>
+              <div class="outcome-step">
+                <span class="step-num" style="background:#EF4444;color:#fff;">2</span>
+                Bunga hiasan muncul 🌸
+              </div>
+              <div class="outcome-step">
+                <span class="step-num" style="background:#EF4444;color:#fff;">3</span>
+                Tidak ada efek → Patung tetap
+              </div>
+              <div class="outcome-step">
+                <span class="step-num" style="background:#EF4444;color:#fff;">4</span>
+                Stickman stuck!
+              </div>
+            </div>
+
+            <div class="paper-tear" style="margin-top:12px;">📜 KERTAS ROBEK! 💥</div>
+            <div style="font-size:11px;color:#fca5a5;margin-top:6px;">Momo: "Gue salah... tolong koreksi gue."</div>
+          </div>
+
+          <!-- OVERRIDE Path (SUCCESS) -->
+          <div class="l3-outcome-box override-path">
+            <div class="outcome-title" style="color:#10B981;">
+              <span class="decision-label override" style="font-size:11px;">OVERRIDE</span>
+              Koreksi AI
+            </div>
+
+            <div style="margin:12px 0;">
+              <div style="font-size:12px;color:#94a3b8;margin-bottom:8px;">User OVERRIDE, ketik:</div>
+              <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:8px 14px;display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:#10B981;">
+                "palu"
+              </div>
+            </div>
+
+            <div class="outcome-steps">
+              <div class="outcome-step">
+                <span class="step-num" style="background:#10B981;color:#0a0a0f;">1</span>
+                User OVERRIDE prediksi AI
+              </div>
+              <div class="outcome-step">
+                <span class="step-num" style="background:#10B981;color:#0a0a0f;">2</span>
+                Palu muncul 🔨
+              </div>
+              <div class="outcome-step">
+                <span class="step-num" style="background:#10B981;color:#0a0a0f;">3</span>
+                Patung dihancurkan! 💥
+              </div>
+              <div class="outcome-step">
+                <span class="step-num" style="background:#10B981;color:#0a0a0f;">4</span>
+                Jalan terbuka → FINISH ✅
+              </div>
+            </div>
+
+            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:8px 14px;margin-top:12px;text-align:center;">
+              <div style="font-size:13px;font-weight:700;color:#10B981;">✅ Level selesai!</div>
+              <div style="font-size:11px;color:#6ee7b7;margin-top:4px;">User berhasil mengoreksi AI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="object-legend">
+        <div class="legend-item">
+          <div class="legend-swatch pre-placed"></div>
+          Pre-placed (sudah ada)
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch user-drawn" style="background:rgba(239,68,68,0.15);border-color:#EF4444;border-style:dashed;"></div>
+          User-drawn (digambar pemain)
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:rgba(168,85,247,0.2);border-color:rgba(168,85,247,0.4);"></div>
+          Decoration (tidak berpengaruh)
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.4);"></div>
+          Danger (bisa gagal)
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Momo Dialog -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🤖 Dialog Momo</div>
+        <div class="momo-dialog">
+          <div class="momo-avatar" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);">🐱</div>
+          <div>
+            <div class="momo-bubble red-bubble">
+              "Aku 51% yakin ini BUNGA! 🌸"
+            </div>
+            <div class="confidence-badge low">🔴 51% — Salah & Percaya Diri</div>
+            <div style="font-size:11px;color:#fca5a5;margin-top:6px;">⚠️ AI salah tapi tampak yakin!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fail Momo Response -->
+      <div class="sidebar-card" style="border-color:rgba(239,68,68,0.2);">
+        <div class="card-title" style="color:#EF4444;">💔 Respon Momo saat FAIL</div>
+        <div class="momo-dialog">
+          <div class="momo-avatar" style="background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);">😿</div>
+          <div>
+            <div class="momo-bubble red-bubble">
+              "Gue salah... tolong koreksi gue."
+            </div>
+            <div style="font-size:11px;color:#fca5a5;margin-top:4px;">Momo menyerah → minta user koreksi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decision Flow -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🔀 Alur Keputusan</div>
+        <div class="decision-flow">
+          <div class="decision-row">
+            <div class="decision-label accept">ACCEPT</div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-outcome fail-outcome">Bunga → Decoration ❌</div>
+          </div>
+          <div style="font-size:11px;color:#475569;padding-left:90px;">Patung tetap → Stuck → Kertas robek</div>
+          <div style="height:8px;"></div>
+          <div class="decision-row">
+            <div class="decision-label override">OVERRIDE</div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-outcome success-outcome">Palu → Solid ✅</div>
+          </div>
+          <div style="font-size:11px;color:#475569;padding-left:90px;">Patung hancur → Jalan terbuka → FINISH</div>
+        </div>
+      </div>
+
+      <!-- Behavior Map -->
+      <div class="sidebar-card">
+        <div class="card-title accent">🧠 Behavior Map</div>
+        <table class="behavior-table">
+          <thead>
+            <tr>
+              <th style="color:#EF4444;">Label</th>
+              <th style="color:#EF4444;">Tipe</th>
+              <th style="color:#EF4444;">Kaplay</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>bunga/awan/pelangi</td>
+              <td><span class="type-badge decoration">Decoration</span></td>
+              <td style="color:#c084fc;">no collision</td>
+            </tr>
+            <tr>
+              <td>palu/kapak</td>
+              <td><span class="type-badge solid">Solid</span></td>
+              <td style="color:#6ee7b7;">destroys obstacle</td>
+            </tr>
+            <tr>
+              <td>pedang/bom</td>
+              <td><span class="type-badge danger">Danger</span></td>
+              <td style="color:#fca5a5;">may trigger trap</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:10px;color:#475569;margin-top:8px;">Level 3: 3 tipe klasifikasi — Decoration adalah jebakan baru</div>
+      </div>
+
+      <!-- Data Logging -->
+      <div class="sidebar-card">
+        <div class="card-title accent">📊 Data Logging</div>
+        <div class="data-logging">
+          <div class="data-item">
+            <div class="data-key">decision_type</div>
+            <div class="data-value">= override</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">latency</div>
+            <div class="data-value">= tinggi (waktu koreksi)</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">override_rate</div>
+            <div class="data-value">= terukur</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">ai_confidence</div>
+            <div class="data-value">= &lt;40% (misleading)</div>
+          </div>
+          <div class="data-item">
+            <div class="data-key">correction_accuracy</div>
+            <div class="data-value">= tepat atau tidak</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="diagram-footer">
+  <div class="footer-text">Escape the Sketchbook — Level Layout Diagrams v1.0</div>
+  <div class="footer-text">HITL AI Literacy Simulation | Diagram Creator Agent</div>
+</div>
+
+</body>
+</html>

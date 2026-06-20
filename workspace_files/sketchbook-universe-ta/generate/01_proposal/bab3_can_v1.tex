@@ -1,0 +1,804 @@
+% ============================================================
+% BAB 3 — DESKRIPSI SISTEM (SCOPE: CAN) — v1
+% Farchan Deano Muhammad — D4 TRM PENS
+% Project: Sketchbook Universe
+% Format: PENS Standard (A4, 12pt TNR, 1.5 spacing, 4cm/3cm margin)
+% Pola: Izzah (Deskripsi Solusi → Metodologi → Desain Sistem → Jadwal)
+% Post-pivot 16/6/26: nomor absen + superadmin, Top-6 check, timer count-up,
+%                     resize/rotate buttons, hapus Decorative category
+% Output: 18-22 halaman DETAIL
+% ============================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[top=4cm,left=4cm,right=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+
+% Times New Roman (pdflatex standard)
+\usepackage{times}
+\renewcommand{\rmdefault}{ptm}
+
+% Line spacing 1.5
+\setstretch{1.5}
+
+% Paragraph indent (PENS standard)
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% Chapter / Section / Subsection formatting
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{14pt}{16.8pt}\selectfont\bfseries\centering}
+  {BAB \thechapter}
+  {12pt}
+  {\MakeUppercase}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries\itshape}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\section}{0pt}{18pt}{12pt}
+\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+
+% Caption formatting (Pola Izzah)
+\captionsetup[table]{font=small,labelfont=bf,name={Tabel},labelsep=period,justification=centering,aboveskip=6pt,belowskip=0pt,position=top}
+\captionsetup[figure]{font=small,labelfont=bf,name={Gambar},labelsep=period,justification=centering,aboveskip=0pt,belowskip=6pt,position=bottom}
+
+% Header / Footer (page number top-right)
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% TOC formatting
+\renewcommand{\contentsname}{DAFTAR ISI}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+
+% Placeholder figure helper (POLOSAN — empty box for unmade figures)
+\newcommand{\placeholderfig}[2]{%
+  \begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.9\textwidth}{\centering\vspace{4cm}\textit{[Placeholder: #1 — akan dilengkapi pada tahap implementasi]}\vspace{4cm}}}
+    \caption{#2}
+    \label{fig:#2}
+  \end{figure}
+}
+
+\begin{document}
+
+% ============================================================
+% BAB 3 — DESKRIPSI SISTEM (SCOPE: CAN)
+% ============================================================
+\chapter{DESKRIPSI SISTEM}
+\label{chap:bab3}
+
+Bab ini menyajikan deskripsi solusi dan desain sistem untuk proyek \textit{Sketchbook Universe} yang berada dalam scope penulis (Can), yaitu: Frontend, UI/UX, Probe UI, Animasi Momo, Level Design, Mekanisme Human-in-the-Loop (HITL), dan Wireframe. Modul klasifikasi sketsa CNN, pelatihan model, penyimpanan log backend, analisis K-Means clustering, dan dashboard admin merupakan bagian pasangan penelitian (Dias) yang dikerjakan oleh anggota tim lainnya. Bab ini disusun mengikuti urutan: deskripsi solusi, metodologi penelitian, desain sistem, pembagian tugas dan alur pengerjaan, serta jadwal penelitian. Deskripsi solusi menguraikan bagaimana prinsip akademis Bab~2 ditranslasikan menjadi keputusan desain konkret; metodologi menjelaskan pendekatan penelitian dan metode pengembangan perangkat lunak; desain sistem menguraikan kebutuhan pengguna, use case, alur pengguna, desain level, mekanisme HITL, perancangan maskot, wireframe, dan rancangan pengujian; pembagian tugas dan jadwal menutup bab ini.
+
+% ============================================================
+\section{DESKRIPSI SOLUSI}
+\label{sec:deskripsi-solusi}
+% ============================================================
+
+\textit{Sketchbook Universe} adalah simulasi interaktif berbasis web yang memfasilitasi interaksi reflektif siswa SMP terhadap output klasifikasi AI melalui mekanisme Human-in-the-Loop (HITL). Solusi ini dirancang berdasarkan empat prinsip akademis yang telah dikaji pada Bab~2: (1) kerangka literasi AI K-12~\cite{ref2} yang menekankan kemampuan mengevaluasi dan mengkritisi output AI, bukan sekadar mengenal teknologinya; (2) prinsip \textit{explainable AI} (XAI) dalam konteks pendidikan~\cite{ref3} yang mensyaratkan transparansi proses prediksi agar pengguna dapat membentuk penilaian yang bermakna; (3) paradigma HITL~\cite{ref4}\cite{ref5} yang memosisikan manusia sebagai pengambil keputusan akhir dalam loop otomasi; dan (4) prinsip \textit{game-based learning}~\cite{ref6} yang menggunakan konsekuensi nyata dalam permainan sebagai mekanisme umpan balik, bukan skor atau leaderboard tradisional.
+
+Solusi ini mengangkat siswa dari posisi penerima pasif menjadi evaluator aktif terhadap output AI. Siswa menggambar objek di atas kanvas, model CNN memberikan prediksi beserta confidence score, lalu siswa memutuskan apakah prediksi tersebut benar, salah, atau perlu dikoreksi melalui antarmuka Probe UI. Keputusan siswa kemudian dipetakan menjadi objek dalam game world yang memiliki konsekuensi langsung terhadap karakter Stickman --- objek \textit{Solid} membantu pergerakan, sedangkan objek \textit{Danger} menyebabkan kegagalan. Kategori \textit{Decorative} yang sempat dirancang pada versi sebelumnya kini dihapus (post-pivot 16/6/26, DECISION \#5) agar konsekuensi gameplay bersifat biner dan jelas bagi siswa SMP. Konsekuensi gameplay inilah yang membuat evaluasi terhadap output AI terasa konkret dan bermakna, bukan sekadar latihan teoretis.
+
+Progresi pengalaman dibagi menjadi tiga level dengan tingkat ambiguitas yang meningkat secara bertahap. Level~1 membangun kepercayaan awal (\textit{trust building}) dengan confidence AI yang tinggi dan scaffolding penuh. Level~2 memperkenalkan ambiguitas terkontrol dengan confidence sedang dan opsi koreksi. Level~3 memunculkan situasi di mana AI secara \textit{confident} memberikan prediksi yang salah, sehingga siswa harus melakukan \textit{Override} untuk menyelamatkan Stickman. Progresi ini didasarkan pada prinsip scaffolding~\cite{ref6}\cite{ref7} yang menggeser tanggung jawab evaluasi secara bertahap dari sistem ke siswa, serta prinsip \textit{Flow Theory}~\cite{ref7} yang menyeimbangkan tantangan dengan kemampuan agar siswa tetap terlibat tanpa merasa frustrasi atau bosan.
+
+Karakter Momo berfungsi sebagai \textit{pedagogical agent} berbasis aturan (\textit{rule-based}) yang berkomunikasi melalui \textit{text bubble} dan \textit{state emosi visual}. Momo bukan chatbot atau NLP agent --- sesuai arahan Bu Hesti (notulensi 15/6/26), Momo tidak memiliki kemampuan voice synthesis maupun pemrosesan bahasa natural. Momo merepresentasikan AI dalam dunia narasi sehingga momen HITL terasa natural dan kontekstual, bukan teknis dan mekanis. Desain Momo didasarkan pada literatur \textit{pedagogical agent}~\cite{ref8} yang menekankan bahwa agen pedagogis paling efektif ketika responsnya terbatas, kontekstual, dan tidak mengalihkan perhatian dari tugas utama.
+
+Secara teknis, solusi ini berjalan sepenuhnya di browser siswa. HTML5 Canvas menerima input gambar siswa, Kaplay.js menangani gameplay loop dan rendering, dan TensorFlow.js menjalankan inferensi CNN secara \textit{client-side} sehingga data gambar siswa tidak keluar dari perangkat. Untuk navigasi kanvas, siswa menggunakan tombol UI \textbf{Resize} dan \textbf{Rotate} (post-pivot Decision \#4 16/6/26) --- bukan gesture pinch/drag maupun slider. Timer \textit{count-up} (post-pivot Decision \#3 16/6/26) ditampilkan pada layar gameplay sebagai parameter log admin untuk mengukur durasi setiap aksi siswa. Backend (dikerjakan oleh anggota tim lainnya) menangani penyimpanan log, analisis clustering, dan dashboard guru. Pembagian ini memastikan bahwa scope penulis terfokus pada pengalaman interaksi dan desain mekanisme HITL, sementara aspek model dan analisis data menjadi tanggung jawab rekan.
+
+Login siswa menggunakan kombinasi \texttt{class\_id} (dipilih dari dropdown) dan \texttt{nomor\_absen} (input numerik), tanpa password (post-pivot PIVOT \#1 16/6/26). Aktor baru \textbf{Superadmin} ditambahkan untuk mengelola entitas sekolah, kelas, akun guru, dan slot nomor absen siswa, sehingga sistem dapat di-deploy ke beberapa sekolah sekaligus dengan isolasi data antar sekolah sesuai prinsip UU PDP No.~27/2022. Mekanisme override juga direvisi: alih-alih membatasi jumlah override per level (\textit{Override Budget} versi lama), sistem kini menerapkan \textbf{Top-6 Check} (post-pivot PIVOT \#2 16/6/26) --- backend memverifikasi apakah label override yang dimasukkan siswa ada di Top-6 prediksi AI (rahasia, tidak ditampilkan ke siswa). Bila ada, override di-\textit{auto-accept}; bila tidak, siswa diminta menggambar ulang. Mekanisme ini lebih elegant sebagai anti-cheat karena tidak membatasi jumlah override, melainkan memverifikasi kewajaran label terhadap prediksi AI.
+
+% ============================================================
+\section{METODOLOGI PENELITIAN}
+\label{sec:metodologi-penelitian}
+% ============================================================
+
+Metodologi penelitian menjelaskan pendekatan, metode pengembangan, analisis masalah, teknik pengumpulan dan analisis data, serta metode pengujian yang digunakan dalam proyek ini. Pendekatan penelitian bersifat \textit{mixed methods} dengan paradigma \textit{Research and Development} (R\&D). Metode pengembangan perangkat lunak mengikuti model \textit{Waterfall SDLC} dengan lima tahap berurutan. Analisis masalah dilakukan menggunakan diagram Fishbone (Ishikawa) dengan pendekatan 6M untuk mengidentifikasi \textit{root cause} dari \textit{automation bias} pada siswa SMP terhadap output AI. Pengumpulan data dilakukan melalui \textit{behavioral log} sistem, kuesioner System Usability Scale (SUS), dan observasi. Analisis data menggunakan statistik deskriptif untuk skor SUS dan K-Means clustering (lintas scope dengan rekan) untuk segmentasi pola perilaku siswa. Pengujian sistem dilakukan dengan black-box testing dan SUS.
+
+\subsection{Pendekatan dan Jenis Penelitian}
+\label{subsec:pendekatan-penelitian}
+
+Penelitian ini menggunakan pendekatan \textit{mixed methods}~\cite{ref13} yang menggabungkan data kuantitatif (behavioral log, decision latency, confidence gap, skor SUS) dan data kualitatif (observasi perilaku siswa, refleksi naratif dari Level Summary Momo). Pemilihan \textit{mixed methods} didasarkan pada karakteristik proyek yang mengukur \textit{mekanisme interaksi} HITL (kuantitatif) sekaligus \textit{pengalaman reflektif} siswa terhadap output AI (kualitatif). Creswell~\cite{ref13} menegaskan bahwa \textit{mixed methods} cocok untuk penelitian yang membutuhkan triangulasi data dari multiple sources untuk menjawab pertanyaan riset yang multidimensional.
+
+Jenis penelitian ini adalah \textit{Research and Development} (R\&D)~\cite{ref12}, yaitu penelitian yang menghasilkan produk berupa sistem perangkat lunak (\textit{Sketchbook Universe}) beserta dokumentasi akademis yang menjelaskan proses pengembangan dan justifikasi keputusan desain. Sugiyono~\cite{ref12} mendefinisikan R\&D sebagai metode penelitian yang digunakan untuk menghasilkan produk tertentu dan menguji keefektifan produk tersebut. Dalam konteks ini, produk yang dikembangkan adalah simulasi interaktif berbasis HITL yang diuji melalui usability testing (SUS) dan behavioral log analysis.
+
+\subsection{Metode Pengembangan (Waterfall SDLC)}
+\label{subsec:metode-pengembangan}
+
+Metode pengembangan perangkat lunak yang digunakan adalah \textit{Waterfall SDLC}~\cite{ref9}\cite{ref10}, yaitu model pengembangan sekuensial linear yang terdiri dari lima tahap berurutan: (1) Analisis Kebutuhan, (2) Perancangan Sistem, (3) Implementasi, (4) Integrasi dan Pengujian, dan (5) Pemeliharaan dan Dokumentasi. Pemilihan Waterfall didasarkan pada karakteristik proyek yang memiliki scope jelas (proposal disetujui sebelum implementasi), tim kecil (dua orang: Can dan Dias), serta kebutuhan dokumentasi akademis yang mensyaratkan setiap tahap terdefinisi secara eksplisit. Pressman~\cite{ref9} menegaskan bahwa Waterfall cocok untuk proyek dengan kebutuhan yang stabil dan tim yang dapat berkomitmen pada satu paradigma desain dari awal.
+
+Gambar~\ref{fig:waterfall-sdlc} menunjukkan diagram alur Waterfall SDLC yang diadaptasi untuk proyek \textit{Sketchbook Universe}. Setiap tahap menghasilkan \textit{deliverable} yang menjadi input bagi tahap berikutnya, dan setiap tahap harus diselesaikan sebelum tahap berikutnya dimulai.
+
+% Mermaid source (POLOSAN, no classDef/style):
+% flowchart TD
+%     A["Analisis Kebutuhan"] --> B["Perancangan Sistem"]
+%     B --> C["Implementasi"]
+%     C --> D["Integrasi & Pengujian"]
+%     D --> E["Pemeliharaan & Dokumentasi"]
+\placeholderfig{Gambar Waterfall SDLC --- 5 Tahap Berurutan}{Gambar 3.1 Metode Pengembangan Waterfall SDLC untuk Sketchbook Universe}
+
+Kelima tahap Waterfall diadaptasi sebagai berikut:
+
+\textbf{Tahap 1 --- Analisis Kebutuhan.} Tahap ini mengidentifikasi kebutuhan fungsional dan non-fungsional sistem berdasarkan kajian pustaka (Bab~2) dan analisis masalah (Fishbone 6M, lihat Sub-bab~\ref{subsec:analisis-masalah}). Output tahap ini meliputi: dokumen kebutuhan pengguna (Tabel~\ref{tab:kebutuhan-pengguna}), daftar 30 use case (Tabel~\ref{tab:use-case-lengkap}), dan spesifikasi teknis tiga level (Tabel~\ref{tab:level1-spec}--\ref{tab:level3-spec}).
+
+\textbf{Tahap 2 --- Perancangan Sistem.} Tahap ini menerjemahkan kebutuhan menjadi desain konkret: arsitektur sistem (lintas scope Can-Dias), use case diagram, alur pengguna, desain level, mekanisme HITL Top-6 Check, perancangan maskot Momo, dan wireframe UI. Output tahap ini meliputi seluruh sub-bab Desain Sistem (Sub-bab~\ref{subsec:kebutuhan-pengguna}--\ref{subsec:rancangan-pengujian}).
+
+\textbf{Tahap 3 --- Implementasi.} Tahap ini mengodekan desain menjadi sistem yang berjalan. Scope penulis (Can) mencakup: onboarding, level select, main gameplay dengan tombol resize/rotate dan timer count-up, Probe UI, Momo animation state machine, mapping perilaku objek (Solid/Danger), dan Level Summary. Implementasi menggunakan Kaplay.js sebagai game engine dan React sebagai framework UI.
+
+\textbf{Tahap 4 --- Integrasi dan Pengujian.} Tahap ini mengintegrasikan modul frontend (scope penulis) dengan modul backend (scope rekan Dias) dan melakukan pengujian black-box serta SUS. Titik integrasi utama adalah Probe UI (tempat output AI bertemu input user) dan endpoint \texttt{POST /api/logs/event} untuk pengiriman behavioral log.
+
+\textbf{Tahap 5 --- Pemeliharaan dan Dokumentasi.} Tahap ini meliputi perbaikan bug yang ditemukan selama pengujian, penulisan laporan akhir, dan dokumentasi kode sumber. Dokumentasi akademis (laporan proyek akhir) disusun secara paralel dengan seluruh tahap Waterfall.
+
+\subsection{Analisis Masalah (Fishbone 6M)}
+\label{subsec:analisis-masalah}
+
+Analisis masalah menggunakan diagram Fishbone (Ishikawa)~\cite{ref14} dengan pendekatan 6M untuk mengidentifikasi \textit{root cause} dari permasalahan inti penelitian: \textbf{automation bias pada siswa SMP terhadap output AI}. Ishikawa~\cite{ref14} memperkenalkan diagram Fishbone sebagai alat analisis \textit{root cause} yang mengkategorikan faktor-faktor penyebab ke dalam enam dimensi (6M): \textit{Man}, \textit{Method}, \textit{Machine}, \textit{Material}, \textit{Measurement}, dan \textit{Environment}. Pemilihan 6M didasarkan pada kemampuannya menjangkau faktor human, teknis, dan kontekstual secara komprehensif.
+
+Tabel~\ref{tab:fishbone-6m} merinci keenam dimensi 6M beserta sub-cause yang teridentifikasi untuk kasus automation bias pada siswa SMP.
+
+\begin{table}[H]
+\centering
+\caption{Analisis Masalah Automation Bias pada Siswa SMP --- Fishbone 6M}
+\label{tab:fishbone-6m}
+\begin{tabular}{|p{2.5cm}|p{5cm}|p{6cm}|}
+\hline
+\textbf{Dimensi 6M} & \textbf{Sub-Cause Teridentifikasi} & \textbf{Implikasi Desain} \\ \hline
+Man (Manusia) & (1) Siswa SMP usia 12--15 tahun belum memiliki pengalaman formal mengevaluasi output AI; (2) Guru belum memiliki alat bantu visual untuk mengobservasi pola keputusan siswa; (3) Peneliti belum memiliki dataset perilaku siswa terhadap AI klasifikasi sketsa & Sistem perlu menyediakan pengalaman \textit{hands-on} mengevaluasi output AI; dashboard guru untuk observasi kelas; data log sebagai kontribusi riset \\ \hline
+Method (Metode) & (1) Pembelajaran AI di SMP masih bersifat konseptual, belum praktis; (2) Tidak ada scaffolding bertahap dari trust building ke override; (3) Tidak ada mekanisme anti-cheat untuk override siswa & Simulasi interaktif berlevel dengan progresi scaffolding; mekanisme Top-6 Check sebagai anti-cheat elegant \\ \hline
+Machine (Mesin) & (1) Model CNN MobileNet memiliki confidence calibration yang belum sempurna; (2) Inferensi \textit{client-side} TensorFlow.js perlu optimasi ukuran model; (3) Browser siswa heterogen (Chrome, Firefox, Safari) dengan kemampuan berbeda & Top-3 prediksi ditampilkan transparan; model dikonversi ke TF.js dengan quantization; fallback rendering untuk browser lama \\ \hline
+Material (Materi) & (1) Dataset Quick Draw! memiliki ratusan kategori yang banyak tidak relevan untuk gameplay SMP; (2) Buku gambar tradisional tidak memberikan feedback konsekuensial; (3) Tidak ada media yang menggabungkan menggambar, AI, dan konsekuensi gameplay & Kurasi 116 kategori post-RSI-1 (medium difficulty); kategorisasi Solid/Danger untuk konsekuensi biner; integrasi Kaplay.js + Canvas + TF.js \\ \hline
+Measurement (Pengukuran) & (1) Tidak ada metrik standar untuk mengukur automation bias siswa SMP; (2) Decision latency dan confidence gap belum terdefinisi sebagai metrik perilaku; (3) SUS belum diadaptasi untuk simulasi AI literacy anak & Metrik: decision type distribution, decision latency, automation bias incidence, confidence calibration; SUS standar Brooke~\cite{ref15} dengan adaptasi bahasa \\ \hline
+Environment (Lingkungan) & (1) Kelas SMP memiliki keterbatasan device (tablet/laptop berbagi); (2) Suara dari speaker bersama dapat mengganggu kelas lain; (3) Bandwidth sekolah terbatas untuk streaming inferensi & Inferensi 100\% client-side (offline setelah model diload); Momo text bubble only (no voice synthesis); model di-cache di browser siswa \\ \hline
+\end{tabular}
+\end{table}
+
+Diagram Fishbone 6M lengkap ditunjukkan pada Gambar~\ref{fig:fishbone-6m}. Diagram menampilkan \textit{root cause} (automation bias pada siswa SMP) di sisi kanan, dengan enam cabang utama 6M yang masing-masing memiliki 2--3 sub-cause.
+
+% Mermaid source (POLOSAN, no classDef/style) tersedia di:
+% /home/z/my-project/download/sketchbook-universe-ta/generate/06_diagram/fishbone_6m.mmd
+% Render ke PNG via: mmdc -i fishbone_6m.mmd -o fishbone_6m.png -b white -w 1600 -H 900
+% Output PNG: /home/z/my-project/download/sketchbook-universe-ta/generate/06_diagram/fishbone_6m.png
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{/home/z/my-project/download/sketchbook-universe-ta/generate/06_diagram/fishbone_6m.png}
+    \caption{Fishbone Diagram 6M untuk Analisis Root Cause Automation Bias pada Siswa SMP}
+    \label{fig:fishbone-6m}
+\end{figure}
+
+Berdasarkan analisis Fishbone 6M, dapat disimpulkan bahwa automation bias pada siswa SMP bersumber dari enam dimensi yang saling terkait. Solusi yang ditawarkan oleh \textit{Sketchbook Universe} --- simulasi interaktif berlevel dengan mekanisme HITL Top-6 Check, maskot Momo sebagai pedagogical agent, dan dashboard guru --- menjawab root cause di seluruh enam dimensi tersebut. Diagram Fishbone 6M selengkapnya juga tersedia dalam format Mermaid POLOSAN di file \texttt{fishbone\_6m.mmd} (dirender terpisah ke PNG).
+
+\subsection{Teknik Pengumpulan Data}
+\label{subsec:teknik-pengumpulan-data}
+
+Pengumpulan data dilakukan melalui tiga teknik yang saling melengkapi:
+
+\textbf{(1) Behavioral Log Sistem.} Setiap aksi siswa di Probe UI (Accept, Correct, Override) dan aksi gameplay (draw\_start, draw\_end, move\_stickman, complete\_level, fail\_level) dicatat sebagai event log yang dikirim ke backend via \texttt{POST /api/logs/event} (fire-and-forget pattern). Setiap event memuat: \texttt{student\_id}, \texttt{class\_id}, \texttt{school\_id}, \texttt{level}, \texttt{probe\_id}, \texttt{event\_type}, \texttt{decision\_type}, \texttt{override\_label}, \texttt{top6\_match} (boolean hasil Top-6 Check), \texttt{time\_spent\_ms} (durasi aksi), \texttt{confidence\_top1}, \texttt{confidence\_top6}, dan \texttt{timestamp}. Field \texttt{time\_spent\_ms} merupakan tambahan baru post-pivot Decision \#3 (timer count-up) yang memungkinkan analisis durasi per aksi. Behavioral log merupakan sumber data utama untuk analisis pola keputusan siswa.
+
+\textbf{(2) Kuesioner System Usability Scale (SUS).} Setelah menyelesaikan ketiga level, siswa mengisi kuesioner SUS~\cite{ref15}\cite{ref16} yang terdiri dari 10 item dengan skala Likert 5 poin (1 = Strongly Disagree, 5 = Strongly Agree). SUS dipilih karena terbukti reliabel untuk sampel kecil (5--8 siswa) dan memiliki validasi empiris~\cite{ref16}. Adaptasi SUS untuk konteks anak SMP dilakukan dengan penyederhanaan bahasa (translate ke Bahasa Indonesia dengan readability level usia 13--15 tahun) tanpa mengubah struktur 10 item standar.
+
+\textbf{(3) Observasi Lapangan.} Selama sesi usability testing, peneliti mengobservasi perilaku siswa secara langsung: ekspresi wajah saat melihat confidence rendah, gesture ragu saat memilih tombol keputusan, dan komentar spontan yang muncul. Observasi dicatat sebagai \textit{field note} kualitatif untuk triangulasi dengan behavioral log dan SUS. Observasi juga mencatat kondisi teknis (latensi, error browser, masalah device) sebagai konteks interpretasi data.
+
+\subsection{Teknik Analisis Data}
+\label{subsec:teknik-analisis-data}
+
+Analisis data menggunakan dua teknik komplementer:
+
+\textbf{(1) Statistik Deskriptif untuk SUS.} Skor SUS dihitung dengan rumus standar Brooke~\cite{ref15}: untuk item ganjil, skor = (response -- 1); untuk item genap, skor = (5 -- response). Total skor (maksimum 40) dikalikan 2.5 untuk mendapatkan skor SUS dalam skala 0--100. Skor SUS $\geq 68$ diinterpretasikan sebagai \textit{above average}~\cite{ref16}; skor $<$ 68 diinterpretasikan sebagai \textit{below average} dan menjadi sinyal untuk revisi UI. Statistik deskriptif (mean, median, standar deviasi, range) dihitung untuk keseluruhan sampel dan per kategori demografis (gender, kelas, pengalaman gaming sebelumnya).
+
+\textbf{(2) K-Means Clustering untuk Behavioral Log (lintas scope dengan rekan Dias).} Behavioral log yang terkumpul di-feature engineering menjadi matriks fitur per siswa: \texttt{accept\_rate}, \texttt{correct\_rate}, \texttt{override\_rate}, \texttt{mean\_latency\_ms}, \texttt{confidence\_gap\_mean}, \texttt{override\_frequency}, dan \texttt{top6\_match\_rate} (rasio override yang diterima via Top-6 Check). Fitur dinormalisasi (z-score) lalu di-cluster menggunakan K-Means (jumlah cluster $k$ ditentukan via elbow method, kandidat $k = 3$--$5$). Hasil clustering menghasilkan segmentasi tipe pengambil keputusan siswa, misalnya: \textit{Cluster 1 --- Tipe Pasif (Automation Bias Prone)}, \textit{Cluster 2 --- Tipe Evaluatif (Calibrated Evaluator)}, \textit{Cluster 3 --- Tipe Kritis (Overconfident Override)}. Detail teknis K-Means clustering diuraikan pada Bab~3 Dias (Sub-bab Perancangan K-Means Clustering) karena berada di scope rekan.
+
+\subsection{Metode Pengujian}
+\label{subsec:metode-pengujian}
+
+Pengujian sistem dilakukan dengan dua metode:
+
+\textbf{(1) Black-Box Testing.} Pengujian fungsionalitas sistem dari perspektif input-output tanpa memeriksa kode internal. Skenario black-box mencakup: login nomor absen (valid/invalid), draw object dengan tombol resize/rotate, Probe UI menampilkan Top-3 prediksi, Accept/Correct/Override menghasilkan log yang sesuai, Top-6 Check untuk override (match/no-match), Level Summary menampilkan refleksi Momo. Setiap skenario memiliki \textit{expected output} yang didefinisikan sebelum pengujian; \textit{actual output} dibandingkan untuk menentukan \textit{pass/fail}.
+
+\textbf{(2) System Usability Scale (SUS).} Pengujian usability dari perspektif pengguna akhir (siswa SMP). SUS dipilih karena membutuhkan sampel kecil (minimum 5 siswa)~\cite{ref15}\cite{ref16} dan menghasilkan skor kuantitatif yang dapat dibandingkan antar studi. Target skor SUS untuk proyek ini adalah $\geq 68$ (above average menurut Bangor et al.~\cite{ref16}). SUS dilengkapi dengan wawancara semi-terstruktur pasca-pengujian untuk menggali pengalaman reflektif siswa terhadap output AI.
+
+% ============================================================
+\section{DESAIN SISTEM}
+\label{sec:desain-sistem}
+% ============================================================
+
+Desain sistem menguraikan keputusan desain yang diambil berdasarkan prinsip-prinsip akademis dari Bab~2 dan hasil analisis Fishbone 6M pada Sub-bab~\ref{subsec:analisis-masalah}. Setiap keputusan desain disertai dengan justifikasi teoretis agar hubungan antara teori dan implementasi dapat ditelusuri secara eksplisit. Desain sistem meliputi: kebutuhan pengguna, use case, alur pengguna, desain level, mekanisme HITL Top-6 Check, perancangan maskot Momo, wireframe, dan rancangan pengujian.
+
+\subsection{Kebutuhan Pengguna}
+\label{subsec:kebutuhan-pengguna}
+
+Kebutuhan pengguna diidentifikasi berdasarkan kerangka literasi AI K-12~\cite{ref2} dan konseptualisasi literasi AI~\cite{ref1} yang menekankan bahwa siswa pada jenjang SMP memerlukan pengalaman langsung mengevaluasi output AI, bukan sekadar memahami konsep teoretis. Ng et al.~\cite{ref1} mengidentifikasi bahwa salah satu kompetensi inti literasi AI adalah kemampuan untuk \textit{evaluate} --- menilai apakah output AI akurat, bias, atau perlu dikoreksi. Casal-Otero et al.~\cite{ref2} menegaskan bahwa aktivitas literasi AI untuk K-12 paling efektif ketika bersifat \textit{hands-on} dan memungkinkan siswa melihat konsekuensi dari keputusan mereka terhadap sistem AI.
+
+Berdasarkan kedua kerangka tersebut, kebutuhan pengguna utama diidentifikasi pada Tabel~\ref{tab:kebutuhan-pengguna}. Setiap kebutuhan dipetakan ke prinsip akademis pendukung dan referensi pustaka terkait.
+
+\begin{table}[H]
+\centering
+\caption{Kebutuhan Pengguna dan Prinsip Akademis Pendukung}
+\label{tab:kebutuhan-pengguna}
+\begin{tabular}{|p{0.5cm}|p{5cm}|p{4cm}|p{2.5cm}|}
+\hline
+\textbf{No} & \textbf{Kebutuhan Pengguna} & \textbf{Prinsip Akademis} & \textbf{Ref.} \\ \hline
+1 & Transparansi proses prediksi AI (Top-3 prediksi + confidence score ditampilkan) & XAI dalam pendidikan; literasi AI (evaluate) & \cite{ref1}\cite{ref3} \\ \hline
+2 & Mekanisme keputusan terhadap output AI (Accept/Correct/Override) & HITL: observer, corrector, decision-maker & \cite{ref4}\cite{ref5} \\ \hline
+3 & Umpan balik konsekuensial yang bermakna (Solid/Danger mapping) & Game-based learning; consequence-driven & \cite{ref6} \\ \hline
+4 & Progresi bertahap tanpa membanjiri kognisi (3 level scaffolding) & Scaffolding; Flow Theory & \cite{ref6}\cite{ref7} \\ \hline
+5 & Pendampingan visual non-teknis (Momo sebagai pedagogical agent) & Pedagogical agent; CCI & \cite{ref8} \\ \hline
+6 & Manipulasi kanvas via tombol UI (resize, rotate, erase) & CCI untuk K-12; motorik SMP & \cite{ref2} \\ \hline
+7 & Timer count-up sebagai parameter log admin & Behavioral measurement & --- \\ \hline
+8 & Login nomor absen + superadmin (multi-school deployment) & Data privacy; UU PDP No. 27/2022 & --- \\ \hline
+9 & Mekanisme anti-cheat untuk override (Top-6 Check) & Probabilistic reasoning & --- \\ \hline
+\end{tabular}
+\end{table}
+
+Kebutuhan pengguna juga mencakup aspek demografis: siswa SMP kelas 7--9 berusia 12--15 tahun yang familiar dengan \textit{smartphone} dan \textit{browser}, namun belum memiliki pengalaman formal mengevaluasi output AI. Oleh karena itu, antarmuka harus bersifat visual, minimal teks, dan menggunakan bahasa yang tidak terlalu teknis. Tombol UI resize/rotate dipilih sebagai input manipulasi kanvas (post-pivot Decision \#4) alih-alih gesture pinch/drag karena lebih konsisten antar device (desktop, tablet, laptop) dan lebih mudah diobservasi guru saat kelas berlangsung.
+
+\subsection{Use Case Sistem}
+\label{subsec:use-case}
+
+Use case diagram memetakan aktor eksternal dan tujuan utama sistem. Post-pivot diskusi 16/6/26 (PIVOT \#1), terdapat \textbf{tiga aktor utama}: Siswa, Guru/Admin Sekolah, dan Superadmin. Aktor Superadmin merupakan aktor baru yang ditambahkan untuk mendukung deployment multi-sekolah dan pengelolaan nomor absen siswa per kelas. Aktor AI/CNN (Momo) tidak ditampilkan sebagai aktor eksternal karena ia merupakan bagian internal dari sistem, bukan pengguna eksternal.
+
+Hierarki user baru yang berlaku post-pivot adalah: \texttt{Superadmin} (top-level, manages multiple schools) $\rightarrow$ \texttt{Sekolah} (managed by superadmin) $\rightarrow$ \texttt{Kelas} (managed by superadmin/assigned to guru) $\rightarrow$ \texttt{Siswa} (login via class\_id + nomor\_absen, no password). Penambahan aktor Superadmin memungkinkan sistem di-deploy ke multiple sekolah tanpa intervensi developer, sekaligus memastikan isolasi data antar sekolah sesuai prinsip UU PDP No.~27/2022.
+
+Tiga aktor eksternal sistem beserta scope aksesnya diuraikan pada Tabel~\ref{tab:aktor-sistem}.
+
+\begin{table}[H]
+\centering
+\caption{Aktor Sistem dan Scope Akses}
+\label{tab:aktor-sistem}
+\begin{tabular}{|p{1cm}|p{3.5cm}|p{6.5cm}|p{3cm}|}
+\hline
+\textbf{ID} & \textbf{Aktor} & \textbf{Deskripsi} & \textbf{Scope Akses} \\ \hline
+A1 & Superadmin & Aktor top-level yang mengelola multi-sekolah, kelas, akun guru, dan slot nomor absen siswa. & Cross-school \\ \hline
+A2 & Guru / Admin Sekolah & Aktor tingkat sekolah. Hanya dapat melihat kelas yang di-assign oleh superadmin. Mengakses dashboard analitik. & Single-school, kelas yang di-assign \\ \hline
+A3 & Siswa & Aktor end-user. Login menggunakan class\_id + nomor\_absen. Tidak memiliki password. & Personal data only \\ \hline
+\end{tabular}
+\end{table}
+
+Sistem memiliki total 30 use case (UC-01 s/d UC-30) yang terdistribusi pada tiga aktor: 11 use case untuk Superadmin (UC-01 s/d UC-11), 9 use case untuk Guru (UC-12 s/d UC-20), dan 10 use case untuk Siswa (UC-21 s/d UC-30). Tabel lengkap 30 use case ditunjukkan pada Tabel~\ref{tab:use-case-lengkap}.
+
+\begin{table}[H]
+\centering
+\caption{Daftar Lengkap Use Case Sistem (UC-01 s/d UC-30)}
+\label{tab:use-case-lengkap}
+\begin{tabular}{|p{1cm}|p{3.8cm}|p{2.5cm}|p{5cm}|p{1.2cm}|}
+\hline
+\textbf{ID} & \textbf{Nama Use Case} & \textbf{Aktor} & \textbf{Deskripsi} & \textbf{Prioritas} \\ \hline
+UC-01 & Create School & Superadmin & Membuat entitas sekolah baru & Tinggi \\ \hline
+UC-02 & Edit School Details & Superadmin & Mengubah metadata sekolah & Sedang \\ \hline
+UC-03 & Create Class & Superadmin & Membuat kelas baru di bawah sekolah & Tinggi \\ \hline
+UC-04 & Edit Class Details & Superadmin & Mengubah nama kelas & Rendah \\ \hline
+UC-05 & Generate Nomor Absen Siswa & Superadmin & Membuat N slot nomor absen per kelas & Tinggi \\ \hline
+UC-06 & Create Guru Account & Superadmin & Membuat akun guru (no self-register) & Tinggi \\ \hline
+UC-07 & Assign Guru to Class & Superadmin & Menugaskan guru ke kelas (maks 2 guru) & Tinggi \\ \hline
+UC-08 & View All Schools Overview & Superadmin & Daftar sekolah + ringkasan & Sedang \\ \hline
+UC-09 & View All Classes per School & Superadmin & Drill-down kelas per sekolah & Sedang \\ \hline
+UC-10 & Deactivate Entity & Superadmin & Soft-delete sekolah/kelas/guru & Sedang \\ \hline
+UC-11 & Export Cross-School Data & Superadmin & Ekspor CSV/JSON lintas sekolah & Rendah \\ \hline
+UC-12 & Login Guru & Guru & Login username + password & Tinggi \\ \hline
+UC-13 & View Assigned Classes & Guru & Daftar kelas yang ditugaskan & Tinggi \\ \hline
+UC-14 & View Class Dashboard & Guru & Dashboard analitik per kelas & Tinggi \\ \hline
+UC-15 & View Individual Student History & Guru & Drill-down ke siswa individual & Tinggi \\ \hline
+UC-16 & Export Class Data & Guru & Ekspor CSV/JSON per kelas & Sedang \\ \hline
+UC-17 & Trigger K-Means Analysis & Guru & Submit job K-Means clustering & Sedang \\ \hline
+UC-18 & View Cluster Distribution & Guru & Bar chart distribusi cluster & Sedang \\ \hline
+UC-19 & Filter Log by Date Range & Guru & Filter dashboard berdasarkan tanggal & Sedang \\ \hline
+UC-20 & Filter Log by Level & Guru & Filter dashboard per level & Rendah \\ \hline
+UC-21 & Login Nomor Absen & Siswa & Login class\_id + nomor\_absen, no password & Tinggi \\ \hline
+UC-22 & View Onboarding & Siswa & Splash + Momo intro + tutorial general & Tinggi \\ \hline
+UC-23 & Start Level & Siswa & Pilih level yang akan dimainkan & Tinggi \\ \hline
+UC-24 & Draw Object & Siswa & Gambar di canvas + tombol resize/rotate + timer & Tinggi \\ \hline
+UC-25 & View AI Prediction & Siswa & Lihat Top-3 prediksi + Momo reaction & Tinggi \\ \hline
+UC-26 & Accept Prediction & Siswa & Terima Top-1 & Tinggi \\ \hline
+UC-27 & Correct Prediction & Siswa & Pilih Top-2 atau Top-3 & Tinggi \\ \hline
+UC-28 & Override Prediction & Siswa & Input label sendiri, trigger Top-6 check & Tinggi \\ \hline
+UC-29 & Top-6 Verification Result & Siswa & Lihat hasil Top-6 check & Tinggi \\ \hline
+UC-30 & View Personal History & Siswa & Histori permainan sendiri & Sedang \\ \hline
+\end{tabular}
+\end{table}
+
+Use case Accept (UC-26), Correct (UC-27), dan Override (UC-28) merupakan titik \textit{extend} dari use case View AI Prediction (UC-25), karena ketiganya adalah aksi lanjutan yang muncul setelah siswa melihat prediksi AI. Use case View Top-6 Verification Result (UC-29) merupakan titik \textit{include} dari use case Override (UC-28), karena Top-6 Check WAJIB dijalankan setiap kali siswa melakukan Override (post-pivot PIVOT \#2 16/6/26). Use case Trigger K-Means Analysis (UC-17) merupakan titik \textit{include} dari View Class Dashboard (UC-14), karena K-Means dijalankan dari dalam dashboard.
+
+Use case diagram dengan tiga aktor (Siswa, Guru/Admin Sekolah, Superadmin) dan 30 use case ditunjukkan pada Gambar~\ref{fig:use-case}. Diagram menggunakan notasi standar UML: aktor direpresentasikan sebagai stickman, use case sebagai ellipse, dan relasi include/extend sebagai garis putus-putus berpanah.
+
+% Mermaid source (POLOSAN, no classDef/style) — see Use_Case_Superadmin_v1.md Section 4
+% flowchart LR with Siswa, Guru, Superadmin actors and 30 use case nodes
+\placeholderfig{Gambar Use Case Diagram --- 3 Aktor + 30 Use Case}{Gambar 3.3 Use Case Diagram Aktor Siswa, Guru, dan Superadmin Post-Pivot 16 Juni 2026}
+
+\subsection{Alur Pengguna (User Flow)}
+\label{subsec:alur-pengguna}
+
+Alur pengguna dirancang secara \textit{linear} dengan sembilan fase utama: (1) Login, (2) Onboarding, (3) Level Select, (4) Tutorial per level, (5) Main Gameplay, (6) Probe UI, (7) Top-6 Verification (jika Override), (8) Result \& Feedback, dan (9) Next Level / Retry. Linearitas alur didasarkan pada prinsip Child-Computer Interaction (CCI)~\cite{ref2} yang menekankan bahwa interaksi untuk anak usia 12--15 tahun harus sederhana dan dapat diprediksi, serta prinsip scaffolding~\cite{ref6}\cite{ref7} yang mensyaratkan progresi trust building $\rightarrow$ ambiguitas $\rightarrow$ override terjadi secara terprediksi.
+
+\textbf{Catatan penulis:} Diagram alur pengguna lengkap (Gambar~\ref{fig:alur-pengguna-global}) akan dilengkapi oleh penulis pada tahap implementasi setelah playtest awal. Kerangka alur secara textual sudah final dan dijelaskan pada sub-bab ini.
+
+\placeholderfig{Gambar Alur Pengguna Global --- 9 Fase Linear}{Gambar 3.4 Alur Pengguna Sistem Sketchbook Universe 9 Fase Linear}
+
+Sembilan fase alur pengguna dijelaskan secara tekstual sebagai berikut:
+
+\textbf{Fase 1 --- Login.} Siswa memilih \texttt{class\_id} dari dropdown lalu menginput nomor absen. Momo menyambut dengan text bubble ``Hai, siswa nomor X! Siap main?''. Tidak ada password (post-pivot PIVOT \#1 16/6/26). Bila nomor absen tidak terdaftar di kelas tersebut, Momo menampilkan state CONFUSED dengan text bubble ``Nomor absen belum terdaftar di kelas ini.''
+
+\textbf{Fase 2 --- Onboarding.} Splash screen + perkenalan Momo + tutorial general (satu layar overview aturan objek Solid/Danger, bukan step-by-step per mekanik --- sesuai arahan Bu Hesti). Tutorial menampilkan dua kartu visual: Solid (objek membantu Stickman bergerak maju) dan Danger (objek menyebabkan kegagalan). Kategori Decorative telah dihapus post-pivot DECISION \#5.
+
+\textbf{Fase 3 --- Level Select.} Siswa memilih level yang akan dimainkan. Level~1 unlocked by default; Level~2 unlocked setelah Level~1 selesai; Level~3 unlocked setelah Level~2 selesai.
+
+\textbf{Fase 4 --- Tutorial per level.} Brief singkat level: objective, batasan (erase allowed/tidak, drawing attempts), Momo emotion baseline level tersebut.
+
+\textbf{Fase 5 --- Main Gameplay.} Siswa menggambar objek di canvas dengan tombol UI resize (perbesar/perkecil) dan rotate (increment 90$^\circ$) --- post-pivot Decision \#4 16/6/26. Timer count-up (post-pivot Decision \#3) ditampilkan pada layar gameplay sebagai parameter log admin.
+
+\textbf{Fase 6 --- Probe UI.} Saat siswa selesai menggambar, gameplay \textit{pause} dan Probe UI muncul: menampilkan Top-3 prediksi AI + confidence score + Momo reaction. Siswa memilih Accept / Correct (Level 2+) / Override (Level 2+; Level 3 satu-satunya opsi koreksi).
+
+\textbf{Fase 7 --- Top-6 Verification (jika Override).} Backend memeriksa apakah label override ada di Top-6 prediksi (rahasia, tidak ditampilkan ke siswa). Jika ADA $\rightarrow$ AUTO-ACCEPT, objek masuk game world. Jika TIDAK ADA $\rightarrow$ sistem minta re-draw (post-pivot PIVOT \#2).
+
+\textbf{Fase 8 --- Result \& Feedback.} Objek masuk game world dengan perilaku sesuai mapping (Solid/Danger). Stickman bergerak. Momo menampilkan state emosi sesuai outcome (HAPPY jika sukses, CONFUSED jika gagal). Tidak ada skor/leaderboard --- konsekuensi gameplay adalah feedback (sesuai prinsip Narrative as Feedback).
+
+\textbf{Fase 9 --- Next Level / Retry.} Jika sukses, siswa dapat lanjut ke level berikutnya atau replay. Jika gagal, siswa dapat retry level yang sama. Level Summary di akhir setiap level menampilkan refleksi Momo tentang keputusan yang diambil siswa selama level.
+
+\subsubsection{Alur Pengguna Siswa}
+
+Alur pengguna Siswa mengikuti sembilan fase linear di atas. Tiga titik kritis pada alur Siswa adalah: (1) Login dengan nomor absen --- menggantikan gesture MediaPipe yang dideprecate post-pivot 16/6/26; (2) Probe UI sebagai titik jeda evaluatif sesuai prinsip XAI~\cite{ref3} dan HITL~\cite{ref4}; dan (3) Top-6 Verification yang menggantikan Override Budget post-pivot 16/6/26 (PIVOT \#2) --- mekanisme anti-cheat yang lebih elegant karena tidak membatasi jumlah override, melainkan memverifikasi kewajaran label override terhadap Top-6 prediksi AI.
+
+\placeholderfig{Gambar Alur Pengguna Siswa --- 9 Fase dengan Decision Branch Override Top-6 Check}{Gambar 3.5 Alur Pengguna Siswa dengan Decision Branch Override Top-6 Check}
+
+\subsubsection{Alur Pengguna Guru / Admin Sekolah}
+
+Alur pengguna Guru bersifat non-gameplay dan berfokus pada analisis data. Lima fase alur Guru: (1) Login dengan username + password yang dibuat superadmin; (2) View Assigned Classes --- melihat daftar kelas yang ditugaskan; (3) View Class Dashboard --- melihat dashboard analitik per kelas (decision distribution, confidence calibration, decision latency); (4) Drill-down opsional --- View Individual Student History atau Trigger K-Means Cluster Analysis; (5) Export Class Data (opsional, untuk analisis eksternal di Excel/SPSS).
+
+\placeholderfig{Gambar Alur Pengguna Guru --- 5 Fase Analitik}{Gambar 3.6 Alur Pengguna Guru Admin Sekolah 5 Fase Analitik}
+
+\subsubsection{Alur Pengguna Superadmin (BARU)}
+
+Alur pengguna Superadmin --- aktor baru post-pivot 16/6/26 --- berfokus pada provisioning dan management entitas. Tujuh fase alur Superadmin: (1) Login superadmin (credentials yang dibuat saat deployment); (2) View All Schools Overview; (3) Create School (jika sekolah baru) --- input nama sekolah, alamat, jenjang; (4) Create Class --- input nama kelas di bawah sekolah tertentu; (5) Generate Nomor Absen Siswa --- tentukan jumlah slot (mis: 40) dan sistem membuat 40 entitas siswa kosong; (6) Create Guru Account + Assign Guru to Class --- buat akun guru dan tugaskan ke kelas; (7) View All Classes per School (monitoring) --- drill-down ke kelas untuk verifikasi assignment.
+
+\placeholderfig{Gambar Alur Pengguna Superadmin --- 7 Fase Provisioning Multi-Sekolah}{Gambar 3.7 Alur Pengguna Superadmin 7 Fase Provisioning Multi-Sekolah}
+
+\subsubsection{Sequence Diagram Key Flows}
+
+Tiga sequence diagram key flows sistem ditunjukkan pada Gambar~\ref{fig:seq-login}, Gambar~\ref{fig:seq-override}, dan Gambar~\ref{fig:seq-logging}. Diagram-diagram ini merinci interaksi antar komponen (Siswa, Frontend, Backend, Database, K-Means Worker) pada tiga titik kritis: Login, Override + Top-6 Check, dan Data Logging. Source Mermaid POLOSAN untuk ketiga sequence diagram tersedia di file \texttt{User\_Flow\_Placement\_v1.md} Section 4 dan akan dirender ke PNG terpisah.
+
+\placeholderfig{Gambar Sequence Diagram --- Login Flow}{Gambar 3.8 Sequence Diagram Login Flow Siswa Frontend Backend Database}
+
+\placeholderfig{Gambar Sequence Diagram --- Override + Top-6 Check Flow}{Gambar 3.9 Sequence Diagram Override dan Top-6 Check Flow Post-Pivot PIVOT 2 16 Juni 2026}
+
+\placeholderfig{Gambar Sequence Diagram --- Data Logging Flow ke K-Means Offline Batch}{Gambar 3.10 Sequence Diagram Data Logging Flow Frontend Backend Database K-Means Offline Batch}
+
+\subsection{Desain Level}
+\label{subsec:desain-level}
+
+Desain level merupakan inti dari pengalaman \textit{Sketchbook Universe}. Tiga level dirancang dengan progresi ambiguitas yang meningkat secara bertahap, menggeser posisi siswa dari penerima pasif menjadi evaluator aktif terhadap output AI. Setiap level memicu satu jenis interaksi HITL yang berbeda, sehingga menghasilkan data log yang terpisah dan terukur. Progresi ini didasarkan pada tiga kerangka teoretis yang saling melengkapi: scaffolding pedagogis~\cite{ref6}\cite{ref7}, mekanisme HITL~\cite{ref4}\cite{ref5}, dan \textit{Flow Theory}~\cite{ref7}.
+
+Prinsip desain level yang digunakan meliputi: \textit{Controlled Ambiguity} (confidence AI diturunkan secara programatik per level, bukan dengan \textit{retraining} model), \textit{Timer Count-Up} (durasi setiap aksi diukur tanpa tekanan waktu, post-pivot Decision \#3), \textit{Narrative as Feedback} (konsekuensi gameplay menggantikan skor/leaderboard), \textit{Progressive Constraint} (\textit{drawing prompt} makin terbuka, tapi opsi keputusan makin kritis), dan \textit{Data Separation} (setiap level menghasilkan data log yang berbeda secara kuantitatif). Kategori objek dipersempit menjadi dua saja (Solid dan Danger) post-pivot DECISION \#5 --- kategori Decorative dihapus agar konsekuensi gameplay bersifat biner dan jelas.
+
+\subsubsection{Level 1 --- Guided Recognition (Trust Building)}
+
+Level~1 dirancang agar siswa membangun \textit{baseline trust} terhadap sistem sebelum menghadapi ambiguitas. Justifikasi akademisnya didasarkan pada prinsip scaffolding~\cite{ref6}\cite{ref7}: dalam desain \textit{game-based learning}, fase awal harus memastikan bahwa kemampuan siswa (\textit{skill}) melebihi tantangan (\textit{challenge}) agar siswa tidak mengalami frustrasi. Chan, Wan \& King~\cite{ref7} menegaskan bahwa kondisi \textit{skill > challenge} menghasilkan rasa percaya diri dan keterlibatan. Spesifikasi teknis Level~1 ditunjukkan pada Tabel~\ref{tab:level1-spec}.
+
+\begin{table}[H]
+\centering
+\caption{Spesifikasi Teknis Level 1 --- Guided Recognition (Trust Building)}
+\label{tab:level1-spec}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter} & \textbf{Nilai} \\ \hline
+Confidence Range & 0.85 -- 0.96 (sangat tinggi) \\ \hline
+AI Behavior & Momo overconfident, hampir selalu benar \\ \hline
+Momo State & HAPPY (eyebrows angled up, mouth smile oval) \\ \hline
+Scaffolding & Penuh --- tooltip setiap langkah \\ \hline
+Drawing Constraint & Terbatas --- ``Gambar TANGGA'' + contoh visual \\ \hline
+Erase Allowed & Ya \\ \hline
+Drawing Attempts & Tidak terbatas \\ \hline
+Decision Options & Accept / Redraw \\ \hline
+Timer & Count-up (tanpa batas waktu) \\ \hline
+Canvas Tools & Resize, Rotate (tombol UI) \\ \hline
+Object Categories & Solid / Danger (Decorative dihapus) \\ \hline
+\end{tabular}
+\end{table}
+
+\placeholderfig{Gambar Alur Pengguna Level 1 --- Guided Recognition Trust Building}{Gambar 3.11 Alur Pengguna Level 1 Guided Recognition Trust Building}
+
+Data log yang dihasilkan Level~1 didominasi oleh \textit{decision type} \texttt{accept} dengan \textit{decision latency} 2000--4000 ms dan \textit{confidence gap} yang besar ($>0.70$). \textit{Gameplay result} dominan \texttt{success}.
+
+\subsubsection{Level 2 --- Ambiguous Choice (Doubt \& Calibration)}
+
+Level~2 memperkenalkan ambiguitas terkontrol. Confidence AI turun, gap antara Top-1 dan Top-2 mengecil, dan Momo mulai menunjukkan ketidakpastian (state CONFUSED). Justifikasi akademisnya didasarkan pada paradigma HITL~\cite{ref4}\cite{ref5}: Mosqueira-Rey et al.~\cite{ref4} menjelaskan bahwa salah satu peran utama manusia dalam loop otomasi adalah sebagai \textit{corrector} --- yaitu ketika sistem menghasilkan output dengan tingkat ketidakpastian yang cukup untuk memerlukan evaluasi manusia. Memarian \& Doleck~\cite{ref5} menegaskan bahwa momen evaluasi HITL paling bermakna terjadi ketika terdapat ambiguitas terkontrol. Spesifikasi teknis Level~2 ditunjukkan pada Tabel~\ref{tab:level2-spec}.
+
+\begin{table}[H]
+\centering
+\caption{Spersifikasi Teknis Level 2 --- Ambiguous Choice (Doubt \& Calibration)}
+\label{tab:level2-spec}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter} & \textbf{Nilai} \\ \hline
+Confidence Range & 0.55 -- 0.70 (sedang) \\ \hline
+AI Behavior & Momo ragu, confidence gap kecil antara Top-1 dan Top-2 \\ \hline
+Momo State & CONFUSED (eyebrows asymmetric, mouth zigzag, ``?'' bubble) \\ \hline
+Scaffolding & Parsial --- feedback hanya saat error \\ \hline
+Drawing Constraint & Kategori --- ``Gambar sesuatu yang KOKOH'' \\ \hline
+Erase Allowed & Tidak \\ \hline
+Drawing Attempts & 1x (tidak bisa redraw) \\ \hline
+Decision Options & Accept / Correct / Override \\ \hline
+Top-6 Check & Berlaku untuk Override (auto-accept bila match, redraw bila no-match) \\ \hline
+Timer & Count-up (tanpa batas waktu) \\ \hline
+Canvas Tools & Resize, Rotate (tombol UI) \\ \hline
+Object Categories & Solid / Danger (Decorative dihapus) \\ \hline
+\end{tabular}
+\end{table}
+
+\placeholderfig{Gambar Alur Pengguna Level 2 --- Ambiguous Choice Doubt Calibration}{Gambar 3.12 Alur Pengguna Level 2 Ambiguous Choice Doubt and Calibration}
+
+Data log Level~2 didominasi oleh \textit{decision type} \texttt{correct} dengan \textit{decision latency} 4000--7000 ms dan \textit{confidence gap} yang kecil (0.04--0.08). \textit{Gameplay result} campuran \texttt{success} dan \texttt{fail}.
+
+\subsubsection{Level 3 --- Risk \& Override (Human Agency)}
+
+Level~3 adalah puncak evaluasi AI dalam simulasi ini. Justifikasi akademisnya didasarkan pada \textit{Flow Theory}~\cite{ref7}: Chan, Wan \& King~\cite{ref7} menjelaskan bahwa kondisi \textit{challenge > skill} yang terkontrol menghasilkan \textit{peak evaluative moment} --- momen di mana individu harus mengeluarkan upaya kognitif maksimal untuk mengatasi tantangan. Dalam konteks HITL, momen ini terjadi ketika sistem AI secara confident memberikan prediksi yang salah, dan manusia harus secara aktif menolak (\textit{Override}) prediksi tersebut. Mosqueira-Rey et al.~\cite{ref4} mengidentifikasi peran \textit{decision-maker} sebagai peran HITL tertinggi. Spesifikasi teknis Level~3 ditunjukkan pada Tabel~\ref{tab:level3-spec}.
+
+\begin{table}[H]
+\centering
+\caption{Spesifikasi Teknis Level 3 --- Risk \& Override (Human Agency)}
+\label{tab:level3-spec}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Parameter} & \textbf{Nilai} \\ \hline
+Confidence Range & 0.35 -- 0.51 (rendah, tapi AI tetap confident) \\ \hline
+AI Behavior & Momo confidently wrong --- halusinasi klasifikasi \\ \hline
+Momo State & EXCITED (false confidence) $\rightarrow$ CONFUSED (saat override ditolak) \\ \hline
+Scaffolding & Tidak ada --- zero hints, hanya konsekuensi gameplay \\ \hline
+Drawing Constraint & Open-ended --- ``Gambar untuk LEWAT'' \\ \hline
+Erase Allowed & Tidak \\ \hline
+Drawing Attempts & 1x saja \\ \hline
+Decision Options & Accept / Override (Correct dihapus) \\ \hline
+Top-6 Check & Berlaku untuk Override (satu-satunya opsi koreksi) \\ \hline
+Timer & Count-up (tanpa batas waktu) \\ \hline
+Canvas Tools & Resize, Rotate (tombol UI) \\ \hline
+Object Categories & Solid / Danger (Decorative dihapus) \\ \hline
+\end{tabular}
+\end{table}
+
+\placeholderfig{Gambar Alur Pengguna Level 3 --- Risk and Override Human Agency}{Gambar 3.13 Alur Pengguna Level 3 Risk and Override Human Agency}
+
+Data log Level~3 menunjukkan pola yang paling kritis: \textit{decision type} didominasi \texttt{override}, \textit{decision latency} tinggi ($>7000$ ms), dan \textit{confidence gap} yang sangat kecil. \textit{Gameplay result} sangat bervariasi antara \texttt{success} dan \texttt{fail}, tergantung apakah siswa berani menolak AI. Field \texttt{top6\_match} pada Level~3 menjadi indikator kunci: rasio override yang ditolak (top6\_match=false) mencerminkan tingkat \textit{confident error} siswa.
+
+\subsection{Mekanisme Human-in-the-Loop (Top-6 Check)}
+\label{subsec:hitl-mekanisme}
+
+Mekanisme Human-in-the-Loop (HITL) merupakan inti dari \textit{Sketchbook Universe}. Mekanisme ini menentukan bagaimana siswa berinteraksi dengan output AI, bagaimana keputusan siswa dicatat, dan bagaimana konsekuensi keputusan ditampilkan. Desain mekanisme HITL didasarkan pada tiga prinsip akademis: transparansi XAI~\cite{ref3}, peran manusia dalam loop otomasi~\cite{ref4}\cite{ref5}, dan pencegahan \textit{automation bias}~\cite{ref4}.
+
+\subsubsection{Probe UI sebagai Titik Jeda Evaluasi}
+
+Probe UI dirancang untuk menghentikan gameplay sementara (\textit{pause}) saat AI memberikan prediksi. Justifikasi jeda ini didasarkan pada dua prinsip. Pertama, prinsip XAI dalam pendidikan~\cite{ref3}: Khosravi et al.~\cite{ref3} menegaskan bahwa transparansi proses AI hanya bermakna jika pengguna diberikan waktu dan ruang untuk membaca, memahami, dan mengevaluasi informasi yang ditampilkan. Kedua, prinsip HITL~\cite{ref4}: Mosqueira-Rey et al.~\cite{ref4} menjelaskan bahwa evaluasi manusia dalam loop otomasi memerlukan kondisi di mana sistem secara eksplisit meminta input manusia sebelum melanjutkan proses.
+
+\subsubsection{Tiga Opsi Keputusan: Accept, Correct, Override}
+
+Tiga opsi keputusan pada Probe UI dirancang berdasarkan tiga peran HITL yang diidentifikasi oleh Mosqueira-Rey et al.~\cite{ref4} dan Memarian \& Doleck~\cite{ref5}:
+
+\begin{enumerate}
+    \item \textbf{Accept} --- Siswa menerima prediksi Top-1 dari AI. Sesuai peran \textit{observer}~\cite{ref4}. Tersedia di semua level.
+    \item \textbf{Correct} --- Siswa memilih alternatif Top-2 atau Top-3 dari prediksi AI. Sesuai peran \textit{corrector}~\cite{ref4}\cite{ref5}. Tersedia mulai Level~2.
+    \item \textbf{Override} --- Siswa menolak seluruh prediksi AI dan memberikan label sendiri. Sesuai peran \textit{decision-maker}~\cite{ref4}\cite{ref5}. Tersedia mulai Level~2 dan menjadi satu-satunya opsi koreksi di Level~3 (Correct dihapus).
+\end{enumerate}
+
+\subsubsection{Top-6 Check sebagai Mekanisme Anti-Cheat (Post-Pivot PIVOT \#2)}
+
+Post-pivot 16/6/26, mekanisme \textit{Override Budget} versi lama (membatasi jumlah override per level: Level~2=2, Level~3=1) digantikan dengan \textbf{Top-6 Check}. Mekanisme ini lebih elegant karena tidak membatasi jumlah override, melainkan memverifikasi kewajaran label override terhadap prediksi AI. Alur Top-6 Check dijelaskan sebagai berikut:
+
+\begin{enumerate}
+    \item Frontend menampilkan Top-3 prediksi AI kepada siswa (transparan, sesuai prinsip XAI~\cite{ref3}).
+    \item Top-4 s/d Top-6 prediksi disimpan internal di frontend (rahasia, tidak ditampilkan ke siswa).
+    \item Saat siswa melakukan Override dan menginput label sendiri (mis: ``tangga''), frontend mengirim \texttt{POST /probe/override} dengan payload \texttt{\{session\_token, drawing\_blob, top6, override\_label, level, probe\_id, time\_spent\_ms\}} ke backend.
+    \item Backend memvalidasi session\_token dan melakukan \textbf{Top-6 Check}: case-insensitive match antara \texttt{override\_label} dengan \texttt{top6[].label}.
+    \item \textbf{Bila label ADA di Top-6 (AUTO-ACCEPT):} backend mencatat \texttt{top6\_match=true} ke \texttt{interaction\_logs}, mengembalikan \texttt{200 OK \{accepted: true, reason: top6\_match\}}, frontend menampilkan Momo EXCITED dengan text bubble ``Hebat! Kamu berani percaya diri.'' lalu \textit{spawn} objek sebagai Solid/Danger sesuai mapping.
+    \item \textbf{Bila label TIDAK ADA di Top-6 (FORCE VERIFY):} backend mencatat \texttt{top6\_match=false} ke \texttt{interaction\_logs}, mengembalikan \texttt{200 OK \{accepted: false, reason: top6\_no\_match, action: redraw\}}, frontend menampilkan Momo CONFUSED dengan text bubble ``Aku belum kenal itu. Gambar ulang yuk?'' lalu reset canvas dan increment \texttt{attempt\_counter}.
+\end{enumerate}
+
+Mekanisme Top-6 Check memberikan tiga keunggulan dibanding Override Budget: (1) tidak membatasi kreativitas siswa --- siswa boleh override sebanyak yang mereka mau; (2) anti-cheat lebih elegant --- siswa yang gambar carelessly (mis: coretan acak) akan diprediksi sebagai label yang tidak relevan, dan label override mereka tidak akan match di Top-6, sehingga diarahkan untuk menggambar ulang; (3) data log \texttt{top6\_match} menjadi metrik baru untuk analisis pola perilaku siswa.
+
+\placeholderfig{Gambar Mekanisme Top-6 Check --- Flow Diagram}{Gambar 3.14 Mekanisme Human-in-the-Loop Top-6 Check Post-Pivot PIVOT 2 16 Juni 2026}
+
+\subsubsection{Pencegahan Automation Bias}
+
+\textit{Automation bias} adalah kecenderungan manusia untuk secara otomatis menerima output sistem otomatis tanpa evaluasi kritis~\cite{ref4}. Dua mekanisme desain diterapkan untuk pencegahannya. Pertama, \textit{cognitive friction}: pada Level~2, jika confidence $< 50\%$ dan siswa klik Accept dalam waktu $< 1$ detik, muncul pop-up konfirmasi ``Yakin?'' yang memaksa siswa berhenti sejenak. Kedua, \textit{visual hierarchy}: Probe UI mengatur urutan visual dari atas ke bawah --- gambar user, Momo reaction, prediksi Top-3 dengan confidence bar, dan terakhir tombol keputusan --- sehingga siswa harus melewati informasi prediksi sebelum mencapai tombol. Kedua mekanisme ini didasarkan pada rekomendasi Mosqueira-Rey et al.~\cite{ref4}.
+
+\subsection{Perancangan Maskot Momo}
+\label{subsec:maskot-momo}
+
+\subsubsection{Konsep Maskot}
+
+Maskot sistem bernama \textbf{Momo} --- sebuah kubus sketsa 2.5D yang terlipat dari selembar kertas buku gambar dan ``hidup'' melayang di Sketchbook Universe. Momo berfungsi sebagai \textit{pedagogical agent} non-NLP: ia tidak berbicara dengan suara dan tidak memproses bahasa natural, melainkan berkomunikasi melalui \textit{text bubble} berisi pesan singkat (rule-based, bukan generated) dan \textit{state emosi visual} yang berubah sesuai konteks interaksi siswa dengan output AI. Pilihan ini sesuai arahan Bu Hesti (notulensi 15/6/26): voice synthesis memerlukan bandwidth tambahan, dapat mengganggu kelas yang menggunakan speaker bersama, dan rentan terhadap miskomunikasi pada siswa dengan hearing impairment.
+
+Justifikasi akademis pemilihan Momo sebagai pedagogical agent non-NLP didasarkan pada Schroeder, Davis \& Yang~\cite{ref8} yang melakukan \textit{umbrella review} terhadap 47 penelitian pedagogical agent. Schroeder et al.~\cite{ref8} menemukan bahwa keberhasilan pedagogical agent tidak ditentukan oleh kemampuan NLP atau voice synthesis, melainkan oleh tiga faktor: (1) \textit{visibility} --- agent harus selalu hadir secara visual di layar; (2) \textit{responsiveness} --- ekspresi agent harus berubah sesuai konteks tugas; dan (3) \textit{non-intrusiveness} --- agent tidak boleh mengganggu flow kognitif siswa. Momo dirancang sesuai ketiga faktor tersebut.
+
+\subsubsection{Desain Visual (OPSI E --- Doodle Cube)}
+
+Momo dirender sebagai kubus 2.5D dengan tiga sisi terlihat: \textbf{front face} (rect 28$\times$28 cream \texttt{\#F5E6CA}) sebagai panel wajah utama, \textbf{top face} (parallelogram lebih terang \texttt{\#FAEED5}) memberi ilusi depth, dan \textbf{right side face} (parallelogram lebih gelap \texttt{\#D4C4A8}) memperkuat ilusi 3D tanpa 3D engine. Pilihan kubus 2.5D alih-alih flat 2D memungkinkan animasi \textit{spin} di state THINKING --- diferensiator visual yang tidak dimiliki opsi maskot flat lainnya.
+
+Komponen wajah Momo pada front face terdiri dari tiga elemen ekspresif: mata hexagonal (polygon 6-vertex, radius 4 px, warna dark \texttt{\#2D3436}), eyebrows (rect 4$\times$2 dark) sebagai \textit{signature} OPSI E dan sumber utama range ekspresi, serta mulut (rect 8$\times$2 yang dapat \textit{morph} per state). Asymmetric signature Momo adalah lipatan teal (\texttt{\#4ECDC4}) di sudut kanan-atas kubus, yang merepresentasikan ``magic ink mark'' --- tanda bahwa kertas sketsa ini telah hidup.
+
+\subsubsection{Shape Inventory}
+
+Shape inventory Momo terdiri dari 10 shape sederhana (rect, polygon, ellipse) yang semuanya dapat dirender native oleh Kaplay.js tanpa asset eksternal. Tabel~\ref{tab:maskot-shape-inventory} merinci setiap shape.
+
+\begin{table}[H]
+\centering
+\caption{Shape Inventory Maskot Momo (OPSI E --- Doodle Cube)}
+\label{tab:maskot-shape-inventory}
+\begin{tabular}{|p{0.5cm}|p{2.5cm}|p{5cm}|p{1.5cm}|p{1.8cm}|p{2.5cm}|}
+\hline
+\textbf{\#} & \textbf{Shape} & \textbf{Code (Kaplay.js)} & \textbf{Size} & \textbf{Color} & \textbf{Function} \\ \hline
+1 & Rectangle & \texttt{rect(28, 28, \{radius: 1\})} & 28$\times$28 & \texttt{\#F5E6CA} & Front face \\ \hline
+2 & Polygon (top) & \texttt{polygon([...])} & $\sim$28$\times$4 & \texttt{\#FAEED5} & Top face (depth) \\ \hline
+3 & Polygon (side) & \texttt{polygon([...])} & $\sim$4$\times$32 & \texttt{\#D4C4A8} & Right side face \\ \hline
+4 & Polygon (hex eye L) & \texttt{polygon([6 hex vertices], r=4)} & r=4 & \texttt{\#2D3436} & Left eye \\ \hline
+5 & Polygon (hex eye R) & \texttt{polygon([6 hex vertices], r=4)} & r=4 & \texttt{\#2D3436} & Right eye \\ \hline
+6 & Rectangle & \texttt{rect(4, 2) at (-7, -8)} & 4$\times$2 & \texttt{\#2D3436} & Left eyebrow (SIGNATURE) \\ \hline
+7 & Rectangle & \texttt{rect(4, 2) at (7, -8)} & 4$\times$2 & \texttt{\#2D3436} & Right eyebrow \\ \hline
+8 & Rectangle & \texttt{rect(8, 2) at (0, 4)} & 8$\times$2 & \texttt{\#2D3436} & Mouth (morphs per state) \\ \hline
+9 & Polygon (fold) & \texttt{polygon([...])} & triangle & \texttt{\#4ECDC4} & Magic ink fold \\ \hline
+10 & Ellipse & \texttt{ellipse(22, 5) at (0, 20)} & 22$\times$5 & \texttt{rgba(0,0,0,0.10)} & Float shadow \\ \hline
+\end{tabular}
+\end{table}
+
+Total 10 shape berada di dalam budget \texttt{<100KB} asset (semua vector, tidak ada PNG/sprite sheet) dan \texttt{<5MB} RAM saat runtime.
+
+\subsubsection{State Emosi (5 State)}
+
+Momo memiliki lima state emosi yang dipicu oleh konteks interaksi siswa dengan output AI. Tabel~\ref{tab:maskot-state-emosi} merinci trigger, visual change, dan duration setiap state.
+
+\begin{table}[H]
+\centering
+\caption{State Emosi Maskot Momo (5 State)}
+\label{tab:maskot-state-emosi}
+\begin{tabular}{|p{1.8cm}|p{4.5cm}|p{6cm}|p{1.8cm}|}
+\hline
+\textbf{State} & \textbf{Trigger} & \textbf{Visual Change} & \textbf{Duration} \\ \hline
+IDLE & Default, tidak ada interaksi aktif & Float \texttt{sin(t*2.5)*3} + sway \texttt{sin(t*1.5)*2}$^\circ$; eyebrows flat; mouth neutral line; shadow breathe $\pm$10\% & Loop \\ \hline
+HAPPY & Accept pada confidence $>$ 70\%, atau level selesai & Squish (1.2, 0.8) $\rightarrow$ stretch (0.9, 1.2); eyebrows angled up +10$^\circ$; mouth smile oval 12$\times$4; 5 yellow sparkles & 1.5s one-shot \\ \hline
+CONFUSED & Confidence $<$ 50\%, atau confidence gap Top-1 vs Top-2 $<$ 0.10 & Tilt 12$^\circ$ + oscillate $\pm$3$^\circ$; eyebrows asymmetric; mouth zigzag 4-vertex; ``?'' bubble & Hold state \\ \hline
+THINKING & Probe UI muncul, siswa membaca prediksi (jeda $>$ 2 detik) & Slow spin \texttt{(t*120)\%360} (3s/rot) --- 2.5D rotation unik OPSI E; eyebrows narrowed; mouth small circle r=2; 3 yellow dots orbiting & Hold state \\ \hline
+EXCITED & Override sukses (Top-6 match), atau Level~3 selesai & Shake $\pm$3px at 30Hz; eyebrows angled up +20$^\circ$; mouth big triangle 12$\times$8; 8+4 confetti & 2.0s one-shot \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Color Palette}
+
+Color palette Momo menggunakan 6 warna yang seluruhnya berada di rentang cream-teal-dark, menghindari warna-warna yang sudah ter-asosiasi kuat dengan karakter populer (yellow-Pikachu, pink-Domo, navy-Smurf). Tabel~\ref{tab:maskot-color-palette} merinci palette.
+
+\begin{table}[H]
+\centering
+\caption{Color Palette Maskot Momo}
+\label{tab:maskot-color-palette}
+\begin{tabular}{|p{3.5cm}|p{2.5cm}|p{3cm}|p{4.5cm}|}
+\hline
+\textbf{Role} & \textbf{Hex Code} & \textbf{RGB} & \textbf{Description} \\ \hline
+Primary (front face) & \texttt{\#F5E6CA} & (245, 230, 202) & Cream front face --- sketch paper \\ \hline
+Top face (depth) & \texttt{\#FAEED5} & (250, 238, 213) & Lighter cream --- depth illusion \\ \hline
+Side face (shadow) & \texttt{\#D4C4A8} & (212, 196, 168) & Darker cream --- 3D shadow face \\ \hline
+Accent (fold) & \texttt{\#4ECDC4} & (78, 205, 196) & Teal --- magic ink mark (signature) \\ \hline
+Outline/Eyes/Eyebrows & \texttt{\#2D3436} & (45, 52, 54) & Dark grey --- face features \\ \hline
+Shadow & \texttt{rgba(0,0,0,0.10)} & --- & Soft float shadow beneath \\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Placeholder Sketsa 5 State}
+
+Karena pada tahap proposal belum dilakukan produksi pixel art final, sketsa 5 state Momo ditampilkan sebagai placeholder blok kosong yang akan diisi pada tahap implementasi. Setiap state direncanakan akan dirender dalam resolusi 64$\times$64 px (base size) dan di-upscale 2$\times$ saat runtime di layar untuk mempertahankan estetika 8-bit.
+
+\placeholderfig{Sketsa Momo State IDLE}{Gambar 3.15 Konsep Maskot Momo State IDLE Body Float Eyebrows Flat Mouth Neutral Line}
+
+\placeholderfig{Sketsa Momo State HAPPY}{Gambar 3.16 Konsep Maskot Momo State HAPPY Squish Stretch Eyebrows Angled Up Mouth Smile Oval 5 Yellow Sparkles}
+
+\placeholderfig{Sketsa Momo State CONFUSED}{Gambar 3.17 Konsep Maskot Momo State CONFUSED Body Tilt 12 Derajat Eyebrows Asymmetric Mouth Zigzag Question Bubble}
+
+\placeholderfig{Sketsa Momo State THINKING}{Gambar 3.18 Konsep Maskot Momo State THINKING 2 5D Spin 3s Per Rotation Narrowed Eyebrows Mouth Small Circle 3 Orbiting Dots}
+
+\placeholderfig{Sketsa Momo State EXCITED}{Gambar 3.19 Konsep Maskot Momo State EXCITED Shake 3px Eyebrows Raised High Mouth Big Triangle 8 Plus 4 Confetti}
+
+\subsubsection{Text Bubble Behavior}
+
+Momo berkomunikasi melalui \textbf{text bubble} berisi pesan singkat (maksimal 80 karakter) yang muncul di samping body Momo. Pesan bersifat \textit{rule-based} (dipilih dari bank pesan statis sesuai kondisi), bukan generated oleh LLM/NLP. Tabel~\ref{tab:momo-text-bubble} merinci kondisi munculnya text bubble dan contoh pesan.
+
+\begin{table}[H]
+\centering
+\caption{Text Bubble Behavior Maskot Momo}
+\label{tab:momo-text-bubble}
+\begin{tabular}{|p{4.5cm}|p{2.5cm}|p{6.5cm}|}
+\hline
+\textbf{Kondisi} & \textbf{State Momo} & \textbf{Contoh Pesan Text Bubble} \\ \hline
+Login berhasil & HAPPY & ``Hai, siswa nomor X! Siap main?'' \\ \hline
+Confidence AI rendah ($<$ 50\%) & CONFUSED & ``Aku agak ragu sama tebakan ini. Coba cek alternatifnya.'' \\ \hline
+Confidence gap Top-1 vs Top-2 $<$ 0.10 & CONFUSED & ``Hmm, dua tebakan ini mirip. Pikir dulu ya.'' \\ \hline
+Accept cepat ($<$ 1 detik) pada confidence $<$ 50\% & CONFUSED & ``Eh, yakin? Coba baca lagi prediksinya.'' \\ \hline
+Correct (pilih Top-2/Top-3) & HAPPY & ``Pilihan bagus! Kadang alternatif lebih tepat.'' \\ \hline
+Override sukses (Top-6 match) & EXCITED & ``Hebat! Kamu berani percaya diri.'' \\ \hline
+Override gagal (Top-6 no match) & CONFUSED & ``Aku belum kenal itu. Gambar ulang yuk.'' \\ \hline
+Siswa idle $>$ 30 detik tanpa aksi & THINKING & ``Lagi mikir? Ambil waktu yang kamu butuh.'' \\ \hline
+Level berhasil diselesaikan & EXCITED & ``Mantap! Level selesai. Lanjut?'' \\ \hline
+Level gagal (Stickman kena Danger) & CONFUSED & ``Yah, gagal. Pelajaran buat ronde berikutnya.'' \\ \hline
+\end{tabular}
+\end{table}
+
+Text bubble muncul dengan animasi \textit{fade-in} 200ms dan menghilang setelah 3 detik (untuk pesan transient) atau tetap tampil hingga event berikutnya (untuk pesan kontekstual seperti CONFUSED state). Pesan tidak menghalangi area gameplay utama --- text bubble selalu muncul di area pojok layar tempat Momo berada.
+
+\subsection{Desain Wireframe}
+\label{subsec:wireframe}
+
+Wireframe antarmuka dirancang untuk empat layar utama: Onboarding, Main Gameplay, Probe UI, dan Result \& Feedback. \textbf{Catatan penulis:} wireframe final akan diproduksi oleh penulis sendiri pada tahap implementasi menggunakan Figma atau draw.io; sub-bab ini menyediakan kerangka tekstual dan placeholder untuk gambar.
+
+\subsubsection{Wireframe Onboarding}
+
+Wireframe onboarding dirancang sebagai fase pertama yang memperkenalkan siswa pada dunia \textit{Sketchbook Universe}. Desain onboarding didasarkan pada prinsip scaffolding~\cite{ref6} dan Child-Computer Interaction (CCI)~\cite{ref2}. Onboarding terdiri dari empat langkah: (1) Splash screen dengan Momo tertidur, (2) Momo introduction yang menjelaskan perannya sebagai ``pembaca gambar'', (3) Tutorial objek (Solid, Danger) dengan contoh visual --- kategori Decorative telah dihapus, (4) Ready screen dengan konfirmasi siswa siap memulai Level~1.
+
+\placeholderfig{Wireframe Onboarding}{Gambar 3.20 Wireframe Onboarding Splash Momo Introduction Tutorial Objek Ready Screen}
+
+\subsubsection{Wireframe Main Gameplay + Toolbar Resize/Rotate/Timer}
+
+Wireframe main gameplay merupakan ruang utama siswa melihat kebutuhan level, menggambar objek, dan menggerakkan Stickman setelah objek masuk ke game world. Komponen utama meliputi: (1) Level Area --- area visual rintangan dan tujuan; (2) Stickman --- karakter utama; (3) Momo Companion --- Momo mengambang di sudut layar; (4) Drawing Canvas --- area menggambar; (5) \textbf{Toolbar Resize/Rotate/Eraser} --- tombol UI untuk memanipulasi kanvas (post-pivot Decision \#4 16/6/26); (6) \textbf{Timer count-up} --- ditampilkan di pojok atas sebagai parameter log admin (post-pivot Decision \#3); (7) Object Slot --- preview objek yang telah diklasifikasi.
+
+\placeholderfig{Wireframe Main Gameplay dengan Toolbar Resize Rotate dan Timer Count-Up}{Gambar 3.21 Wireframe Main Gameplay dengan Toolbar Resize Rotate Eraser dan Timer Count-Up Post-Pivot 16 Juni 2026}
+
+\subsubsection{Wireframe Probe UI (Top-3 + Top-6 Check)}
+
+Probe UI adalah \textit{core HITL moment} --- titik di mana siswa berinteraksi langsung dengan output AI. Komponen: (1) Thumbnail gambar siswa, (2) Momo reaction (state emosi sesuai confidence), (3) Top-3 prediction dengan confidence bar, (4) Tombol keputusan Accept / Correct (Level 2+) / Override (Level 2+), (5) Form override (muncul saat siswa klik Override). Top-4 s/d Top-6 prediksi tidak ditampilkan (rahasia untuk Top-6 Check).
+
+\placeholderfig{Wireframe Probe UI Top-3 Predictions dan Tombol Override}{Gambar 3.22 Wireframe Probe UI Top-3 Predictions Confidence Bar Momo Reaction Tombol Accept Correct Override}
+
+\subsubsection{Wireframe Result dan Feedback}
+
+Wireframe result memperlihatkan dampak keputusan siswa terhadap gameplay. Tiga state hasil: (1) \textit{Solid success} --- Stickman berhasil lewat, Momo HAPPY; (2) \textit{Danger fail/reset} --- Stickman terkena Danger, level di-reset, Momo CONFUSED; (3) \textit{Level Summary} --- ringkasan keputusan siswa (jumlah Accept/Correct/Override, rasio success/fail, refleksi Momo). Tidak ada skor numerik atau leaderboard --- sesuai prinsip \textit{Narrative as Feedback}.
+
+\placeholderfig{Wireframe Result dan Feedback Solid Success Danger Fail Level Summary}{Gambar 3.23 Wireframe Result dan Feedback Solid Success Danger Fail Level Summary}
+
+\subsection{Rancangan Pengujian}
+\label{subsec:rancangan-pengujian}
+
+Rancangan pengujian mengutamakan bukti perilaku (\textit{behavioral evidence}) sebagai indikator keberhasilan mekanisme HITL, bukan pengukuran hasil belajar (\textit{learning outcome}). Justifikasi pemilihan ini didasarkan pada prinsip HITL~\cite{ref5}: Memarian \& Doleck~\cite{ref5} menegaskan bahwa dalam konteks interaksi manusia-AI, bukti perilaku merupakan indikator yang lebih langsung dan terukur dibandingkan pengukuran pemahaman konseptual.
+
+Pengujian dilakukan dalam tiga tahap. Tahap pertama adalah \textit{expert review} oleh 2--3 praktisi UX/edutech yang mengevaluasi kesesuaian desain Probe UI dengan prinsip XAI~\cite{ref3} dan HITL~\cite{ref4}, serta kesesuaian desain level dengan prinsip scaffolding~\cite{ref6}\cite{ref7}. Tahap kedua adalah \textit{usability testing} dengan 5--8 siswa SMP kelas 7--9 yang mengukur perilaku interaksi HITL. Tahap ketiga adalah \textit{behavioral log analysis} yang menganalisis data log interaksi untuk mengidentifikasi pola keputusan siswa.
+
+Metrik pengujian utama ditunjukkan pada Tabel~\ref{tab:metrik-pengujian}.
+
+\begin{table}[H]
+\centering
+\caption{Metrik Pengujian Berbasis Perilaku}
+\label{tab:metrik-pengujian}
+\begin{tabular}{|p{3.5cm}|p{4.5cm}|p{3cm}|p{1.8cm}|}
+\hline
+\textbf{Metrik} & \textbf{Deskripsi} & \textbf{Sumber Data} & \textbf{Ref.} \\ \hline
+Decision Type Distribution & Rasio Accept vs Correct vs Override per level & Interaction log & \cite{ref4}\cite{ref5} \\ \hline
+Decision Latency & Waktu rata-rata sebelum memutuskan (ms) & Interaction log & \cite{ref4} \\ \hline
+Automation Bias Incidence & Frekuensi Accept $<$ 1 detik pada confidence $<$ 50\% & Interaction log & \cite{ref4} \\ \hline
+Top-6 Match Rate & Rasio override yang diterima via Top-6 Check & Interaction log & --- \\ \hline
+Confidence Calibration & Kesesuaian keputusan dengan confidence score & Interaction log & \cite{ref9} \\ \hline
+Task Success Rate & Persentase level yang diselesaikan dengan keputusan tepat & Gameplay log & \cite{ref6} \\ \hline
+SUS Score & System Usability Scale dari post-test questionnaire & Kuesioner & \cite{ref15}\cite{ref16} \\ \hline
+\end{tabular}
+\end{table}
+
+Target skor SUS $\geq 68$ (above average menurut Bangor et al.~\cite{ref16}). Rancangan pengujian ini tidak menggunakan \textit{pre-post test} literasi AI karena dua alasan: (1) proyek ini mengukur mekanisme interaksi HITL (bagaimana siswa berinteraksi), bukan outcome literasi AI (apakah siswa menjadi lebih literat); (2) pengukuran literasi AI memerlukan instrumen terstandar dan sampel yang lebih besar, yang berada di luar scope proyek akhir ini.
+
+% ============================================================
+\section{PEMBAGIAN TUGAS DAN ALUR PENGERJAAN}
+\label{sec:pembagian-tugas}
+% ============================================================
+
+Pengembangan proyek akhir ini dilakukan oleh dua orang dalam satu tim, yaitu penulis (Can) dan Muhammad Dias Al Izzat (Dias) sebagai rekan kerja. Pembagian tugas disesuaikan dengan bidang keahlian masing-masing anggota. Penulis bertanggung jawab pada aspek Frontend, UI/UX, Probe UI, Animasi Momo, Level Design, Mekanisme HITL Top-6 Check, dan Wireframe. Rekan (Dias) bertanggung jawab pada aspek Backend, CNN Model, K-Means Clustering, REST API, dan Admin Dashboard. Tabel~\ref{tab:pembagian-tugas} merinci pembagian tugas per komponen.
+
+\begin{table}[H]
+\centering
+\caption{Pembagian Tugas Can dan Dias per Komponen Sistem}
+\label{tab:pembagian-tugas}
+\begin{tabular}{|p{4cm}|p{4.5cm}|p{4.5cm}|}
+\hline
+\textbf{Komponen Sistem} & \textbf{Scope Can (Penulis)} & \textbf{Scope Dias (Rekan)} \\ \hline
+Login & UI Login Siswa (class\_id + nomor\_absen) & Backend endpoint \texttt{POST /auth/login}, JWT generation \\ \hline
+Onboarding & Splash screen, Momo intro, Tutorial objek & --- \\ \hline
+Level Design & 3 level (Trust Build, Ambiguity, Override) & --- \\ \hline
+Main Gameplay & Canvas, Kaplay.js loop, Stickman movement & --- \\ \hline
+Canvas Tools & Tombol Resize, Rotate, Eraser (UI) & --- \\ \hline
+Timer & Timer count-up display, time\_spent\_ms field & --- \\ \hline
+CNN Model & --- & MobileNet V2 training, TF.js conversion \\ \hline
+AI Inference & Load TF.js model di browser, tampilkan Top-3 & --- \\ \hline
+Probe UI & Tampilan Top-3, tombol Accept/Correct/Override & --- \\ \hline
+Top-6 Check & Kirim \texttt{POST /probe/override} & Backend Top-6 Check, return auto-accept/redraw \\ \hline
+Momo Animation & State machine, 5 state, text bubble & --- \\ \hline
+Behavior Mapping & Solid/Danger mapping (frontend) & Label mapping table (shared) \\ \hline
+Backend API & --- & Node.js + Express, REST endpoints \\ \hline
+Database & --- & SQLite, schema interaction\_logs \\ \hline
+K-Means Clustering & --- & Python + scikit-learn, feature engineering \\ \hline
+Admin Dashboard & --- & Dashboard guru (decision distribution, cluster) \\ \hline
+Superadmin UI & --- & Dashboard superadmin (school/class/guru management) \\ \hline
+Data Logging & Pack event, kirim \texttt{POST /logs/event} & Backend validasi, INSERT ke SQLite \\ \hline
+Integrasi Can-Dias & Titik temu Probe UI + \texttt{POST /logs/event} & Titik temu Probe UI + \texttt{POST /logs/event} \\ \hline
+Pengujian SUS & SUS ke siswa, behavioral log analysis & Akurasi model, dashboard testing \\ \hline
+\end{tabular}
+\end{table}
+
+Titik temu (integration point) antara scope Can dan Dias berada di dua lokasi: (1) \textbf{Probe UI} --- tempat output AI (Top-3 + confidence dari CNN model Dias) bertemu input user (keputusan siswa dari frontend Can); (2) \textbf{Endpoint \texttt{POST /api/logs/event}} --- tempat frontend Can mengirim behavioral log ke backend Dias. Kontrak data lengkap antara Dias dan Can diuraikan pada Bab~3 Dias Sub-bab Kontrak Data Dias--Can.
+
+Alur pengerjaan proyek dijalankan dalam empat tahap utama yang berurutan mengikuti Waterfall SDLC (lihat Sub-bab~\ref{subsec:metode-pengembangan}): (1) \textbf{Research \& Design} --- studi literatur, analisis kebutuhan, desain sistem, wireframe; (2) \textbf{Production} --- implementasi frontend Can dan backend Dias secara paralel; (3) \textbf{Integration} --- integrasi Probe UI dan endpoint logging; (4) \textbf{Testing \& Documentation} --- pengujian black-box, SUS, dan penulisan laporan. Tahap Research \& Design dan Production dijalankan paralel antara Can dan Dias; tahap Integration dan Testing memerlukan kolaborasi kedua anggota.
+
+% ============================================================
+\section{JADWAL PENELITIAN}
+\label{sec:jadwal-penelitian}
+% ============================================================
+
+Jadwal penelitian disusun untuk periode 12 bulan dengan pembagian waktu mengikuti tahapan Waterfall SDLC: studi literatur dan penyusunan proposal, analisis kebutuhan dan desain sistem, implementasi paralel Can-Dias, integrasi, pengujian, dan penulisan laporan akhir. Jadwal penelitian \textbf{sinkron} antara penulis (Can) dan rekan (Dias) --- ditampilkan dalam satu tabel shared dengan kolom inisial pelaksana (C untuk Can, D untuk Dias, CD untuk Both). Jadwal penelitian ditunjukkan pada Tabel~\ref{tab:jadwal-penelitian}.
+
+\begin{table}[H]
+\centering
+\caption{Jadwal Penelitian Sinkron Can dan Dias --- 17 Kegiatan $\times$ 12 Bulan}
+\label{tab:jadwal-penelitian}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{0.4cm}|p{4cm}|p{1cm}|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{No} & \textbf{Kegiatan} & \textbf{Inisial} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{11} & \textbf{12} \\ \hline
+1 & Studi Literatur \& Pengumpulan Referensi & CD & X & X &  &  &  &  &  &  &  &  &  &  \\ \hline
+2 & Penyusunan Proposal & CD &  & X & X & X &  &  &  &  &  &  &  &  \\ \hline
+3 & Analisis Kebutuhan \& Use Case (Fishbone 6M) & CD &  &  & X & X &  &  &  &  &  &  &  &  \\ \hline
+4 & Desain Sistem Global (Waterfall) & CD &  &  &  & X & X &  &  &  &  &  &  &  \\ \hline
+5 & Pengumpulan \& Kurasi Dataset Quick Draw & D &  &  &  &  & X & X &  &  &  &  &  &  \\ \hline
+6 & Pelatihan Model CNN MobileNet & D &  &  &  &  &  & X & X &  &  &  &  &  \\ \hline
+7 & Konversi Model ke TensorFlow.js & D &  &  &  &  &  &  & X &  &  &  &  &  \\ \hline
+8 & Pengembangan Frontend Kaplay.js + React & C &  &  &  &  & X & X & X & X &  &  &  &  \\ \hline
+9 & Desain Maskot Momo (OPSI E Doodle Cube) & C &  &  &  &  &  & X & X &  &  &  &  &  \\ \hline
+10 & Implementasi Level Design + HITL UI Top-6 Check & C &  &  &  &  &  &  & X & X & X &  &  &  \\ \hline
+11 & Implementasi Backend REST API & D &  &  &  &  &  & X & X & X &  &  &  &  \\ \hline
+12 & Implementasi Data Logging + SQLite & D &  &  &  &  &  &  &  & X & X &  &  &  \\ \hline
+13 & Implementasi K-Means Clustering & D &  &  &  &  &  &  &  &  & X & X &  &  \\ \hline
+14 & Implementasi Superadmin Dashboard & D &  &  &  &  &  &  &  &  & X & X &  &  \\ \hline
+15 & Integrasi Can-Dias (Kontrak Data) & CD &  &  &  &  &  &  &  &  &  & X & X &  \\ \hline
+16 & Pengujian SUS + Black-Box & CD &  &  &  &  &  &  &  &  &  &  & X & X \\ \hline
+17 & Penulisan Laporan Akhir & CD &  &  &  &  &  &  &  &  &  &  & X & X \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+Keterangan inisial: C = Can (Frontend, UI/UX, Maskot, HITL, Level Design); D = Dias (Backend, CNN, K-Means, API); CD = Both (kegiatan kolaboratif). Tanda X menunjukkan bulan pelaksanaan kegiatan tersebut.
+
+Fase studi literatur dan penyusunan proposal (Bulan 1--4) dilakukan oleh Can dan Dias secara paralel. Fase analisis kebutuhan dan desain sistem (Bulan 3--5) meliputi pengumpulan referensi tambahan, analisis Fishbone 6M, dan desain sistem global mengikuti Waterfall SDLC. Fase implementasi paralel Can-Dias (Bulan 5--10) dijalankan secara bersamaan: Can mengembangkan frontend Kaplay.js + React, desain maskot Momo, dan implementasi Level Design + HITL Top-6 Check; Dias mengumpulkan dan kurasi dataset Quick Draw, melatih model CNN MobileNet, konversi ke TF.js, mengimplementasi backend REST API, data logging SQLite, K-Means clustering, dan superadmin dashboard. Fase integrasi (Bulan 10--11) menyatukan Probe UI Can dengan endpoint logging Dias sesuai kontrak data. Fase pengujian (Bulan 11--12) meliputi black-box testing dan SUS. Penulisan laporan akhir (Bulan 11--12) dilakukan secara bertahap dan paralel dengan pengujian.
+
+\end{document}

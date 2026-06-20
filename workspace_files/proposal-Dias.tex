@@ -1,0 +1,795 @@
+% ============================================================
+% PROPOSAL PROYEK AKHIR — MUHAMMAD DIAS AL-IZZAT
+% PENGEMBANGAN SISTEM KLASIFIKASI SKETSA BERBASIS CNN MOBILENET
+% DENGAN CONFIDENCE SCORE DAN CLUSTERING POLA KEPUTUSAN
+% PADA SISTEM LITERASI KECERDASAN BUATAN UNTUK SISWA SMP
+% ============================================================
+
+\documentclass[12pt,oneside]{report}
+\usepackage[a4paper,left=4cm,top=3cm,bottom=3cm,right=3cm]{geometry}
+\usepackage{mathptmx}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{rotating}
+
+\onehalfspacing
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\centering\MakeUppercase}{BAB \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\setlength{\parindent}{1.27cm}
+
+\begin{document}
+
+% ============================================================
+% HALAMAN SAMPUL / COVER PAGE
+% ============================================================
+
+\begin{titlepage}
+\centering
+
+\vspace*{1cm}
+
+{\large PROPOSAL PROYEK AKHIR}
+
+\vspace{0.5cm}
+
+{\Large\bfseries PENGEMBANGAN SISTEM KLASIFIKASI SKETSA BERBASIS CNN MOBILENET DENGAN CONFIDENCE SCORE DAN CLUSTERING POLA KEPUTUSAN PADA SISTEM LITERASI KECERDASAN BUATAN UNTUK SISWA SMP}
+
+\vspace{2cm}
+
+{\large Oleh:}\\[0.3cm]
+{\large\bfseries Muhammad Dias Al-Izzat}\\[0.1cm]
+{\large NRP. [Isi NRP]}
+
+\vspace{2cm}
+
+{\large Dosen Pembimbing:}\\[0.3cm]
+{\large Dr. Tri Budi Santoso, S.T., M.T.}\\[0.1cm]
+{\large NIP. 197001051995021001}
+
+\vspace{0.5cm}
+
+{\large Dosen Pembimbing 2:}\\[0.3cm]
+{\large [Nama Pembimbing 2]}\\[0.1cm]
+{\large NIP. [Isi NIP]}
+
+\vspace{2cm}
+
+{\large PROGRAM STUDI SARJANA TERAPAN TEKNOLOGI REKAYASA MULTIMEDIA}\\[0.2cm]
+{\large JURUSAN TEKNOLOGI MULTIMEDIA KREATIF}\\[0.2cm]
+{\large POLITEKNIK ELEKTRONIKA NEGERI SURABAYA}\\[0.2cm]
+{\large 2026}
+
+\end{titlepage}
+
+% ============================================================
+% HALAMAN PENGESAHAN
+% ============================================================
+
+\chapter*{HALAMAN PENGESAHAN}
+\addcontentsline{toc}{chapter}{HALAMAN PENGESAHAN}
+
+Proposal Proyek Akhir ini disusun dan diajukan oleh:
+
+\vspace{0.5cm}
+
+\begin{tabular}{ll}
+Nama & : Muhammad Dias Al-Izzat \\
+NRP & : [Isi NRP] \\
+Program Studi & : Sarjana Terapan Teknologi Rekayasa Multimedia \\
+Jurusan & : Teknologi Multimedia Kreatif \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+Telah diperiksa dan disahkan oleh Dosen Pembimbing pada tanggal: \underline{\hspace{3cm}}
+
+\vspace{1.5cm}
+
+\begin{center}
+\begin{tabular}{c c}
+\underline{\hspace{5cm}} & \underline{\hspace{5cm}} \\
+Dosen Pembimbing & Dosen Pembimbing 2 \\
+& \\
+Dr. Tri Budi Santoso, S.T., M.T. & [Nama Pembimbing 2] \\
+NIP. 197001051995021001 & NIP. [Isi NIP] \\
+\end{tabular}
+\end{center}
+
+\vspace{2cm}
+
+Mengetahui,
+
+\vspace{0.5cm}
+
+\begin{center}
+\begin{tabular}{c}
+\underline{\hspace{5cm}} \\
+Ketua Program Studi \\
+Sarjana Terapan Teknologi Rekayasa Multimedia \\
+\end{tabular}
+\end{center}
+
+% ============================================================
+% DAFTAR ISI
+% ============================================================
+
+\chapter*{DAFTAR ISI}
+\addcontentsline{toc}{chapter}{DAFTAR ISI}
+
+\textit{[Daftar isi akan diisi secara otomatis oleh perintah \texttt{\textbackslash tableofcontents} setelah kompilasi lengkap.]}
+
+% ============================================================
+% DAFTAR GAMBAR
+% ============================================================
+
+\chapter*{DAFTAR GAMBAR}
+\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+
+\textit{[Daftar gambar akan diisi secara otomatis oleh perintah \texttt{\textbackslash listoffigures} setelah kompilasi lengkap.]}
+
+% ============================================================
+% DAFTAR TABEL
+% ============================================================
+
+\chapter*{DAFTAR TABEL}
+\addcontentsline{toc}{chapter}{DAFTAR TABEL}
+
+\textit{[Daftar tabel akan diisi secara otomatis oleh perintah \texttt{\textbackslash listoftables} setelah kompilasi lengkap.]}
+
+% ============================================================
+% BAB 1 — PENDAHULUAN
+% ============================================================
+
+\chapter{PENDAHULUAN}
+\label{chap:bab1}
+
+% ============================================================
+\section{LATAR BELAKANG}
+\label{sec:latar-belakang}
+% ============================================================
+
+Perkembangan kecerdasan buatan telah mendorong kebutuhan literasi teknologi yang tidak hanya menekankan kemampuan menggunakan aplikasi digital, tetapi juga kemampuan memahami cara kerja sistem cerdas. Sistem kecerdasan buatan banyak bekerja melalui proses prediksi, sehingga keluaran yang diberikan tidak selalu dapat dipahami sebagai jawaban mutlak. Pada konteks pendidikan, pemahaman tersebut penting agar siswa dapat membaca hasil sistem secara lebih kritis.
+
+Literasi kecerdasan buatan mencakup kemampuan memahami, menggunakan, mengevaluasi, dan mempertimbangkan dampak penggunaan sistem berbasis kecerdasan buatan [1]. Pada konteks K-12, pembelajaran kecerdasan buatan membutuhkan pendekatan yang dapat menghubungkan konsep teknis dengan pengalaman belajar yang konkret [2]. Salah satu cara untuk memperlihatkan cara kerja sistem kecerdasan buatan adalah melalui aktivitas klasifikasi sketsa, karena siswa dapat melihat hubungan antara input gambar, prediksi sistem, dan nilai keyakinan model.
+
+Sistem literasi kecerdasan buatan yang dikembangkan dalam proyek ini menggunakan proses klasifikasi sketsa. Siswa menggambar objek, kemudian sistem melakukan klasifikasi terhadap gambar tersebut. Hasil klasifikasi ditampilkan dalam bentuk Top-3 prediction dan confidence score. Confidence score digunakan untuk menunjukkan tingkat keyakinan model terhadap hasil prediksi. Penyajian ini penting karena siswa dapat melihat bahwa prediksi sistem memiliki tingkat keyakinan yang berbeda-beda.
+
+Explainable Artificial Intelligence dalam pendidikan menekankan pentingnya penyajian keluaran sistem agar dapat dipahami oleh pengguna [3]. Dalam penelitian ini, explainability diwujudkan melalui tampilan Top-3 prediction dan confidence score yang kemudian digunakan pada mekanisme Human-in-the-Loop. Siswa dapat menerima prediksi utama, memilih prediksi alternatif, atau melakukan override terhadap hasil sistem. Dengan demikian, model klasifikasi tidak hanya menjadi komponen teknis, tetapi juga menjadi bagian dari pengalaman belajar evaluatif.
+
+Dari sisi teknis, sistem menggunakan model Convolutional Neural Network berbasis MobileNet untuk klasifikasi sketsa. CNN dipilih karena memiliki kemampuan mengekstraksi pola visual pada citra, sedangkan MobileNet dipilih karena lebih ringan untuk kebutuhan inferensi pada perangkat pengguna. Kajian mengenai deep learning untuk free-hand sketch menunjukkan bahwa sketsa memiliki karakteristik visual yang berbeda dari citra fotografis, sehingga preprocessing dan pemilihan arsitektur model perlu diperhatikan [6].
+
+Model yang dikembangkan direncanakan berjalan pada sisi klien menggunakan TensorFlow.js. Pendekatan client-side inference dipilih agar proses klasifikasi dapat dilakukan di browser tanpa server kecerdasan buatan. Server hanya digunakan untuk REST API logging dan penyimpanan data interaksi. Kajian mengenai front-end deep learning menunjukkan bahwa deployment model pada aplikasi web memiliki peluang untuk membuat inferensi lebih dekat dengan pengguna, tetapi tetap membutuhkan perhatian pada ukuran model, latency, dan kompatibilitas browser [7].
+
+Selain klasifikasi, penelitian ini juga mencatat data interaksi pengguna. Data yang dicatat meliputi hasil prediksi, confidence score, confidence gap, keputusan pengguna, durasi pengambilan keputusan, kategori objek, retry count, dan status level. Data tersebut kemudian digunakan untuk menganalisis pola keputusan pengguna menggunakan K-Means clustering. Analisis ini tidak digunakan untuk menyimpulkan peningkatan kemampuan siswa melalui pre-test dan post-test, tetapi untuk membaca kecenderungan perilaku pengguna terhadap keluaran probabilistik sistem.
+
+Berdasarkan kebutuhan tersebut, penelitian ini berfokus pada pengembangan sistem klasifikasi sketsa berbasis CNN MobileNet dengan confidence score dan clustering pola keputusan pada sistem literasi kecerdasan buatan untuk siswa SMP. Fokus utama penelitian berada pada pipeline preprocessing, model klasifikasi, konversi TensorFlow.js, pencatatan log, struktur database, dan analisis pola keputusan menggunakan K-Means clustering.
+
+% ============================================================
+\section{PERMASALAHAN}
+\label{sec:permasalahan}
+% ============================================================
+
+Sistem literasi kecerdasan buatan membutuhkan model klasifikasi yang mampu mengenali sketsa siswa dan menyajikan keluaran dalam bentuk yang dapat dievaluasi. Apabila sistem hanya menampilkan satu label akhir, pengguna berpotensi memahami hasil model sebagai jawaban mutlak. Oleh karena itu, diperlukan sistem klasifikasi sketsa berbasis CNN MobileNet yang dapat menghasilkan Top-3 prediction dan confidence score, menjalankan inferensi pada sisi klien menggunakan TensorFlow.js, serta mencatat log keputusan pengguna untuk dianalisis sebagai pola perilaku terhadap keluaran probabilistik sistem.
+
+% ============================================================
+\section{BATASAN MASALAH}
+\label{sec:batasan-masalah}
+% ============================================================
+
+\begin{enumerate}
+\item Penelitian ini dibatasi pada pengembangan model klasifikasi sketsa berbasis CNN MobileNet untuk mendukung sistem literasi kecerdasan buatan bagi siswa SMP kelas 7 sampai 9.
+\item Model dijalankan menggunakan TensorFlow.js pada sisi klien, sehingga tidak menggunakan backend kecerdasan buatan, server machine learning, atau inferensi berbasis cloud.
+\item Dataset yang digunakan dibatasi pada subset kategori sketsa yang relevan dengan kebutuhan simulasi, yaitu kategori yang dapat dipetakan menjadi Solid, Danger, atau Decorative.
+\item Sistem tidak melakukan pelatihan ulang model secara otomatis dari input pengguna dan tidak bersifat adaptif terhadap keputusan pengguna secara real-time.
+\item Server hanya digunakan untuk REST API logging dan penyimpanan data interaksi menggunakan SQLite.
+\item Analisis K-Means clustering difokuskan pada pola keputusan pengguna berdasarkan log interaksi dan tidak digunakan untuk menyimpulkan peningkatan kemampuan siswa melalui pre-test dan post-test.
+\end{enumerate}
+
+% ============================================================
+\section{TUJUAN}
+\label{sec:tujuan}
+% ============================================================
+
+Penelitian ini bertujuan untuk mengembangkan sistem klasifikasi sketsa berbasis CNN MobileNet yang dapat mendukung sistem literasi kecerdasan buatan siswa SMP.
+
+Tujuan khusus penelitian ini adalah menghasilkan keluaran klasifikasi berupa Top-3 prediction dan confidence score yang dapat digunakan pada mekanisme Human-in-the-Loop.
+
+Penelitian ini juga bertujuan merancang pipeline client-side inference menggunakan TensorFlow.js, sistem logging berbasis REST API dan SQLite, serta analisis pola keputusan menggunakan K-Means clustering.
+
+% ============================================================
+\section{MANFAAT}
+\label{sec:manfaat}
+% ============================================================
+
+\begin{enumerate}
+\item Bagi siswa, sistem ini dapat membantu memperlihatkan bahwa hasil kecerdasan buatan bersifat prediktif dan memiliki tingkat keyakinan tertentu.
+\item Bagi guru atau sekolah, sistem ini dapat menjadi media pendukung pembelajaran literasi kecerdasan buatan berbasis aktivitas interaktif.
+\item Bagi pengembang sistem, penelitian ini memberikan rancangan pipeline klasifikasi sketsa client-side yang dapat diintegrasikan dengan simulasi web.
+\item Bagi peneliti, data log dan hasil clustering dapat menjadi dasar analisis pola keputusan pengguna terhadap keluaran probabilistik sistem.
+\end{enumerate}
+
+% ============================================================
+\section{SISTEMATIKA PENULISAN}
+\label{sec:sistematika-penulisan}
+% ============================================================
+
+Penulisan laporan proyek akhir ini disusun dengan sistematika sebagai berikut:
+
+BAB 1 PENDAHULUAN: memuat latar belakang, permasalahan, batasan masalah, tujuan, manfaat, dan sistematika penulisan.
+
+BAB 2 KAJIAN PUSTAKA: memuat deskripsi permasalahan, teori penunjang mengenai literasi kecerdasan buatan, Human-in-the-Loop, klasifikasi sketsa, CNN MobileNet, TensorFlow.js, confidence score, data logging, K-Means clustering, serta penelitian terkait.
+
+BAB 3 DESKRIPSI SISTEM: memuat deskripsi solusi, desain sistem yang mencakup dataset, preprocessing, arsitektur model, konversi TensorFlow.js, client-side inference, skema data log, database, REST API, analisis K-Means, dashboard, rencana pengujian, dan jadwal penelitian.
+
+% ============================================================
+% BAB 2 — KAJIAN PUSTAKA
+% ============================================================
+
+\chapter{KAJIAN PUSTAKA}
+\label{chap:bab2}
+
+Bab ini menyajikan kajian pustaka yang menjadi landasan teoretis bagi perancangan komponen \textit{backend}, klasifikasi, pencatatan data, dan analisis pada sistem \textit{Escape the Sketchbook}. Kajian dimulai dari deskripsi permasalahan yang menjelaskan mengapa klasifikasi berlabel tunggal belum memadai secara pedagogis, mengapa \textit{confidence score} harus divisualisasikan, dan mengapa pencatatan interaksi harus terstruktur untuk keperluan analisis. Dilanjutkan dengan teori penunjang yang mendasari setiap keputusan teknis—mulai dari literasi kecerdasan buatan, \textit{Human-in-the-Loop}, klasifikasi sketsa, arsitektur CNN dan MobileNet, inferensi \textit{client-side} dengan TensorFlow.js, \textit{confidence score}, \textit{data logging}, hingga \textit{K-Means clustering}—serta ditutup dengan penelitian terkait dan analisis \textit{state of the art} yang memosisikan kontribusi teknis proyek ini di antara kajian-kajian sebelumnya.
+
+% ============================================================
+\section{DESKRIPSI PERMASALAHAN}
+\label{sec:deskripsi-permasalahan}
+% ============================================================
+
+Permasalahan utama yang menjadi landasan proyek ini adalah belum adanya media interaktif yang memfasilitasi siswa SMP kelas 7--9 untuk mengevaluasi output kecerdasan buatan secara reflektif melalui simulasi klasifikasi sketsa. Sebagian besar aplikasi klasifikasi gambar yang tersedia saat ini menampilkan satu label prediksi sebagai output final, tanpa menunjukkan distribusi probabilitas di balik keputusan tersebut. Pendekatan klasifikasi berlabel tunggal ini secara pedagogis tidak memadai karena menyembunyikan ketidakpastian inheren dari model—siswa tidak mendapat kesempatan untuk mengamati bahwa AI seringkali tidak ``yakin'' dengan satu jawaban, melainkan mendistribusikan probabilitas ke beberapa kelas sekaligus [1]. Tanpa visibilitas terhadap distribusi probabilitas tersebut, siswa cenderung menerima output AI secara \textit{wholesale}, yang merupakan manifestasi dari fenomena \textit{automation bias}—kecenderungan manusia untuk mempercayai output sistem otomatis tanpa evaluasi kritis [4].
+
+Persoalan ini diperkuat oleh temuan dalam literatur \textit{Explainable AI} (XAI) di konteks pendidikan. Khosravi \textit{et al.} [3] menekankan bahwa transparansi proses keputusan AI merupakan prasyarat bagi peserta didik untuk dapat menginterrogasi dan mengevaluasi output tersebut. Dalam konteks klasifikasi sketsa, transparansi ini dapat diwujudkan melalui visualisasi \textit{confidence score} pada \textit{Top-3 prediction}, sehingga siswa dapat melihat bukan hanya apa yang ``dipilih'' oleh AI, tetapi juga seberapa yakin AI terhadap pilihannya dan alternatif-alternatif apa yang dipertimbangkan. Visualisasi \textit{confidence score} bukan sekadar fitur teknis, melainkan kebutuhan pedagogis yang memungkinkan siswa memiliki data untuk mengevaluasi output AI secara lebih bermakna.
+
+Selain permasalahan visibilitas output, terdapat pula tantangan dalam hal pencatatan interaksi siswa. Agar pola keputusan siswa terhadap output AI dapat dianalisis secara sistematis, diperlukan mekanisme \textit{data logging} yang terstruktur—bukan sekadar mencatat hasil akhir, melainkan menangkap konteks lengkap setiap keputusan: sketsa yang diklasifikasikan, distribusi \textit{confidence score} dari model, keputusan yang diambil siswa (setuju atau menolak prediksi AI), serta waktu respons. Pencatatan terstruktur ini esensial untuk analisis \textit{post-hoc} menggunakan metode seperti \textit{K-Means clustering}, yang memerlukan data numerik yang konsisten dan terdefinisi untuk menghasilkan kelompok pola keputusan yang dapat diinterpretasikan [5][10]. Tanpa \textit{logging} terstruktur, data interaksi tidak dapat digunakan untuk mengidentifikasi pola—misalnya, apakah seorang siswa cenderung menerima prediksi AI tanpa mempertimbangkan alternatif, atau justru mengevaluasi \textit{confidence score} sebelum mengambil keputusan.
+
+Dengan demikian, permasalahan ini memiliki tiga dimensi yang saling terkait: (1) kebutuhan akan klasifikasi multi-label dengan visibilitas \textit{confidence} untuk memerangi \textit{automation bias}, (2) kebutuhan akan \textit{logging} terstruktur sebagai fondasi analisis perilaku keputusan, dan (3) kebutuhan akan metode analisis yang mampu mengelompokkan pola keputusan siswa secara interpretif. Proyek \textit{Escape the Sketchbook} merespons ketiga dimensi ini melalui integrasi klasifikasi sketsa berbasis MobileNet dengan visualisasi \textit{Top-3 confidence}, mekanisme \textit{Human-in-the-Loop} yang mencatat keputusan siswa, serta analisis \textit{K-Means clustering} pada data log untuk mengidentifikasi pola keputusan.
+
+% ============================================================
+\section{TEORI PENUNJANG}
+\label{sec:teori-penunjang}
+% ============================================================
+
+Bagian ini membahas teori-teori yang mendasari perancangan komponen teknis pada proyek \textit{Escape the Sketchbook}, meliputi literasi kecerdasan buatan, \textit{Human-in-the-Loop} pada sistem klasifikasi, klasifikasi sketsa, arsitektur CNN dan MobileNet, TensorFlow.js dan inferensi \textit{client-side}, \textit{confidence score}, \textit{data logging}, serta \textit{K-Means clustering}.
+
+% ============================================================
+\subsection{Literasi Kecerdasan Buatan}
+\label{subsec:literasi-kb}
+% ============================================================
+
+Literasi kecerdasan buatan (\textit{AI literacy}) didefinisikan oleh Ng \textit{et al.} [1] sebagai seperangkat kompetensi yang memungkinkan individu untuk memahami, menggunakan, mengevaluasi, dan merefleksikan teknologi AI dalam konteks kehidupan sehari-hari. Dalam kerangka konseptual yang mereka ajukan, terdapat empat dimensi utama: \textit{know and understand AI}, \textit{use and apply AI}, \textit{evaluate and create AI}, serta \textit{AI ethics}. Dimensi evaluasi menjadi sangat relevan dalam konteks proyek ini, karena mencakup kemampuan untuk menilai output AI secara kritis—termasuk memahami bahwa output AI bersifat probabilistik, bukan deterministik. Ng \textit{et al.} secara eksplisit menekankan bahwa penalaran probabilistik (\textit{probabilistic reasoning}) merupakan komponen fundamental dari literasi AI: individu yang melek AI harus mampu mengevaluasi output probabilistik dari model, memahami bahwa \textit{confidence score} merepresentasikan tingkat keyakinan model—bukan kebenaran absolut—dan mempertimbangkan alternatif-alternatif yang mungkin sama masuk akalnya [1].
+
+Dalam konteks K-12, Casal-Otero \textit{et al.} [2] melakukan tinjauan sistematis terhadap implementasi literasi AI di jenjang pendidikan dasar dan menengah. Mereka menemukan bahwa strategi literasi AI yang efektif untuk siswa usia sekolah harus mempertimbangkan tahap perkembangan kognitif peserta didik—siswa SMP belum sepenuhnya mampu berpikir abstrak tentang konsep probabilistik, sehingga diperlukan strategi yang sesuai usia (\textit{age-appropriate strategies}) untuk membuat konsep tersebut teramati dan bermakna. Salah satu pendekatan yang direkomendasikan adalah menggunakan contoh konkret di mana siswa dapat melihat distribusi probabilitas secara langsung, alih-alih menjelaskan konsep probabilistik secara abstrak [2].
+
+Koneksi antara teori literasi AI dan proyek ini terletak pada mekanisme klasifikasi sketsa dengan visualisasi \textit{Top-3 confidence score}. Melalui mekanisme ini, konsep probabilistik yang abstrak menjadi teramati: ketika model MobileNet mengklasifikasikan sketsa siswa dan menampilkan tiga prediksi teratas beserta nilai \textit{confidence}-nya, siswa dapat secara langsung mengamati bahwa AI mendistribusikan keyakinannya ke beberapa kelas—bukan hanya menunjuk satu jawaban dengan kepastian penuh. Dengan demikian, klasifikasi sketsa dalam \textit{Escape the Sketchbook} berfungsi sebagai contoh konkret yang membuat penalaran probabilistik terlihat dan dapat dievaluasi oleh siswa SMP, sejalan dengan rekomendasi Casal-Otero \textit{et al.} [2] untuk strategi literasi AI yang sesuai usia.
+
+% ============================================================
+\subsection{Human-in-the-Loop pada Sistem Klasifikasi}
+\label{subsec:hitl-klasifikasi}
+% ============================================================
+
+Konsep \textit{Human-in-the-Loop} (HITL) merujuk pada paradigma di mana manusia berpartisipasi secara aktif dalam alur keputusan sistem otomatis, baik dengan memberikan masukan, mengoreksi output, maupun membuat keputusan final [4]. Mosqueira-Rey \textit{et al.} [4] dalam tinjauan komprehensif mereka mengidentifikasi bahwa HITL menjadi penting terutama ketika output sistem otomatis memiliki konsekuensi signifikan dan ketika terdapat risiko \textit{automation bias}—yaitu kecenderungan manusia untuk menerima output sistem otomatis secara tidak kritis karena asumsi bahwa mesin ``lebih tahu''. Dalam konteks klasifikasi, \textit{automation bias} terjadi ketika pengguna menerima label prediksi AI tanpa mempertimbangkan kemungkinan kesalahan atau alternatif lain, yang justru menghilangkan kesempatan untuk evaluasi kritis [4].
+
+Memarian \& Doleck [5] melakukan analisis khusus terhadap peran HITL dalam domain \textit{Artificial Intelligence in Education} (AIED). Mereka menemukan bahwa dalam sistem AIED, peran manusia dapat dikategorikan menjadi beberapa tipe: sebagai \textit{supervisor} yang mengawasi keputusan sistem, sebagai \textit{corrector} yang memperbaiki output yang salah, dan sebagai \textit{decision-maker} yang membuat keputusan final berdasarkan informasi dari sistem [5]. Temuan penting dari kajian mereka adalah bahwa efektivitas HITL bergantung pada kualitas informasi yang diberikan kepada manusia—jika sistem hanya menampilkan output final tanpa konteks, manusia cenderung menjadi \textit{rubber stamp} yang sekadar menyetujui keputusan mesin. Sebaliknya, ketika sistem menyediakan informasi yang memungkinkan evaluasi—seperti distribusi \textit{confidence score}—manusia memiliki data yang diperlukan untuk membuat penilaian yang lebih bermakna [5].
+
+Dalam konteks proyek \textit{Escape the Sketchbook}, implementasi HITL dirancang dengan prinsip yang jelas: sistem menyediakan informasi klasifikasi (\textit{Top-3 confidence score}) kepada siswa, kemudian siswa membuat keputusan apakah setuju atau menolak prediksi AI tersebut. Keputusan siswa dicatat sebagai \textit{log} untuk keperluan analisis, namun \textbf{tidak digunakan untuk melatih ulang model}. Pernyataan ini penting untuk membedakan paradigma HITL yang diterapkan dalam proyek ini dari paradigma \textit{active learning} yang menggunakan umpan balik manusia untuk memperbarui parameter model. Dalam proyek ini, model MobileNet bersifat statis—dilatih sebelumnya dengan \textit{dataset} sketsa dan dijalankan di \textit{client-side} tanpa pembaruan bobot—sementara keputusan siswa dicatat murni sebagai data observasi untuk analisis pola perilaku. Dengan demikian, HITL dalam sistem ini berfungsi sebagai mekanisme pencatatan keputusan (\textit{decision logging}), bukan mekanisme pelatihan ulang (\textit{model retraining}).
+
+% ============================================================
+\subsection{Klasifikasi Sketsa}
+\label{subsec:klasifikasi-sketsa}
+% ============================================================
+
+Klasifikasi sketsa (\textit{sketch classification}) merupakan tugas mengkategorikan gambar sketsa tangan ke dalam kelas-kelas yang telah ditentukan. Meskipun secara konseptual serupa dengan klasifikasi gambar fotografis, klasifikasi sketsa memiliki karakteristik tersendiri yang menjadikannya lebih menantang. Xu \textit{et al.} [6] dalam survei komprehensif mereka mengenai \textit{deep learning} untuk sketsa tangan bebas (\textit{free-hand sketch}) mengidentifikasi beberapa perbedaan fundamental antara sketsa dan foto: (1) sketsa bersifat \textit{sparse}—hanya berisi garis-garis esensial tanpa informasi warna atau tekstur, (2) sketsa memiliki tingkat abstraksi yang bervariasi—dua orang dapat menggambar objek yang sama dengan level detail yang sangat berbeda, dan (3) sketsa seringkali ambigu—sebuah sketsa yang dimaksudkan sebagai ``bintang'' dapat menyerupai ``roda'' atau ``matahari'' tergantung pada interpretasi penggambar [6].
+
+Tantangan klasifikasi sketsa semakin kompleks dalam konteks siswa SMP karena variasi gaya menggambar yang dipengaruhi oleh faktor usia dan kemampuan motorik. Sketsa yang dibuat oleh siswa kelas 7 cenderung berbeda dalam tingkat detail dan proporsi dibandingkan sketsa yang dibuat oleh siswa kelas 9, meskipun keduanya menggambar objek yang sama. Variasi ini menyebabkan distribusi \textit{confidence score} pada model klasifikasi menjadi lebih menyebar—model seringkali tidak dapat memberikan prediksi dengan \textit{confidence} tinggi pada satu kelas saja, melainkan mendistribusikan probabilitas ke beberapa kelas sekaligus. Kondisi ini justru menguntungkan secara pedagogis, karena siswa dapat melihat bahwa AI tidak selalu ``yakin'' dan perlu mengevaluasi alternatif-alternatif yang ditampilkan.
+
+Dalam proyek \textit{Escape the Sketchbook}, klasifikasi sketsa tidak hanya berfungsi sebagai tugas pengenalan pola, tetapi juga sebagai sarana untuk memperlihatkan proses evaluasi terhadap output AI. Kategori sketsa yang digunakan dalam sistem ini terbagi menjadi tiga subset—\textit{Solid} (benda-benda padat seperti meja, kursi, batu), \textit{Danger} (benda-benda berbahaya seperti api, pisau, gunting), dan \textit{Decorative} (benda-benda dekoratif seperti bunga, kupu-kupu, pelangi)—yang masing-masing memiliki konsekuensi berbeda dalam simulasi. Pembagian ke dalam subset kategori ini diperlukan karena klasifikasi multi-kelas pada level benda individual (misalnya 30+ kelas) menghasilkan \textit{confidence score} yang sangat tersebar dan sulit diinterpretasikan oleh siswa SMP, sementara pengelompokan ke dalam tiga kategori yang lebih kasar (\textit{coarse-grained}) menghasilkan distribusi \textit{confidence} yang lebih terbaca dan bermakna untuk keperluan evaluasi oleh siswa.
+
+% ============================================================
+\subsection{Convolutional Neural Network dan MobileNet}
+\label{subsec:cnn-mobilenet}
+% ============================================================
+
+\textit{Convolutional Neural Network} (CNN) merupakan arsitektur jaringan saraf tiruan yang dirancang khusus untuk pemrosesan data berbasis grid, seperti gambar. Arsitektur CNN memanfaatkan operasi konvolusi untuk mengekstraksi fitur hierarkis dari input: lapisan-lapisan awal menangkap fitur-fitur dasar seperti tepi dan tekstur, sementara lapisan-lapisan lebih dalam menangkap pola-pola kompleks seperti bentuk dan struktur objek. Kemampuan CNN untuk mempelajari representasi fitur secara otomatis dari data—tanpa memerlukan \textit{feature engineering} manual—menjadikannya arsitektur dominan untuk tugas-tugas klasifikasi gambar, termasuk klasifikasi sketsa [6].
+
+MobileNet merupakan varian CNN yang dikembangkan oleh Google dengan tujuan utama menghasilkan model yang ringan (\textit{lightweight}) dan efisien untuk perangkat dengan sumber daya terbatas. Efisiensi MobileNet dicapai melalui dua mekanisme utama: (1) \textit{depthwise separable convolution}, yang memecah operasi konvolusi standar menjadi \textit{depthwise convolution} dan \textit{pointwise convolution}, sehingga secara signifikan mengurangi jumlah parameter dan operasi komputasi, serta (2) dua \textit{hyperparameter}—\textit{width multiplier} ($\alpha$) dan \textit{resolution multiplier} ($\rho$)—yang memungkinkan penyesuaian \textit{trade-off} antara akurasi dan efisiensi. Dengan \textit{width multiplier} $\alpha < 1$, jumlah \textit{channel} pada setiap lapisan dikurangi secara proporsional, menghasilkan model yang lebih kecil dan lebih cepat dengan pengurangan akurasi yang relatif minimal [6].
+
+Penggunaan MobileNet dalam proyek ini didasarkan pada pertimbangan bahwa model harus dijalankan di \textit{client-side}—yaitu di \textit{browser} siswa melalui TensorFlow.js—tanpa bergantung pada server inferensi. Karena inferensi berjalan di perangkat siswa yang bervariasi (mulai dari laptop spesifikasi rendah hingga perangkat yang lebih bertenaga), model yang digunakan harus memiliki ukuran file yang cukup kecil untuk diunduh ke \textit{browser} dan kebutuhan komputasi yang rendah cukup untuk menghasilkan prediksi dalam waktu yang dapat ditoleransi. MobileNet, dengan ukuran model sekitar beberapa megabyte dan kebutuhan komputasi yang jauh lebih rendah dibandingkan arsitektur seperti ResNet atau VGG, memenuhi persyaratan ini.
+
+Selain itu, pendekatan \textit{transfer learning} diterapkan untuk mengadaptasi model MobileNet yang telah dilatih pada \textit{dataset} ImageNet ke tugas klasifikasi sketsa. \textit{Transfer learning} memungkinkan pemanfaatan fitur-fitur visual yang telah dipelajari dari \textit{dataset} sumber (misalnya, deteksi tepi, tekstur, dan bentuk dasar) untuk tugas target yang memiliki jumlah data latih terbatas. Dalam konteks ini, lapisan-lapisan \textit{base} MobileNet yang telah dilatih sebelumnya digunakan sebagai \textit{feature extractor}, sementara lapisan-lapisan \textit{classifier} di bagian atas diganti dan dilatih ulang menggunakan \textit{dataset} sketsa. Pendekatan ini mengurangi kebutuhan data latih dan waktu pelatihan secara signifikan, sekaligus mempertahankan kualitas representasi fitur yang telah dipelajari.
+
+% ============================================================
+\subsection{TensorFlow.js dan Client-Side Inference}
+\label{subsec:tfjs-client-side}
+% ============================================================
+
+TensorFlow.js merupakan \textit{library} \textit{open-source} yang memungkinkan pelatihan dan inferensi model \textit{machine learning} langsung di \textit{browser} web maupun \textit{Node.js}. Smilkov \textit{et al.} [8] menjelaskan bahwa TensorFlow.js dirancang untuk membawa kemampuan \textit{machine learning} ke ekosistem web tanpa memerlukan instalasi perangkat lunak tambahan atau akses ke server komputasi. Arsitektur TensorFlow.js mendukung dua \textit{backend} utama: \textit{WebGL backend} yang memanfaatkan GPU melalui API \textit{WebGL} untuk akselerasi komputasi, dan \textit{CPU backend} yang berjalan di \textit{CPU} murni sebagai \textit{fallback} ketika WebGL tidak tersedia. Dukungan terhadap WebGL memungkinkan inferensi model yang cukup cepat di \textit{browser}, meskipun tidak secepat inferensi \textit{native} di \textit{GPU} melalui CUDA [8].
+
+Goh, Ho \& Abas [7] melakukan studi komprehensif mengenai penerapan \textit{deep learning} pada \textit{front-end web application} dan mengidentifikasi beberapa pertimbangan kritis dalam proses \textit{deployment}: (1) ukuran model—model yang terlalu besar akan memerlukan waktu unduh yang lama dan mengonsumsi memori \textit{browser} yang signifikan, (2) latensi inferensi—waktu yang dibutuhkan model untuk menghasilkan prediksi harus dalam batas yang dapat ditoleransi untuk pengalaman pengguna yang responsif, dan (3) kompatibilitas \textit{browser}—tidak semua \textit{browser} mendukung WebGL dengan tingkat performa yang sama, sehingga diperlukan strategi \textit{fallback} [7]. Mereka juga menemukan bahwa arsitektur model ringan seperti MobileNet merupakan pilihan yang paling sesuai untuk \textit{deployment front-end}, karena menawarkan keseimbangan terbaik antara akurasi dan efisiensi di lingkungan \textit{browser} [7].
+
+Dalam proyek \textit{Escape the Sketchbook}, inferensi dilaksanakan sepenuhnya di \textit{client-side}—yaitu di \textit{browser} siswa—menggunakan TensorFlow.js. Keputusan arsitektural ini didasarkan pada alasan bahwa sistem tidak memiliki server AI, tidak menggunakan \textit{ML server}, dan tidak bergantung pada \textit{cloud inference}. Server dalam arsitektur proyek ini hanya berperan sebagai \textit{REST API} untuk pencatatan \textit{log} interaksi ke \textit{database} SQLite—bukan untuk menjalankan inferensi model. Dengan demikian, seluruh proses klasifikasi sketsa, mulai dari penerimaan input gambar, pra-pemrosesan, inferensi model MobileNet, hingga penghitungan \textit{confidence score}, berjalan di \textit{browser} siswa. Arsitektur ini memiliki implikasi: di satu sisi, eliminasi ketergantungan pada server inferensi mengurangi latensi jaringan dan masalah privasi data (sketsa siswa tidak perlu dikirim ke server); di sisi lain, performa inferensi bergantung pada kemampuan perangkat siswa, sehingga pemilihan model ringan seperti MobileNet menjadi keharusan arsitektural, bukan sekadar preferensi.
+
+\begin{figure}[H]
+\centering
+\rule{0.9\textwidth}{6cm}
+\caption{Arsitektur inferensi \textit{client-side}: model MobileNet berjalan di \textit{browser} siswa melalui TensorFlow.js, sementara server hanya menangani \textit{REST API logging} ke SQLite.}
+\label{fig:arsitektur-client-side}
+\end{figure}
+
+% ============================================================
+\subsection{Confidence Score}
+\label{subsec:confidence-score}
+% ============================================================
+
+\textit{Confidence score} merupakan nilai numerik yang merepresentasikan tingkat keyakinan model terhadap setiap kelas prediksi. Dalam konteks klasifikasi menggunakan \textit{softmax output layer}, \textit{confidence score} dihasilkan melalui fungsi \textit{softmax} yang mengkonversi \textit{logit} mentah menjadi distribusi probabilitas di mana jumlah seluruh nilai \textit{confidence} sama dengan satu. Kelas dengan \textit{confidence score} tertinggi menjadi prediksi utama model, namun nilai-nilai \textit{confidence} pada kelas-kelas lain juga mengandung informasi penting—mereka menunjukkan seberapa besar model mempertimbangkan alternatif-alternatif tersebut sebagai kemungkinan yang masuk akal.
+
+Pemahaman tentang \textit{confidence score} memerlukan pembedaan yang krusial antara \textit{confidence} dan \textit{correctness}. \textit{Confidence score} yang tinggi tidak menjamin bahwa prediksi model benar—model dapat sangat yakin namun salah (\textit{high confidence, low correctness}), sebaliknya model dapat kurang yakin namun prediksinya benar (\textit{low confidence, high correctness}). Kesenjangan antara \textit{confidence} dan \textit{correctness} ini merupakan fenomena yang terdokumentasi dengan baik dalam literatur dan merupakan salah satu alasan mengapa visualisasi \textit{confidence} saja tidak cukup—pengguna juga memerlukan konteks untuk menginterpretasikan nilai \textit{confidence} tersebut [9].
+
+Karran, Demazure \& Hudelot [9] dalam kajian mereka mengenai desain visualisasi \textit{confidence} menemukan bahwa representasi \textit{confidence} yang efektif membantu pengguna menimbang output AI secara lebih bermakna. Mereka mengidentifikasi bahwa visualisasi \textit{confidence} yang hanya menampilkan satu nilai (misalnya, ``AI 95\% yakin ini kucing'') cenderung membuat pengguna fokus pada angka tersebut secara terisolasi, sementara visualisasi yang menampilkan distribusi \textit{confidence} di beberapa kelas—seperti \textit{bar chart} untuk \textit{Top-3 prediksi}—memungkinkan pengguna untuk membandingkan dan mengevaluasi alternatif secara relatif [9].
+
+Dalam proyek ini, \textit{confidence score} digunakan dalam dua kapasitas: (1) sebagai informasi yang divisualisasikan kepada siswa melalui \textit{Top-3 prediction}, sehingga siswa dapat melihat distribusi keyakinan model dan mengevaluasi alternatif-alternatif yang dipertimbangkan AI, serta (2) sebagai fitur numerik yang dicatat dalam \textit{log} interaksi untuk keperluan analisis. Salah satu metrik turunan yang dapat diekstraksi dari \textit{confidence score} adalah \textit{confidence gap}—selisih antara \textit{confidence score} tertinggi dan \textit{confidence score} kedua tertinggi. \textit{Confidence gap} yang kecil menunjukkan bahwa model ragu-ragu antara dua kelas, sementara \textit{confidence gap} yang besar menunjukkan bahwa model cukup yakin dengan prediksi utamanya. Metrik ini relevan untuk analisis perilaku siswa: bagaimana siswa merespons situasi ketika model ragu (\textit{confidence gap} kecil) versus ketika model yakin (\textit{confidence gap} besar) memberikan indikasi tentang seberapa kritis siswa mengevaluasi output AI.
+
+% ============================================================
+\subsection{Data Logging}
+\label{subsec:data-logging}
+% ============================================================
+
+\textit{Data logging} dalam konteks sistem interaktif merujuk pada pencatatan terstruktur atas peristiwa-peristiwa (\textit{events}) yang terjadi selama interaksi pengguna dengan sistem. Pencatatan ini mencakup tidak hanya hasil akhir interaksi, tetapi juga konteks, urutan, dan waktu terjadinya setiap peristiwa. Dalam domain AIED, Memarian \& Doleck [5] menekankan bahwa implementasi HITL yang bermakna memerlukan pencatatan data interaksi yang komprehensif—tanpa data yang memadai, pola perilaku pengguna tidak dapat diidentifikasi dan peran manusia dalam loop tidak dapat dianalisis secara sistematis. Pencatatan yang terstruktur juga merupakan prasyarat untuk reproduktibilitas analisis: peneliti lain harus dapat mereplikasi proses analisis berdasarkan data \textit{log} yang dikumpulkan [5].
+
+Dalam proyek \textit{Escape the Sketchbook}, \textit{data logging} dirancang untuk menangkap konteks lengkap setiap keputusan siswa terhadap output AI. Setiap entri \textit{log} mencatat beberapa \textit{field} yang masing-masing memiliki rasional tersendiri. Pertama, \texttt{sketch\_id} mengidentifikasi sketsa yang diklasifikasikan, memungkinkan analisis berdasarkan tingkat kesulitan atau ambiguitas sketsa tertentu. Kedua, \texttt{top3\_predictions} dan \texttt{top3\_confidences} mencatat tiga prediksi teratas beserta nilai \textit{confidence}-nya, memberikan konteks tentang informasi apa yang tersedia bagi siswa saat membuat keputusan. Ketiga, \texttt{user\_decision} mencatat apakah siswa setuju atau menolak prediksi utama AI, yang merupakan variabel utama dalam analisis pola keputusan. Keempat, \texttt{response\_time} mencatat durasi antara saat \textit{confidence score} ditampilkan dan saat siswa mengambil keputusan, memberikan indikasi tentang seberapa banyak waktu yang dihabiskan siswa untuk mengevaluasi output AI. Kelima, \texttt{session\_id} dan \texttt{timestamp} memungkinkan pengelompokan \textit{log} berdasarkan sesi dan analisis temporal.
+
+Arsitektur \textit{logging} dalam proyek ini menggunakan \textit{REST API} sebagai antarmuka antara \textit{client} (\textit{browser} siswa) dan server. Ketika siswa membuat keputusan, \textit{client} mengirimkan data \textit{log} ke server melalui permintaan HTTP POST, dan server menyimpan data tersebut ke \textit{database} SQLite. Pemilihan SQLite sebagai \textit{database} didasarkan pada kesederhanaan dan kecukupan untuk skala data yang diharapkan—SQLite tidak memerlukan konfigurasi \textit{server database} terpisah dan sudah memadai untuk penyimpanan data \textit{log} dalam konteks proyyek akhir. Penting untuk ditekankan bahwa server dalam arsitektur ini hanya berperan sebagai penyimpan \textit{log}—seluruh inferensi model berjalan di \textit{client-side} menggunakan TensorFlow.js.
+
+% ============================================================
+\subsection{K-Means Clustering}
+\label{subsec:kmeans}
+% ============================================================
+
+\textit{K-Means clustering} merupakan algoritma \textit{unsupervised learning} yang bertujuan mengelompokkan data ke dalam $k$ kelompok (\textit{cluster}) berdasarkan kemiripan fitur, di mana setiap data diatribusikan ke kelompok dengan \textit{centroid} terdekat. Algoritma ini bekerja secara iteratif: (1) inisialisasi $k$ \textit{centroid} secara acak, (2) atribusikan setiap data ke \textit{centroid} terdekat, (3) perbarui posisi \textit{centroid} berdasarkan rata-rata seluruh data dalam kelompok, dan (4) ulangi langkah 2--3 hingga konvergensi. Meskipun sederhana, K-Means telah terbukti efektif untuk analisis pola dalam berbagai domain, termasuk pendidikan [10][11].
+
+Pansri \textit{et al.} [10] menerapkan K-Means untuk mengidentifikasi pola perilaku belajar siswa berdasarkan data interaksi pada \textit{learning management system}. Mereka menggunakan fitur-fitur seperti frekuensi akses, durasi sesi, dan pola penyelesaian tugas untuk mengelompokkan siswa ke dalam beberapa profil perilaku. Temuan mereka menunjukkan bahwa K-Means mampu menghasilkan kelompok yang dapat diinterpretasikan secara bermakna—misalnya, kelompok siswa yang aktif dan konsisten versus kelompok siswa yang sporadis—meskipun hasil pengelompokan bersifat deskriptif dan tidak mengimplikasikan kausalitas [10]. Alzahrani \textit{et al.} [11] menggunakan pendekatan serupa untuk menganalisis \textit{engagement} mingguan siswa dan menemukan bahwa K-Means dapat mengidentifikasi pola \textit{engagement} yang berbeda antar kelompok siswa, yang dapat digunakan sebagai dasar intervensi pedagogis.
+
+Dalam konteks proyek \textit{Escape the Sketchbook}, K-Means diterapkan untuk menganalisis pola keputusan siswa berdasarkan data \textit{log} interaksi. Fitur-fitur yang digunakan untuk pengelompokan mencakup: rasio persetujuan terhadap prediksi AI (seberapa sering siswa menyetujui prediksi utama), rata-rata \textit{confidence gap} pada keputusan yang disetujui versus ditolak, dan rata-rata \textit{response time}. Berdasarkan konfigurasi fitur ini, hasil pengelompokan K-Means diinterpretasikan ke dalam tiga profil keputusan: (1) \textit{Trust Acceptor}—siswa yang cenderung menyetujui prediksi AI tanpa mempertimbangkan alternatif, ditandai dengan rasio persetujuan tinggi dan \textit{response time} rendah; (2) \textit{Critical Evaluator}—siswa yang mengevaluasi \textit{confidence score} sebelum mengambil keputusan, ditandai dengan variasi rasio persetujuan yang bergantung pada \textit{confidence gap} dan \textit{response time} yang lebih tinggi; serta (3) \textit{Uncertain Explorer}—siswa yang menunjukkan pola keputusan tidak konsisten, ditandai dengan variasi tinggi pada seluruh metrik.
+
+Penting untuk ditekankan bahwa hasil K-Means dalam proyek ini bersifat \textbf{interpretif, bukan diagnostik}. Pengelompokan K-Means mengidentifikasi pola-pola empiris dalam data keputusan, namun tidak memberikan diagnosis tentang kemampuan kognitif atau tingkat literasi AI siswa. Profil \textit{Trust Acceptor}, \textit{Critical Evaluator}, dan \textit{Uncertain Explorer} merupakan label interpretif yang didasarkan pada pengamatan pola data, bukan klasifikasi klinis atau penilaian kompetensi. Interpretasi ini bertujuan untuk memperlihatkan variasi pola keputusan di antara siswa, yang dapat menjadi bahan refleksi bagi guru—bukan untuk mengkategorikan siswa ke dalam hierarki kemampuan. Selain itu, jumlah kelompok ($k$) ditentukan melalui metode \textit{elbow method} dan validasi menggunakan \textit{silhouette score}, memastikan bahwa pengelompokan yang dihasilkan memiliki kohesi internal yang memadai.
+
+% ============================================================
+\section{PENELITIAN TERKAIT}
+\label{sec:penelitian-terkait}
+% ============================================================
+
+Bagian ini membahas penelitian-penelitian terkait yang menjadi referensi dalam perancangan komponen teknis proyek \textit{Escape the Sketchbook}. Setiap penelitian dianalisis dari segi relevansi dan kontribusinya terhadap aspek-aspek spesifik yang dikembangkan dalam proyek ini.
+
+% ============================================================
+\subsection{Deep Learning for Free-Hand Sketch Recognition}
+\label{subsec:penelitian-sketch}
+% ============================================================
+
+Xu \textit{et al.} [6] menyajikan survei komprehensif mengenai penerapan \textit{deep learning} untuk pengenalan sketsa tangan bebas. Kajian mereka mencakup evolusi arsitektur dari metode berbasis \textit{hand-crafted features} (seperti HOG dan SIFT) hingga pendekatan \textit{end-to-end deep learning} menggunakan CNN. Salah satu temuan utama adalah bahwa arsitektur CNN standar seperti VGG dan ResNet, meskipun sangat efektif untuk klasifikasi gambar fotografis, tidak selalu menjadi pilihan optimal untuk sketsa karena karakteristik data yang berbeda. Sketsa bersifat \textit{sparse} dan biner (garis pada latar belakang putih), sehingga representasi fitur yang dipelajari dari gambar fotografis berwarna tidak sepenuhnya transferabel. Xu \textit{et al.} juga mengevaluasi berbagai teknik \textit{data augmentation} khusus untuk sketsa—seperti \textit{random scaling}, \textit{rotation}, dan \textit{stroke perturbation}—yang terbukti meningkatkan performa klasifikasi secara signifikan [6].
+
+Relevansi penelitian ini terhadap proyek \textit{Escape the Sketchbook} terletak pada pemahaman bahwa klasifikasi sketsa memerlukan penanganan yang berbeda dari klasifikasi foto. Temuan Xu \textit{et al.} mengenai sifat \textit{sparse} dan ambiguitas sketsa mendukung keputusan desain untuk menampilkan \textit{Top-3 confidence score}—karena ambiguitas inheren sketsa, model seringkali tidak dapat memberikan prediksi dengan \textit{confidence} tinggi pada satu kelas, sehingga menampilkan beberapa alternatif merupakan representasi yang lebih jujur terhadap kondisi model. Selain itu, teknik \textit{data augmentation} yang mereka identifikasi menjadi referensi untuk pra-pemrosesan data latih pada model MobileNet yang digunakan dalam proyek ini. Namun, Xu \textit{et al.} tidak membahas aspek pedagogis atau penggunaan klasifikasi sketsa sebagai sarana literasi AI—yang merupakan kontribusi utama proyek ini.
+
+% ============================================================
+\subsection{Front-End Deep Learning Web Applications}
+\label{subsec:penelitian-frontend-dl}
+% ============================================================
+
+Goh, Ho \& Abas [7] melakukan studi mendalam mengenai penerapan \textit{deep learning} pada \textit{front-end web application}, dengan fokus pada arsitektur, kerangka kerja, dan tantangan \textit{deployment}. Mereka mengidentifikasi bahwa pendekatan \textit{front-end deployment}—di mana model berjalan langsung di \textit{browser} menggunakan \textit{library} seperti TensorFlow.js atau ONNX.js—memiliki keunggulan dalam hal latensi (tidak ada \textit{round-trip} ke server), privasi data (data tidak keluar dari perangkat pengguna), dan aksesibilitas (tidak memerlukan infrastruktur server). Namun, mereka juga mencatat tantangan signifikan: keterbatasan memori \textit{browser}, variasi dukungan WebGL antar \textit{browser}, dan \textit{trade-off} antara ukuran model dan akurasi yang harus dikelola dengan cermat [7].
+
+Goh \textit{et al.} secara spesifik mengevaluasi performa beberapa arsitektur model pada lingkungan \textit{browser}, dan menemukan bahwa MobileNetV2 dengan \textit{width multiplier} $\alpha = 0.5$ atau $\alpha = 0.75$ memberikan keseimbangan terbaik antara akurasi klasifikasi dan kebutuhan sumber daya—waktu inferensi berkisar antara 30--100 ms pada perangkat menengah, dengan ukuran model di bawah 5 MB [7]. Temuan ini sangat relevan dengan keputusan arsitektural dalam proyek \textit{Escape the Sketchbook} untuk menggunakan MobileNet sebagai model klasifikasi yang dijalankan di \textit{client-side}. Perbedaan mendasar antara kajian Goh \textit{et al.} dan proyek ini adalah bahwa Goh \textit{et al.} berfokus pada aspek teknis \textit{deployment}, sementara proyek ini mengintegrasikan aspek \textit{deployment front-end} dengan mekanisme HITL, \textit{data logging}, dan analisis \textit{K-Means clustering} dalam satu sistem yang koheren.
+
+% ============================================================
+\subsection{Confidence Visualization}
+\label{subsec:penelitian-confidence-vis}
+% ============================================================
+
+Karran, Demazure \& Hudelot [9] mengkaji desain visualisasi \textit{confidence} untuk membantu pengguna menilai dan menimbang output sistem AI. Melalui analisis literatur dan eksperimen desain, mereka mengidentifikasi bahwa efektivitas visualisasi \textit{confidence} bergantung pada tiga faktor: (1) \textit{granularity}—apakah visualisasi menampilkan satu nilai atau distribusi lengkap, (2) \textit{comparability}—apakah visualisasi memungkinkan perbandingan antar alternatif, dan (3) \textit{contextual framing}—apakah visualisasi menyertakan konteks yang membantu pengguna menginterpretasikan nilai \textit{confidence}. Mereka menemukan bahwa visualisasi yang menampilkan distribusi \textit{confidence} di beberapa alternatif—misalnya \textit{bar chart} horizontal untuk \textit{Top-N prediksi}—lebih efektif dalam memfasilitasi evaluasi kritis dibandingkan visualisasi yang hanya menampilkan satu angka [9].
+
+Relevansi penelitian Karran \textit{et al.} terhadap proyek ini terletak pada dukungan empiris untuk keputusan menampilkan \textit{Top-3 confidence score} alih-alih hanya label prediksi utama. Prinsip \textit{comparability} yang mereka identifikasi menegaskan bahwa siswa perlu dapat membandingkan beberapa alternatif untuk mengevaluasi output AI secara bermakna—yang merupakan esensi dari mekanisme HITL dalam sistem ini. Selain itu, temuan mereka mengenai \textit{contextual framing} mendukung keputusan untuk menyertakan kategori subset (\textit{Solid}/\textit{Danger}/\textit{Decorative}) sebagai konteks tambahan yang membantu siswa menginterpretasikan prediksi model. Namun, Karran \textit{et al.} tidak membahas penggunaan visualisasi \textit{confidence} dalam konteks literasi AI untuk siswa SMP, dan juga tidak mengintegrasikan visualisasi \textit{confidence} dengan mekanisme \textit{logging} dan analisis \textit{clustering}—yang merupakan kontribusi integratif proyek ini.
+
+% ============================================================
+\subsection{K-Means untuk Pola Belajar}
+\label{subsec:penelitian-kmeans}
+% ============================================================
+
+Pansri \textit{et al.} [10] menerapkan algoritma K-Means untuk menganalisis pola perilaku belajar siswa berdasarkan data interaksi pada \textit{learning management system} (LMS). Fitur-fitur yang digunakan mencakup frekuensi akses materi, durasi sesi belajar, pola penyelesaian tugas, dan skor kuis. Hasil pengelompokan mengidentifikasi empat profil perilaku: \textit{active learners} (siswa yang aktif dan konsisten), \textit{sporadic learners} (siswa yang mengakses secara tidak teratur), \textit{struggling learners} (siswa yang aktif namun berkinerja rendah), dan \textit{disengaged learners} (siswa yang jarang mengakses dan berkinerja rendah). Pansri \textit{et al.} menekankan bahwa profil ini bersifat deskriptif—menggambarkan pola observasi—dan tidak mengimplikasikan diagnosis atau prediksi tentang kemampuan siswa [10].
+
+Alzahrani \textit{et al.} [11] menggunakan pendekatan serupa untuk menganalisis \textit{engagement} mingguan siswa. Mereka mengumpulkan data partisipasi, waktu yang dihabiskan, dan interaksi dengan konten selama satu semester, kemudian mengelompokkan siswa menggunakan K-Means. Temuan mereka menunjukkan bahwa pola \textit{engagement} dapat berubah sepanjang semester—siswa yang awalnya aktif dapat menjadi pasif, dan sebaliknya—yang menunjukkan pentingnya analisis temporal dalam interpretasi hasil \textit{clustering}. Alzahrani \textit{et al.} juga mengevaluasi metode penentuan jumlah kelompok ($k$) dan menemukan bahwa kombinasi \textit{elbow method} dengan \textit{silhouette score} menghasilkan pengelompokan yang paling stabil dan dapat diinterpretasikan [11].
+
+Relevansi kedua penelitian ini terhadap proyek \textit{Escape the Sketchbook} terletak pada metodologi penerapan K-Means untuk analisis pola perilaku dalam konteks pendidikan. Pansri \textit{et al.} dan Alzahrani \textit{et al.} menunjukkan bahwa K-Means mampu menghasilkan profil perilaku yang dapat diinterpretasikan dari data interaksi—yang menjadi dasar bagi penerapan K-Means pada data \textit{log} keputusan siswa dalam proyek ini. Perbedaan fundamental adalah bahwa kedua penelitian tersebut menganalisis perilaku belajar umum (akses LMS, penyelesaian tugas), sementara proyek ini menganalisis pola keputusan spesifik terhadap output AI—yaitu bagaimana siswa merespons \textit{confidence score} dan apakah mereka mengevaluasi alternatif sebelum mengambil keputusan. Domain analisis yang berbeda ini menghasilkan profil yang secara konseptual berbeda: \textit{Trust Acceptor}, \textit{Critical Evaluator}, dan \textit{Uncertain Explorer} merupakan profil keputusan terhadap AI, bukan profil gaya belajar umum.
+
+% ============================================================
+\subsection{State of The Art}
+\label{subsec:state-of-the-art}
+% ============================================================
+
+Berdasarkan kajian terhadap penelitian-penelitian terkait, dapat diidentifikasi posisi \textit{state of the art} dan celah penelitian yang diisi oleh proyek \textit{Escape the Sketchbook}. Tabel~\ref{tab:sota} merangkum cakupan masing-masing penelitian terkait.
+
+\begin{table}[H]
+\centering
+\caption{Rangkuman cakupan penelitian terkait}
+\label{tab:sota}
+\small
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Penelitian} & \rotatebox{90}{\textbf{Klasifikasi Sketsa}} & \rotatebox{90}{\textbf{Client-Side Inference}} & \rotatebox{90}{\textbf{Confidence Vis.}} & \rotatebox{90}{\textbf{HITL Logging}} & \rotatebox{90}{\textbf{K-Means Analisis}} & \rotatebox{90}{\textbf{Integrasi Sistem}} \\
+\hline
+Xu \textit{et al.} [6] & \checkmark & -- & -- & -- & -- & -- \\
+\hline
+Goh \textit{et al.} [7] & -- & \checkmark & -- & -- & -- & -- \\
+\hline
+Karran \textit{et al.} [9] & -- & -- & \checkmark & -- & -- & -- \\
+\hline
+Pansri \textit{et al.} [10] & -- & -- & -- & -- & \checkmark & -- \\
+\hline
+Alzahrani \textit{et al.} [11] & -- & -- & -- & -- & \checkmark & -- \\
+\hline
+\textbf{Proyek ini} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+\hline
+\end{tabular}
+\end{table}
+
+Dari tabel di atas, terlihat bahwa setiap penelitian terkait memberikan kontribusi pada satu aspek spesifik: Xu \textit{et al.} [6] pada klasifikasi sketsa, Goh \textit{et al.} [7] pada \textit{deployment front-end}, Karran \textit{et al.} [9] pada visualisasi \textit{confidence}, serta Pansri \textit{et al.} [10] dan Alzahrani \textit{et al.} [11] pada analisis \textit{K-Means} untuk pola perilaku. Namun, tidak ada satu pun dari penelitian tersebut yang mengintegrasikan seluruh komponen—klasifikasi sketsa, inferensi \textit{client-side}, visualisasi \textit{confidence}, mekanisme HITL dengan \textit{logging} terstruktur, dan analisis \textit{K-Means clustering}—dalam satu sistem yang koheren.
+
+Celah penelitian yang diisi oleh proyek ini memiliki karakteristik sebagai berikut. Pertama, integrasi antara klasifikasi sketsa dan visualisasi \textit{confidence}: sementara Xu \textit{et al.} [6] berfokus pada akurasi klasifikasi dan Karran \textit{et al.} [9] berfokus pada desain visualisasi, proyek ini menghubungkan keduanya dengan menjadikan distribusi \textit{confidence} dari klasifikasi sketsa sebagai objek evaluasi oleh siswa. Kedua, integrasi antara HITL dan \textit{data logging}: sementara Memarian \& Doleck [5] mendiskusikan peran HITL dalam AIED secara konseptual, proyek ini mengimplementasikan HITL sebagai mekanisme pencatatan keputusan yang menghasilkan data terstruktur untuk analisis. Ketiga, integrasi antara \textit{logging} dan \textit{K-Means clustering}: sementara Pansri \textit{et al.} [10] dan Alzahrani \textit{et al.} [11] mengaplikasikan K-Means pada data LMS, proyek ini mengaplikasikan K-Means pada data keputusan siswa terhadap output AI—sebuah domain analisis yang secara konseptual berbeda.
+
+Kontribusi teknis Muhammad Dias Al-Izzat dalam proyek ini secara spesifik mencakup: (1) perancangan dan pelatihan model CNN berbasis MobileNet untuk klasifikasi sketsa dengan \textit{transfer learning}, (2) implementasi inferensi \textit{client-side} menggunakan TensorFlow.js di \textit{browser}, (3) perancangan skema \textit{data logging} terstruktur melalui \textit{REST API} dan penyimpanan ke SQLite, (4) implementasi analisis \textit{K-Means clustering} untuk mengidentifikasi pola keputusan siswa, serta (5) pengembangan \textit{dashboard} untuk visualisasi hasil analisis. Kelima komponen ini diintegrasikan dalam satu arsitektur sistem di mana inferensi berjalan di \textit{client-side}, keputusan dicatat melalui \textit{REST API}, dan analisis dilakukan secara \textit{post-hoc} menggunakan data \textit{log}—menciptakan alur data yang koheren dari interaksi siswa hingga interpretasi pola keputusan.
+
+% ============================================================
+% BAB 3 — DESKRIPSI SISTEM
+% ============================================================
+
+\chapter{DESKRIPSI SISTEM}
+\label{chap:bab3}
+
+Bab ini menyajikan deskripsi solusi dan desain sistem yang dikembangkan dalam proyek \textit{Escape the Sketchbook}. Deskripsi solusi menjelaskan pendekatan umum yang ditempuh untuk menjawab permasalahan yang telah diidentifikasi pada Bab~1 dan Bab~2. Desain sistem memuat rancangan teknis untuk setiap komponen utama, mulai dari dataset, preprocessing, arsitektur model CNN MobileNet, konversi ke TensorFlow.js, client-side inference, skema data log, rancangan database, REST API logging, analisis K-Means clustering, dashboard analisis, hingga rencana pengujian. Bab ini ditutup dengan jadwal penelitian yang merencanakan tahapan pelaksanaan proyek.
+
+% ============================================================
+\section{DESKRIPSI SOLUSI}
+\label{sec:deskripsi-solusi}
+% ============================================================
+
+Permasalahan yang diidentifikasi pada Bab~1 dan Bab~2 menunjukkan bahwa terdapat tiga kebutuhan utama yang harus dipenuhi oleh sistem: (1) model klasifikasi sketsa yang mampu menghasilkan keluaran berupa Top-3 prediction dan confidence score, sehingga siswa dapat melihat distribusi keyakinan model dan mengevaluasi alternatif-alternatif yang dipertimbangkan oleh kecerdasan buatan; (2) mekanisme inferensi yang berjalan sepenuhnya pada sisi klien tanpa bergantung pada server kecerdasan buatan, sehingga proses klasifikasi dapat dilakukan secara langsung di browser siswa; dan (3) pencatatan log interaksi yang terstruktur untuk memungkinkan analisis pola keputusan siswa terhadap keluaran probabilistik sistem.
+
+Solusi yang dikembangkan dalam proyek ini mengintegrasikan ketiga kebutuhan tersebut ke dalam satu arsitektur yang koheren. Pada sisi klasifikasi, sistem menggunakan model CNN berbasis MobileNet yang dilatih menggunakan subset dataset QuickDraw. Model ini menghasilkan prediksi beserta confidence score yang disajikan dalam bentuk Top-3 prediction. Pada sisi inferensi, model dikonversi ke format TensorFlow.js dan dijalankan di browser siswa, sehingga seluruh proses klasifikasi berjalan secara lokal tanpa mengirimkan data gambar ke server. Pada sisi pencatatan, setiap keputusan yang dibuat siswa terhadap output klasifikasi dicatat melalui REST API dan disimpan ke database SQLite. Data log yang terkumpul kemudian dianalisis menggunakan K-Means clustering untuk mengidentifikasi pola keputusan siswa, yang diinterpretasikan ke dalam profil Trust Acceptor, Critical Evaluator, dan Uncertain Explorer.
+
+Penting untuk ditegaskan bahwa solusi ini bersifat interpretif, bukan diagnostik. Hasil K-Means clustering tidak digunakan untuk menyimpulkan peningkatan kemampuan siswa melalui pre-test dan post-test, melainkan untuk membaca kecenderungan perilaku pengguna terhadap keluaran probabilistik sistem. Demikian pula, model klasifikasi bersifat statis dan tidak melakukan pelatihan ulang dari keputusan pengguna. Antarmuka simulasi yang dikembangkan oleh anggota tim lainnya merupakan komponen terpisah yang berinteraksi dengan pipeline backend yang menjadi fokus penelitian ini.
+
+% ============================================================
+\section{DESAIN SISTEM}
+\label{sec:desain-sistem}
+% ============================================================
+
+Bagian ini memuat rancangan teknis untuk setiap komponen utama sistem. Desain sistem disusun berdasarkan landasan teori yang telah dibahas pada Bab~2, dengan mempertimbangkan batasan masalah yang ditetapkan pada Bab~1.
+
+% ============================================================
+\subsection{Dataset}
+\label{subsec:dataset}
+% ============================================================
+
+Dataset yang digunakan dalam pelatihan model klasifikasi sketsa bersumber dari Google QuickDraw Dataset, yang merupakan kumpulan sketsa tangan yang dikumpulkan secara crowdsourcing dari pengguna di seluruh dunia. QuickDraw Dataset dipilih karena menyediakan data sketsa dalam jumlah besar dengan variasi gaya menggambar yang merepresentasikan keragaman input yang akan dihadapi model pada saat inferensi. Sebagaimana diidentifikasi oleh Xu \textit{et al.} [6], sketsa memiliki karakteristik visual yang berbeda dari citra fotografis—bersifat sparse, tanpa informasi warna, dan memiliki tingkat abstraksi yang bervariasi—sehingga penggunaan dataset sketsa yang autentik menjadi prasyarat untuk mendapatkan model yang mampu mengenali pola visual khas sketsa.
+
+Dari total kategori yang tersedia dalam QuickDraw Dataset, dipilih subset kategori yang dapat dipetakan ke dalam tiga kelompok utama: Solid (benda-benda padat seperti meja, kursi, batu, buku), Danger (benda-benda berbahaya seperti api, pisau, gunting, obat), dan Decorative (benda-benda dekoratif seperti bunga, kupu-kupu, pelangi, bintang). Pemetaan ke dalam tiga kategori ini didasarkan pada kebutuhan simulasi, di mana setiap kategori memiliki konsekuensi berbeda dalam antarmuka simulasi yang dikembangkan oleh anggota tim lainnya. Selain itu, pengelompokan ke dalam kategori yang lebih kasar (\textit{coarse-grained}) menghasilkan distribusi confidence score yang lebih terbaca dan bermakna untuk keperluan evaluasi oleh siswa SMP, sebagaimana dibahas pada Subbab~\ref{subsec:klasifikasi-sketsa}.
+
+Perhatian khusus diberikan pada keseimbangan kelas (\textit{class balance}) dalam dataset. Ketidakseimbangan kelas dapat menyebabkan model memiliki bias terhadap kelas mayoritas, sehingga confidence score yang dihasilkan tidak merepresentasikan distribusi keyakinan yang sesungguhnya. Untuk mengatasi hal ini, dilakukan undersampling pada kelas mayoritas atau oversampling pada kelas minoritas sehingga jumlah sampel pada setiap kategori relatif seimbang. Selain itu, dataset dibagi menjadi subset pelatihan (\textit{training set}), validasi (\textit{validation set}), dan pengujian (\textit{test set}) dengan rasio yang konvensional, memastikan bahwa evaluasi performa model dilakukan pada data yang tidak digunakan selama pelatihan.
+
+% ============================================================
+\subsection{Preprocessing Data}
+\label{subsec:preprocessing}
+% ============================================================
+
+Pra-pemrosesan data (\textit{preprocessing}) merupakan tahap kritis dalam pipeline klasifikasi sketsa, karena konsistensi antara preprocessing pada saat pelatihan dan preprocessing pada saat inferensi menentukan kualitas prediksi model. Xu \textit{et al.} [6] menekankan bahwa sketsa memiliki karakteristik visual yang berbeda dari citra fotografis, sehingga tahapan preprocessing perlu dirancang secara khusus untuk mempertahankan informasi esensial pada sketsa sambil memenuhi kebutuhan input model. Goh \textit{et al.} [7] juga menekankan pentingnya konsistensi preprocessing antara lingkungan pelatihan (Python/Keras) dan lingkungan inferensi (TensorFlow.js di browser), karena ketidakcocokan pada tahap ini dapat menyebabkan degradasi akurasi yang signifikan.
+
+Tahapan preprocessing yang dirancang untuk sistem ini mencakup beberapa langkah. Pertama, setiap sketsa di-\textit{resize} ke dimensi tetap sesuai dengan kebutuhan input model MobileNet, yaitu $224 \times 224$ piksel. Proses resizing menggunakan interpolasi bilinear untuk mempertahankan kontur garis sketsa. Kedua, sketsa dinormalisasi ke rentang nilai $[0, 1]$ dengan membagi setiap nilai piksel dengan 255, sesuai dengan praktik standar untuk model CNN. Ketiga, pada tahap pelatihan, diterapkan augmentasi data yang mencakup random horizontal flip, random rotation dalam rentang kecil, dan random zoom, sesuai dengan rekomendasi Xu \textit{et al.} [6] mengenai teknik augmentasi yang efektif untuk sketsa. Keempat, pada tahap inferensi di browser, preprocessing yang sama diterapkan menggunakan API Canvas JavaScript untuk memastikan bahwa input yang diterima model identik dengan input yang digunakan selama pelatihan.
+
+Konsistensi preprocessing antara Python (pelatihan) dan JavaScript (inferensi) diverifikasi melalui pengujian komparatif, di mana sketsa yang sama diproses menggunakan pipeline Python dan pipeline JavaScript, kemudian output preprocessing dibandingkan secara numerik untuk memastikan tidak ada perbedaan yang signifikan. Verifikasi ini penting karena perbedahan implementasi antara library Pillow (Python) dan Canvas API (JavaScript) pada operasi resize dan normalisasi dapat menyebabkan pergeseran distribusi input yang berdampak pada akurasi model di lingkungan browser.
+
+% ============================================================
+\subsection{Arsitektur Model CNN MobileNet}
+\label{subsec:arsitektur-model}
+% ============================================================
+
+Arsitektur model yang digunakan dalam sistem ini berbasis MobileNetV2 dengan pendekatan transfer learning, sebagaimana didasarkan pada kajian teori yang dibahas pada Subbab~\ref{subsec:cnn-mobilenet}. MobileNetV2 dipilih karena arsitektur ini menggunakan depthwise separable convolution yang secara signifikan mengurangi jumlah parameter dan kebutuhan komputasi dibandingkan CNN standar, sehingga sesuai untuk inferensi di lingkungan browser melalui TensorFlow.js [7][8]. Model MobileNetV2 yang telah dilatih sebelumnya pada dataset ImageNet digunakan sebagai feature extractor, di mana lapisan-lapisan konvolusi dasar (\textit{base layers}) yang telah mempelajari representasi fitur visual generik (tepi, tekstur, bentuk dasar) dipertahankan bobotnya, sementara lapisan classifier di bagian atas diganti dan dilatih ulang menggunakan dataset sketsa.
+
+Modifikasi arsitektur dilakukan pada bagian classifier model. Lapisan Dense terakhir dari MobileNetV2 yang semula memiliki 1000 neuron (sesuai dengan kelas ImageNet) diganti dengan lapisan Dense baru yang jumlah neuronnya sesuai dengan jumlah kategori sketsa yang digunakan dalam sistem ini. Sebelum lapisan Dense akhir, ditambahkan lapisan GlobalAveragePooling2D untuk mereduksi dimensi fitur, diikuti oleh lapisan Dropout dengan rate 0.2 untuk mencegah overfitting. Lapisan output menggunakan aktivasi softmax untuk menghasilkan distribusi probabilitas pada setiap kelas, yang kemudian diekstraksi untuk menghasilkan Top-3 prediction beserta confidence score-nya.
+
+Pelatihan model dilakukan dengan strategi dua tahap. Pada tahap pertama, seluruh base layer dibekukan (\textit{frozen}) dan hanya classifier baru yang dilatih menggunakan learning rate yang relatif tinggi ($1 \times 10^{-3}$). Tahap ini bertujuan untuk mengadaptasi classifier baru ke representasi fitur yang telah dipelajari oleh base model. Pada tahap kedua, sebagian base layer dibuka (\textit{unfrozen}) dan seluruh model dilatih dengan learning rate yang lebih rendah ($1 \times 10^{-5}$) untuk fine-tuning. Pendekatan ini mengurangi risiko destruksi representasi fitur yang telah dipelajari sebelumnya, sebagaimana direkomendasikan dalam praktik transfer learning. Ekstraksi Top-3 prediction dilakukan setelah inferensi dengan mengurutkan output softmax dan mengambil tiga kelas dengan nilai confidence tertinggi.
+
+\begin{figure}[H]
+\centering
+\rule{0.9\textwidth}{8cm}
+\caption{Arsitektur model CNN MobileNetV2 dengan modifikasi classifier untuk klasifikasi sketsa. Base layer digunakan sebagai feature extractor, sedangkan classifier dilatih ulang menggunakan dataset sketsa.}
+\label{fig:arsitektur-model}
+\end{figure}
+
+% ============================================================
+\subsection{Konversi TensorFlow.js}
+\label{subsec:konversi-tfjs}
+% ============================================================
+
+Setelah model MobileNetV2 dilatih menggunakan Keras/TensorFlow di lingkungan Python, model perlu dikonversi ke format yang dapat dijalankan oleh TensorFlow.js di browser. Proses konversi ini menggunakan TensorFlow.js Converter, yang merupakan tool resmi untuk mengkonversi model Keras (\texttt{.h5} atau \texttt{.keras}) ke format web-compatible [8]. Hasil konversi terdiri dari dua komponen utama: file \texttt{model.json} yang memuat arsitektur model dan metadata, serta satu atau lebih file bobot biner (\texttt{group1-shard\dots.bin}) yang memuat parameter-parameter model yang telah dilatih.
+
+Proses konversi memerlukan perhatian pada beberapa aspek teknis. Pertama, kompatibilitas operasi: tidak semua operasi TensorFlow memiliki implementasi yang setara di TensorFlow.js, sehingga perlu diverifikasi bahwa seluruh operasi dalam model dapat dieksekusi di lingkungan browser. Smilkov \textit{et al.} [8] mencatat bahwa operasi-operasi standar pada arsitektur MobileNetV2 umumnya didukung oleh TensorFlow.js, namun operasi kustom atau lapisan eksperimental mungkin tidak kompatibel. Kedua, ukuran model: file bobot yang dihasilkan perlu diperhatikan agar tidak terlalu besar untuk diunduh oleh browser. Model MobileNetV2 dengan width multiplier $\alpha = 0.5$ atau $\alpha = 0.75$ menghasilkan ukuran file yang cukup kecil (di bawah 5 MB) sesuai dengan temuan Goh \textit{et al.} [7].
+
+Verifikasi pasca-konversi dilakukan dengan cara membandingkan output inferensi model Keras asli (Python) dengan output inferensi model TensorFlow.js (browser) pada input yang identik. Perbedaan numerik yang sangat kecil (orde $10^{-6}$) dapat diterima karena perbedaan implementasi floating-point antara backend Python dan WebGL, namun perbedaan yang lebih besar mengindikasikan masalah pada proses konversi atau preprocessing. Verifikasi ini memastikan bahwa model yang berjalan di browser menghasilkan prediksi yang konsisten dengan model yang dilatih, sehingga confidence score yang ditampilkan kepada siswa akurat dan dapat diandalkan.
+
+% ============================================================
+\subsection{Client-Side Inference}
+\label{subsec:client-side-inference}
+% ============================================================
+
+Inferensi pada sisi klien (\textit{client-side inference}) merupakan komponen inti dari arsitektur sistem, di mana seluruh proses klasifikasi sketsa berjalan di browser siswa tanpa melibatkan server kecerdasan buatan. Keputusan arsitektural ini didasarkan pada pertimbangan yang dibahas pada Subbab~\ref{subsec:tfjs-client-side}: sistem tidak memiliki server AI, tidak menggunakan ML server, dan tidak bergantung pada cloud inference. Server dalam arsitektur ini hanya berperan sebagai REST API untuk pencatatan log interaksi ke database SQLite, bukan untuk menjalankan inferensi model.
+
+Alur client-side inference dimulai ketika siswa menyelesaikan menggambar sketsa pada elemen canvas di browser. Sketsa yang berada di canvas kemudian dipra-olah melalui pipeline preprocessing JavaScript, meliputi resize ke dimensi $224 \times 224$ piksel dan normalisasi nilai piksel ke rentang $[0, 1]$, sesuai dengan preprocessing yang diterapkan pada saat pelatihan model. Hasil preprocessing berupa tensor berdimensi $[1, 224, 224, 3]$ yang kemudian diumpankan ke model MobileNetV2 yang telah dimuat ke memori browser menggunakan TensorFlow.js. Model menghasilkan output berupa distribusi probabilitas softmax, yang kemudian diekstraksi untuk mendapatkan Top-3 prediction beserta confidence score masing-masing.
+
+Hasil Top-3 prediction dan confidence score disajikan kepada siswa melalui antarmuka simulasi yang dikembangkan oleh anggota tim lainnya. Pada titik ini, mekanisme Human-in-the-Loop diaktifkan: siswa dapat menerima prediksi utama, memilih prediksi alternatif dari Top-3, atau melakukan override terhadap hasil sistem. Keputusan yang dibuat siswa kemudian dicatat sebagai log interaksi melalui REST API logging. Penting untuk dicatat bahwa keputusan siswa dicatat murni sebagai data observasi dan tidak digunakan untuk melatih ulang model, sebagaimana ditegaskan pada Subbab~\ref{subsec:hitl-klasifikasi}. Pendekatan client-side inference ini memiliki keunggulan dalam hal privasi data (sketsa siswa tidak dikirim ke server) dan latensi (tidak ada round-trip jaringan untuk inferensi), namun juga membatasi ukuran model yang dapat digunakan dan bergantung pada kemampuan komputasi perangkat siswa [7].
+
+\begin{figure}[H]
+\centering
+\rule{0.9\textwidth}{5cm}
+\caption{Alur client-side inference: canvas $\rightarrow$ preprocessing $\rightarrow$ model MobileNetV2 $\rightarrow$ Top-3 extraction $\rightarrow$ penyajian ke siswa.}
+\label{fig:client-side-inference}
+\end{figure}
+
+% ============================================================
+\subsection{Skema Data Log}
+\label{subsec:skema-data-log}
+% ============================================================
+
+Skema data log dirancang untuk menangkap konteks lengkap setiap keputusan siswa terhadap output klasifikasi, sebagaimana didasarkan pada prinsip data logging yang dibahas pada Subbab~\ref{subsec:data-logging}. Memarian \& Doleck [5] menekankan bahwa implementasi HITL yang bermakna memerlukan pencatatan data interaksi yang komprehensif, di mana setiap field memiliki rasional yang jelas untuk keperluan analisis. Skema data log dalam sistem ini mencakup beberapa field yang masing-masing dirancang untuk menangkap aspek spesifik dari interaksi siswa dengan output AI.
+
+Tabel~\ref{tab:skema-log} menunjukkan field-field yang dicatat dalam setiap entri log interaksi beserta rasionalnya.
+
+\begin{table}[H]
+\centering
+\caption{Skema data log interaksi}
+\label{tab:skema-log}
+\small
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Field} & \textbf{Tipe} & \textbf{Rasional} \\
+\hline
+\texttt{log\_id} & String & Identifikasi unik setiap entri log untuk reproduktibilitas analisis \\
+\hline
+\texttt{session\_id} & String & Pengelompokan log berdasarkan sesi untuk analisis temporal \\
+\hline
+\texttt{timestamp} & DateTime & Waktu keputusan untuk analisis sekuensial dan temporal \\
+\hline
+\texttt{sketch\_id} & String & Identifikasi sketsa untuk analisis berdasarkan tingkat kesulitan \\
+\hline
+\texttt{category} & String & Kategori sketsa (Solid/Danger/Decorative) untuk analisis per kategori \\
+\hline
+\texttt{top3\_predictions} & Array & Tiga prediksi teratas model sebagai konteks keputusan \\
+\hline
+\texttt{top3\_confidences} & Array & Nilai confidence ketiga prediksi untuk analisis distribusi keyakinan \\
+\hline
+\texttt{confidence\_gap} & Float & Selisih confidence tertinggi dan kedua; indikator ketidakpastian model \\
+\hline
+\texttt{user\_decision} & String & Keputusan siswa (accept/alternative/override); variabel utama analisis \\
+\hline
+\texttt{response\_time} & Float & Durasi keputusan (ms); indikator tingkat evaluasi terhadap output \\
+\hline
+\texttt{retry\_count} & Integer & Jumlah pengulangan menggambar; konteks tambahan keputusan \\
+\hline
+\texttt{level\_status} & String & Status level saat keputusan; konteks progres simulasi \\
+\hline
+\end{tabularx}
+\end{table}
+
+Setiap field dalam skema log memiliki rasional yang berkaitan langsung dengan kebutuhan analisis K-Means clustering. Field \texttt{top3\_confidences} dan \texttt{confidence\_gap} memungkinkan analisis seberapa besar informasi confidence memengaruhi keputusan siswa. Field \texttt{user\_decision} merupakan variabel dependen utama yang menunjukkan apakah siswa menyetujui prediksi AI, memilih alternatif, atau menolak seluruh prediksi. Field \texttt{response\_time} memberikan indikasi tentang proses evaluasi yang dilakukan siswa—response time yang lebih lama dapat mengindikasikan bahwa siswa mempertimbangkan alternatif sebelum mengambil keputusan. Field \texttt{retry\_count} dan \texttt{level\_status} memberikan konteks tambahan tentang keadaan simulasi saat keputusan dibuat.
+
+% ============================================================
+\subsection{Rancangan Database}
+\label{subsec:rancangan-database}
+% ============================================================
+
+Database yang digunakan dalam sistem ini adalah SQLite, yang dipilih berdasarkan kesederhanaan dan kecukupannya untuk skala data yang diharapkan dalam konteks proyek akhir. SQLite tidak memerlukan konfigurasi server database terpisah—database tersimpan sebagai file tunggal yang dapat diakses langsung oleh aplikasi server. Pemilihan ini sejalan dengan batasan masalah yang menyatakan bahwa server hanya digunakan untuk REST API logging dan penyimpanan data interaksi menggunakan SQLite.
+
+Rancangan database terdiri dari beberapa tabel utama. Tabel \texttt{sessions} menyimpan metadata sesi interaksi, termasuk identifikasi pengguna, waktu mulai dan selesai sesi, serta ringkasan statistik sesi. Tabel \texttt{interaction\_logs} menyimpan setiap entri log interaksi sesuai dengan skema yang didefinisikan pada Subbab~\ref{subsec:skema-data-log}, dengan \texttt{log\_id} sebagai primary key dan \texttt{session\_id} sebagai foreign key yang merujuk ke tabel \texttt{sessions}. Relasi antar tabel memungkinkan analisis pada dua granularity: analisis per interaksi (menggunakan tabel \texttt{interaction\_logs}) dan analisis per sesi (menggunakan agregasi dari tabel \texttt{interaction\_logs} yang dikelompokkan berdasarkan \texttt{session\_id}).
+
+Selain penyimpanan dalam format SQLite, data log juga dapat diekspor ke format CSV dan JSON untuk keperluan analisis menggunakan tool eksternal seperti Python (pandas, scikit-learn). Ekspor ke CSV memfasilitasi analisis tabular dan visualisasi menggunakan spreadsheet, sementara ekspor ke JSON memfasilitasi integrasi dengan aplikasi web dan API. Kemampuan ekspor ini penting untuk memastikan bahwa data log tidak terkunci dalam satu format dan dapat diakses oleh berbagai tool analisis.
+
+\begin{figure}[H]
+\centering
+\rule{0.7\textwidth}{6cm}
+\caption{Entity-Relationship Diagram rancangan database SQLite untuk pencatatan log interaksi.}
+\label{fig:er-database}
+\end{figure}
+
+% ============================================================
+\subsection{REST API Logging}
+\label{subsec:rest-api}
+% ============================================================
+
+REST API logging berfungsi sebagai antarmuka antara client (browser siswa) dan server untuk pencatatan data log interaksi. Ketika siswa membuat keputusan terhadap output klasifikasi, client mengirimkan data log ke server melalui permintaan HTTP, dan server menyimpan data tersebut ke database SQLite. Penting untuk ditegaskan bahwa REST API ini hanya menangani pencatatan log—seluruh proses inferensi model berjalan di client-side menggunakan TensorFlow.js, bukan di server.
+
+Rancangan REST API mencakup beberapa endpoint utama. Endpoint \texttt{POST /api/logs} digunakan untuk mencatat entri log interaksi baru, menerima payload JSON yang sesuai dengan skema data log pada Subbab~\ref{subsec:skema-data-log}. Endpoint \texttt{GET /api/logs} digunakan untuk mengambil data log dengan dukungan filtering berdasarkan session\_id, category, dan rentang waktu. Endpoint \texttt{GET /api/sessions} digunakan untuk mengambil daftar sesi interaksi beserta ringkasan statistik. Endpoint \texttt{GET /api/export/csv} dan \texttt{GET /api/export/json} digunakan untuk mengekspor data log ke format CSV dan JSON.
+
+Setiap endpoint dilengkapi dengan validasi input yang memastikan bahwa data yang diterima sesuai dengan skema yang didefinisikan. Validasi mencakup pemeriksaan kelengkapan field wajib, tipe data yang sesuai, dan rentang nilai yang valid. Jika validasi gagal, API mengembalikan respons error dengan kode status HTTP yang sesuai dan pesan deskriptif. Validasi ini penting untuk menjaga integritas data log yang menjadi fondasi analisis K-Means clustering—data yang tidak valid atau tidak lengkap dapat menghasilkan pola yang menyesatkan.
+
+Server REST API diimplementasikan menggunakan framework web ringan (seperti Express.js atau Flask) yang berjalan di atas Node.js atau Python. Pemilihan framework yang ringan sejalan dengan kesederhanaan arsitektur server yang hanya menangani operasi CRUD terhadap database SQLite, tanpa beban komputasi inferensi model.
+
+\begin{table}[H]
+\centering
+\caption{Rancangan endpoint REST API logging}
+\label{tab:endpoint-api}
+\small
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Endpoint} & \textbf{Metode} & \textbf{Deskripsi} \\
+\hline
+\texttt{/api/logs} & POST & Mencatat entri log interaksi baru dengan validasi field \\
+\hline
+\texttt{/api/logs} & GET & Mengambil data log dengan filter session, kategori, waktu \\
+\hline
+\texttt{/api/sessions} & GET & Mengambil daftar sesi beserta ringkasan statistik \\
+\hline
+\texttt{/api/export/csv} & GET & Mengekspor data log ke format CSV \\
+\hline
+\texttt{/api/export/json} & GET & Mengekspor data log ke format JSON \\
+\hline
+\end{tabularx}
+\end{table}
+
+% ============================================================
+\subsection{Analisis K-Means Clustering}
+\label{subsec:analisis-kmeans}
+% ============================================================
+
+Analisis K-Means clustering diterapkan pada data log interaksi untuk mengidentifikasi pola keputusan siswa terhadap keluaran probabilistik sistem. Sebagaimana dibahas pada Subbab~\ref{subsec:kmeans}, K-Means merupakan algoritma unsupervised learning yang mengelompokkan data berdasarkan kemiripan fitur. Dalam konteks proyek ini, pengelompokan dilakukan berdasarkan fitur-fitur yang diekstraksi dari data log, dengan tujuan mengidentifikasi profil keputusan yang dapat diinterpretasikan secara bermakna.
+
+Seleksi fitur untuk analisis clustering mencakup beberapa variabel yang masing-masing memiliki justifikasi teoretis. Rasio persetujuan (\textit{acceptance ratio}) mengukur kecenderungan siswa untuk menerima prediksi utama AI tanpa mempertimbangkan alternatif. Rata-rata confidence gap pada keputusan yang disetujui versus ditolak mengindikasikan apakah siswa memperhatikan distribusi confidence sebelum mengambil keputusan. Rata-rata response time memberikan indikasi tentang durasi evaluasi yang dilakukan siswa. Variasi (\textit{standard deviation}) dari metrik-metrik tersebut menangukkan konsistensi pola keputusan siswa sepanjang sesi interaksi.
+
+Sebelum penerapan K-Means, seluruh fitur dinormalisasi menggunakan z-score normalization untuk mengeliminasi perbedaan skala antar fitur. Normalisasi diperlukan karena K-Means menggunakan jarak Euclidean untuk mengukur kemiripan, sehingga fitur dengan skala yang lebih besar akan mendominasi pengelompokan jika tidak dinormalisasi [10][11]. Penentuan jumlah cluster ($k$) dilakukan menggunakan dua metode yang saling melengkapi: elbow method yang mengidentifikasi titik di mana penambahan cluster tidak lagi memberikan pengurangan within-cluster sum of squares yang signifikan, dan silhouette score yang mengukur kohesi internal dan separasi antar cluster. Kombinasi kedua metode ini menghasilkan pengelompokan yang paling stabil dan dapat diinterpretasikan, sebagaimana direkomendasikan oleh Alzahrani \textit{et al.} [11].
+
+Hasil pengelompokan diinterpretasikan ke dalam tiga profil keputusan: (1) Trust Acceptor—siswa yang cenderung menyetujui prediksi AI tanpa mempertimbangkan alternatif, ditandai dengan acceptance ratio tinggi, response time rendah, dan variasi keputusan yang kecil; (2) Critical Evaluator—siswa yang mengevaluasi confidence score sebelum mengambil keputusan, ditandai dengan acceptance ratio yang bervariasi bergantung pada confidence gap dan response time yang lebih tinggi; serta (3) Uncertain Explorer—siswa yang menunjukkan pola keputusan tidak konsisten, ditandai dengan variasi tinggi pada seluruh metrik.
+
+Penting untuk ditegaskan kembali bahwa hasil K-Means clustering dalam proyek ini bersifat \textbf{interpretif, bukan diagnostik} [10][11]. Profil keputusan merupakan label interpretif yang didasarkan pada pengamatan pola data empiris, bukan klasifikasi klinis atau penilaian kompetensi. Pengelompokan ini tidak digunakan untuk menyimpulkan peningkatan kemampuan siswa melalui pre-test dan post-test, melainkan untuk memperlihatkan variasi pola keputusan di antara siswa sebagai bahan refleksi bagi guru dan peneliti.
+
+\begin{figure}[H]
+\centering
+\rule{0.8\textwidth}{6cm}
+\caption{Ilustrasi proses analisis K-Means clustering: ekstraksi fitur dari log $\rightarrow$ normalisasi $\rightarrow$ penentuan $k$ $\rightarrow$ clustering $\rightarrow$ interpretasi profil.}
+\label{fig:kmeans-proses}
+\end{figure}
+
+% ============================================================
+\subsection{Dashboard Analisis}
+\label{subsec:dashboard}
+% ============================================================
+
+Dashboard analisis merupakan komponen yang menyajikan visualisasi hasil analisis K-Means clustering dan statistik data log interaksi. Dashboard ini ditujukan sebagai alat bagi peneliti dan guru untuk memperoleh gambaran umum tentang pola keputusan siswa, bukan sebagai antarmuka yang ditujukan untuk siswa. Dengan demikian, dashboard berfungsi sebagai perangkat analisis pasca-interaksi (\textit{post-hoc analysis tool}), bukan sebagai bagian dari pengalaman simulasi siswa.
+
+Dashboard menampilkan beberapa komponen visualisasi. Pertama, ringkasan statistik sesi yang mencakup jumlah total interaksi, distribusi keputusan (accept/alternative/override), dan distribusi confidence score. Kedua, visualisasi hasil clustering yang menampilkan posisi setiap siswa dalam ruang fitur yang direduksi menggunakan PCA (\textit{Principal Component Analysis}), dengan pewarnaan berdasarkan cluster yang dihasilkan K-Means. Visualisasi ini memungkinkan peneliti untuk mengamati separasi antar cluster secara visual. Ketiga, profil setiap cluster yang menampilkan rata-rata dan distribusi setiap fitur clustering, dilengkapi dengan interpretasi profil (Trust Acceptor, Critical Evaluator, Uncertain Explorer). Keempat, analisis temporal yang menunjukkan perubahan pola keputusan siswa sepanjang sesi interaksi, sejalan dengan temuan Alzahrani \textit{et al.} [11] bahwa pola engagement dapat berubah sepanjang waktu.
+
+Dashboard diimplementasikan sebagai halaman web terpisah yang mengakses data log melalui REST API. Pemisahan dashboard dari antarmuka simulasi siswa menegaskan bahwa dashboard merupakan alat analisis peneliti, bukan komponen yang memengaruhi pengalaman siswa. Data yang ditampilkan pada dashboard bersifat deskriptif dan interpretif—tidak mengandung penilaian normatif tentang kemampuan siswa, melainkan memperlihatkan pola keputusan yang dapat menjadi bahan diskusi dan refleksi bagi guru.
+
+% ============================================================
+\subsection{Rencana Pengujian}
+\label{subsec:rencana-pengujian}
+% ============================================================
+
+Pengujian sistem dilakukan pada empat aspek utama yang mencakup seluruh komponen teknis yang dikembangkan dalam proyek ini. Rencana pengujian disusun untuk memverifikasi bahwa setiap komponen berfungsi sesuai spesifikasi dan bahwa integrasi antar komponen menghasilkan sistem yang koheren.
+
+Pengujian model klasifikasi mencakup beberapa metrik. Accuracy mengukur proporsi prediksi yang benar dari total prediksi pada test set. Top-3 accuracy mengukur proporsi di mana label yang benar termasuk dalam tiga prediksi teratas, yang merupakan metrik yang lebih relevan untuk sistem ini karena siswa diberikan Top-3 prediction. Loss (categorical cross-entropy) mengukur kesesuaian distribusi probabilitas model dengan label sebenarnya. Confusion matrix memberikan gambaran detail tentang pola kesalahan model pada setiap kategori, memungkinkan identifikasi kategori yang sulit dibedakan oleh model. Selain itu, dilakukan pengujian terhadap distribusi confidence score pada prediksi yang benar versus salah, untuk memverifikasi bahwa confidence score memiliki korelasi yang memadai dengan correctness—sebagaimana dibahas pada Subbab~\ref{subsec:confidence-score}, kesenjangan antara confidence dan correctness merupakan fenomena yang perlu dipahami.
+
+Pengujian client-side inference mencakup pengukuran latency inferensi (waktu dari input preprocessing hingga output Top-3 prediction diperoleh) pada berbagai perangkat dan browser, serta pengukuran waktu loading model (waktu yang dibutuhkan untuk mengunduh dan menginisialisasi model di browser). Pengujian ini sejalan dengan pertimbangan Goh \textit{et al.} [7] mengenai latensi inferensi dan ukuran model sebagai faktor kritis dalam deployment front-end. Target latency inferensi yang ditetapkan adalah di bawah 500 ms pada perangkat menengah, dan target loading time model di bawah 5 detik pada koneksi jaringan standar.
+
+Pengujian logging mencakup verifikasi kelengkapan field pada setiap entri log yang dicatat melalui REST API. Pengujian ini memastikan bahwa seluruh field yang didefinisikan pada skema data log (Subbab~\ref{subsec:skema-data-log}) tercatat dengan tipe data yang sesuai dan nilai yang valid. Selain itu, dilakukan pengujian integritas referensial antara tabel interaction\_logs dan tabel sessions pada database SQLite.
+
+Pengujian clustering mencakup evaluasi interpretabilitas hasil K-Means, bukan evaluasi akurasi klasifikasi. Metrik yang digunakan mencakup silhouette score untuk mengukur kohesi internal dan separasi antar cluster, serta elbow method untuk verifikasi jumlah cluster yang optimal. Selain itu, dilakukan evaluasi kualitatif terhadap interpretabilitas profil cluster—apakah profil Trust Acceptor, Critical Evaluator, dan Uncertain Explorer yang dihasilkan dapat dijelaskan secara koheren berdasarkan karakteristik fitur yang mendefinisikan setiap cluster. Evaluasi ini sejalan dengan penekanan Pansri \textit{et al.} [10] bahwa hasil clustering bersifat deskriptif dan harus dapat diinterpretasikan secara bermakna.
+
+\begin{table}[H]
+\centering
+\caption{Rangkuman rencana pengujian sistem}
+\label{tab:rencana-pengujian}
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Komponen} & \textbf{Metrik Pengujian} & \textbf{Target} \\
+\hline
+Model klasifikasi & Accuracy, Top-3 accuracy, Loss, Confusion matrix, Distribusi confidence & Top-3 accuracy $\geq$ 80\% \\
+\hline
+Client-side inference & Latensi inferensi, Loading time model & Latensi $<$ 500 ms, Loading $<$ 5 s \\
+\hline
+REST API logging & Kelengkapan field, Integritas referensial & 100\% field tercatat valid \\
+\hline
+K-Means clustering & Silhouette score, Elbow method, Interpretabilitas profil & Silhouette $\geq$ 0.4 \\
+\hline
+\end{tabularx}
+\end{table}
+
+% ============================================================
+\section{JADWAL PENELITIAN}
+\label{sec:jadwal-penelitian}
+% ============================================================
+
+Jadwal penelitian disusun untuk merencanakan tahapan pelaksanaan proyek secara sistematis, mulai dari studi literatur hingga penulisan laporan akhir. Penelitian direncanakan berlangsung selama satu semester dengan pembagian waktu yang proporsional untuk setiap tahapan. Tabel~\ref{tab:jadwal} menunjukkan rencana jadwal penelitian.
+
+\begin{table}[H]
+\centering
+\caption{Jadwal penelitian}
+\label{tab:jadwal}
+\small
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Kegiatan} & \rotatebox{90}{\textbf{Minggu 1--2}} & \rotatebox{90}{\textbf{Minggu 3--4}} & \rotatebox{90}{\textbf{Minggu 5--8}} & \rotatebox{90}{\textbf{Minggu 9--10}} & \rotatebox{90}{\textbf{Minggu 11--12}} & \rotatebox{90}{\textbf{Minggu 13--16}} \\
+\hline
+Studi literatur & \checkmark & \checkmark & -- & -- & -- & -- \\
+\hline
+Persiapan dataset & -- & \checkmark & -- & -- & -- & -- \\
+\hline
+Pelatihan model MobileNet & -- & -- & \checkmark & -- & -- & -- \\
+\hline
+Konversi TF.js \& inferensi & -- & -- & \checkmark & \checkmark & -- & -- \\
+\hline
+REST API \& database & -- & -- & \checkmark & \checkmark & -- & -- \\
+\hline
+Implementasi logging & -- & -- & -- & \checkmark & -- & -- \\
+\hline
+Implementasi K-Means & -- & -- & -- & -- & \checkmark & -- \\
+\hline
+Dashboard analisis & -- & -- & -- & -- & \checkmark & -- \\
+\hline
+Pengujian sistem & -- & -- & -- & -- & \checkmark & \checkmark \\
+\hline
+Penulisan laporan & -- & -- & -- & -- & -- & \checkmark \\
+\hline
+\end{tabular}
+\end{table}
+
+Tahap awal (Minggu 1--4) difokuskan pada studi literatur dan persiapan dataset. Studi literatur mencakup kajian teori penunjang dan penelitian terkait yang telah dibahas pada Bab~2, sedangkan persiapan dataset mencakup seleksi subset kategori QuickDraw, pemetaan ke Solid/Danger/Decorative, dan penyeimbangan kelas. Tahap inti (Minggu 5--10) mencakup pelatihan model MobileNet dengan transfer learning, konversi ke format TensorFlow.js, implementasi client-side inference, pengembangan REST API dan database SQLite, serta implementasi sistem logging. Tahap analisis dan pengujian (Minggu 11--16) mencakup implementasi K-Means clustering, pengembangan dashboard analisis, pengujian seluruh komponen sistem, dan penulisan laporan akhir.
+
+% ============================================================
+% DAFTAR PUSTAKA
+% ============================================================
+
+\begin{thebibliography}{11}
+
+\bibitem{ng2021}
+D.~T.~K. Ng, J.~K.~L. Leung, S.~K.~W. Chu, and M.~S. Qiao, ``Conceptualizing AI literacy: An exploratory review,'' \textit{Computers and Education: Artificial Intelligence}, vol.~2, Art. no.~100041, 2021, doi: 10.1016/j.caeai.2021.100041.
+
+\bibitem{casal2023}
+L.~Casal-Otero \textit{et al.}, ``AI literacy in K-12: A systematic literature review,'' \textit{International Journal of STEM Education}, vol.~10, Art. no.~29, 2023, doi: 10.1186/s40594-023-00418-7.
+
+\bibitem{khosravi2022}
+H.~Khosravi \textit{et al.}, ``Explainable Artificial Intelligence in education,'' \textit{Computers and Education: Artificial Intelligence}, vol.~3, Art. no.~100074, 2022, doi: 10.1016/j.caeai.2022.100074.
+
+\bibitem{mosqueira2023}
+E.~Mosqueira-Rey \textit{et al.}, ``Human-in-the-loop machine learning: A state of the art,'' \textit{Artificial Intelligence Review}, vol.~56, pp.~3005--3054, 2023, doi: 10.1007/s10462-022-10246-w.
+
+\bibitem{memarian2024}
+B.~Memarian and T.~Doleck, ``Human-in-the-loop in artificial intelligence in education: A review and entity-relationship (ER) analysis,'' \textit{Computers in Human Behavior: Artificial Humans}, vol.~2, Art. no.~100053, 2024, doi: 10.1016/j.chbah.2024.100053.
+
+\bibitem{xu2023}
+P.~Xu, T.~M. Hospedales, Q.~Yin, Y.-Z. Song, T.~Xiang, and L.~Wang, ``Deep Learning for Free-Hand Sketch: A Survey,'' \textit{IEEE Transactions on Pattern Analysis and Machine Intelligence}, vol.~45, no.~1, pp.~285--312, 2023, doi: 10.1109/TPAMI.2022.3148853.
+
+\bibitem{goh2023}
+H.~A. Goh, C.~K. Ho, and F.~S. Abas, ``Front-end deep learning web apps development and deployment: A review,'' \textit{Applied Intelligence}, vol.~53, pp.~15923--15945, 2023, doi: 10.1007/s10489-022-04278-6.
+
+\bibitem{smilkov2019}
+D.~Smilkov \textit{et al.}, ``TensorFlow.js: Machine Learning for the Web and Beyond,'' \textit{arXiv}, 2019, doi: 10.48550/arXiv.1901.05350.
+
+\bibitem{karran2022}
+A.~J. Karran, S.~Demazure, and S.~Hudelot, ``Designing for confidence: The impact of visualizing artificial intelligence decisions,'' \textit{Frontiers in Neuroscience}, vol.~16, 2022, doi: 10.3389/fnins.2022.883385.
+
+\bibitem{pansri2024}
+B.~Pansri \textit{et al.}, ``Understanding Student Learning Behavior: Integrating Self-Regulated Learning Theory and K-Means Clustering for Actionable Insights,'' \textit{Education Sciences}, vol.~14, no.~12, Art. no.~1291, 2024, doi: 10.3390/educsci14121291.
+
+\bibitem{alzahrani2025}
+N.~Alzahrani, M.~Meccawy, H.~Samra, and H.~A. El-Sabagh, ``Identifying Weekly Student Engagement Patterns via K-Means Clustering,'' \textit{Electronics}, vol.~14, no.~15, Art. no.~3018, 2025, doi: 10.3390/electronics14153018.
+
+\end{thebibliography}
+
+\end{document}

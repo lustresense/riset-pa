@@ -1,0 +1,41 @@
+flowchart LR
+    %% Root Cause (EFFECT - di sisi kanan)
+    Root["Automation Bias<br/>pada Siswa SMP<br/>terhadap Output AI"]
+
+    %% 6 Cabang Utama 6M
+    Root --- Man["Man<br/>(Manusia)"]
+    Root --- Method["Method<br/>(Metode)"]
+    Root --- Machine["Machine<br/>(Mesin)"]
+    Root --- Material["Material<br/>(Materi)"]
+    Root --- Measurement["Measurement<br/>(Pengukuran)"]
+    Root --- Environment["Environment<br/>(Lingkungan)"]
+
+    %% Sub-Cause: Man (3 sub)
+    Man --- Man1["Siswa SMP usia 12-15 tahun<br/>belum punya pengalaman formal<br/>mengevaluasi output AI"]
+    Man --- Man2["Guru belum punya alat bantu<br/>visual untuk mengobservasi<br/>pola keputusan siswa"]
+    Man --- Man3["Peneliti belum punya dataset<br/>perilaku siswa SMP terhadap<br/>AI klasifikasi sketsa"]
+
+    %% Sub-Cause: Method (3 sub)
+    Method --- Met1["Pembelajaran AI di SMP<br/>masih bersifat konseptual,<br/>belum praktis hands-on"]
+    Method --- Met2["Tidak ada scaffolding bertahap<br/>dari trust building ke override<br/>dalam media existing"]
+    Method --- Met3["Tidak ada mekanisme anti-cheat<br/>untuk override siswa<br/>(label asal dikirim)"]
+
+    %% Sub-Cause: Machine (3 sub)
+    Machine --- Mac1["Model CNN MobileNet memiliki<br/>confidence calibration<br/>yang belum sempurna"]
+    Machine --- Mac2["Inferensi server-side memiliki<br/>latensi 200-500 ms<br/>(mengganggu flow gameplay)"]
+    Machine --- Mac3["Browser siswa heterogen<br/>(Chrome, Firefox, Safari)<br/>dengan kemampuan berbeda"]
+
+    %% Sub-Cause: Material (3 sub)
+    Material --- Mat1["Dataset Quick Draw! terlalu luas<br/>(ratusan kategori, banyak<br/>tidak relevan untuk SMP)"]
+    Material --- Mat2["Buku gambar tradisional<br/>tidak memberikan feedback<br/>konsekuensial"]
+    Material --- Mat3["Tidak ada media yang menggabungkan<br/>menggambar, AI, dan konsekuensi<br/>gameplay dalam satu sistem"]
+
+    %% Sub-Cause: Measurement (3 sub)
+    Measurement --- Mea1["Tidak ada metrik standar<br/>untuk mengukur automation bias<br/>siswa SMP"]
+    Measurement --- Mea2["Decision latency dan confidence gap<br/>belum terdefinisi sebagai<br/>metrik perilaku"]
+    Measurement --- Mea3["SUS belum diadaptasi untuk<br/>simulasi AI literacy anak SMP"]
+
+    %% Sub-Cause: Environment (3 sub)
+    Environment --- Env1["Kelas SMP memiliki keterbatasan<br/>device (tablet/laptop berbagi)"]
+    Environment --- Env2["Bandwidth sekolah terbatas<br/>untuk streaming inferensi<br/>real-time"]
+    Environment --- Env3["Suara dari speaker bersama<br/>dapat mengganggu kelas lain<br/>(voice synthesis tidak ideal)"]

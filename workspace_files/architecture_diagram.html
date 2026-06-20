@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #243447;
+    --text-sub: #5A6B7E;
+    --text-muted: #8B9BB0;
+    --bg: #F8FAFC;
+    --surface: #E9EEF3;
+    --accent: #4C6EF5;
+    --accent-light: #EDF2FF;
+    --accent-dark: #3B5BDB;
+    --border: #D0D9E4;
+    --connector: #64748B;
+    --card-bg: #FFFFFF;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    width: fit-content;
+    min-width: 1600px;
+    margin: 0 auto;
+    padding: 52px 56px 56px;
+    position: relative;
+  }
+
+  /* ─── HEADER ─── */
+  .diagram-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .diagram-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+  .diagram-subtitle {
+    font-size: 13px;
+    color: var(--text-sub);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .subtitle-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 4px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .subtitle-divider {
+    color: var(--border);
+    font-size: 16px;
+  }
+
+  /* ─── SWIM-LANE LAYOUT ─── */
+  .swimlane-wrapper {
+    position: relative;
+  }
+
+  .swimlane-container {
+    display: flex;
+    gap: 0;
+  }
+
+  .swimlane {
+    flex: 1;
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .swimlane-header {
+    text-align: center;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    border-bottom: 3px solid transparent;
+    position: relative;
+  }
+
+  .swimlane-client .swimlane-header {
+    background: #E8EDF3;
+    color: #1E3A5F;
+    border-bottom-color: #4C6EF5;
+    border-radius: 12px 0 0 0;
+  }
+  .swimlane-engine .swimlane-header {
+    background: #E3EAF2;
+    color: #1B3A50;
+    border-bottom-color: #5B7A99;
+  }
+  .swimlane-server .swimlane-header {
+    background: #EEF0F4;
+    color: #3D4F63;
+    border-bottom-color: #8B9BB0;
+    border-radius: 0 12px 0 0;
+  }
+
+  .swimlane-header-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    opacity: 0.7;
+  }
+
+  .swimlane-body {
+    padding: 24px 22px 28px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .swimlane-client .swimlane-body {
+    background: #FAFBFD;
+    border-left: 2px solid #D0D9E4;
+    border-right: 1px solid #E8ECF1;
+  }
+  .swimlane-engine .swimlane-body {
+    background: #F8FAFB;
+    border-left: 1px solid #E8ECF1;
+    border-right: 1px solid #E8ECF1;
+  }
+  .swimlane-server .swimlane-body {
+    background: #FBFCFD;
+    border-left: 1px solid #E8ECF1;
+    border-right: 2px solid #D0D9E4;
+  }
+
+  /* ─── PHASE CARDS ─── */
+  .phase-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  }
+
+  .phase-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .phase-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .phase-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .phase-card-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 1px;
+  }
+
+  .phase-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .phase-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    line-height: 1.5;
+    padding: 7px 10px;
+    background: var(--bg);
+    border-radius: 6px;
+    border: 1px solid #E8ECF1;
+  }
+
+  .phase-item-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  .phase-item strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* ─── PHASE-SPECIFIC COLORS ─── */
+  .phase-1 .phase-number { background: #DBEAFE; color: #1E40AF; }
+  .phase-1 { border-color: #93B4E8; }
+  .phase-1 .phase-item-icon { background: #DBEAFE; color: #1E40AF; }
+
+  .phase-2 .phase-number { background: #E0E7FF; color: #3730A3; }
+  .phase-2 { border-color: #A5B4C8; }
+  .phase-2 .phase-item-icon { background: #E0E7FF; color: #3730A3; }
+
+  /* Phase 3 - HITL HIGHLIGHTED */
+  .phase-3 {
+    border: 3px solid var(--accent) !important;
+    box-shadow: 0 0 0 5px rgba(76,110,245,0.12), 0 4px 20px rgba(76,110,245,0.1) !important;
+    position: relative;
+  }
+  .phase-3::before {
+    content: 'INOVASI INTI';
+    position: absolute;
+    top: -13px;
+    right: 16px;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+  }
+  .phase-3 .phase-number { background: var(--accent); color: white; }
+  .phase-3 .phase-card-title { color: var(--accent-dark); }
+  .phase-3 .phase-item-icon { background: var(--accent-light); color: var(--accent-dark); }
+  .phase-3 .phase-item { background: var(--accent-light); border-color: #C5D3F7; }
+
+  .phase-4 .phase-number { background: #E3EAF2; color: #1B3A50; }
+  .phase-4 { border-color: #9DB3C8; }
+  .phase-4 .phase-item-icon { background: #E3EAF2; color: #1B3A50; }
+
+  .phase-5 .phase-number { background: #D9E2ED; color: #172540; }
+  .phase-5 { border-color: #8DA4B8; }
+  .phase-5 .phase-item-icon { background: #D9E2ED; color: #172540; }
+
+  .phase-6 .phase-number { background: #EEF0F4; color: #3D4F63; }
+  .phase-6 { border-color: #B0BEC5; }
+  .phase-6 .phase-item-icon { background: #EEF0F4; color: #3D4F63; }
+
+  /* ─── VERTICAL ARROWS ─── */
+  .connector-v {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    gap: 8px;
+  }
+  .connector-v-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--connector);
+  }
+  .connector-v-line .shaft {
+    width: 2px;
+    height: 14px;
+    background: var(--connector);
+  }
+  .connector-v-line .head {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid var(--connector);
+  }
+  .connector-v-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ─── BEHAVIOR TYPE BADGES ─── */
+  .behavior-types {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .behavior-badge {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1.5px solid;
+    line-height: 1.3;
+  }
+  .behavior-solid { background: #F0FFF4; border-color: #7DCE8A; color: #1B6B2B; }
+  .behavior-danger { background: #FFF5F5; border-color: #F1A5A5; color: #A12828; }
+  .behavior-decoration { background: #FFF9DB; border-color: #FFD666; color: #9A6700; }
+  .behavior-badge-desc { font-weight: 400; font-size: 10px; display: block; margin-top: 1px; }
+
+  /* ─── DECISION BUTTONS ─── */
+  .decision-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .decision-btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    flex: 1;
+    line-height: 1.3;
+  }
+  .btn-accept { background: #D3F9D8; color: #1B6B2B; border: 1.5px solid #7DCE8A; }
+  .btn-correct { background: #FFF9DB; color: #9A6700; border: 1.5px solid #FFD666; }
+  .btn-override { background: #FFE3E3; color: #A12828; border: 1.5px solid #F1A5A5; }
+  .btn-sub { font-size: 9px; font-weight: 500; display: block; margin-top: 1px; opacity: 0.8; }
+
+  /* ─── CONFIDENCE BAR ─── */
+  .confidence-bar {
+    display: flex;
+    gap: 3px;
+    margin-top: 10px;
+    align-items: center;
+  }
+  .conf-segment {
+    height: 22px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    padding: 0 8px;
+  }
+  .conf-high { background: var(--accent); }
+  .conf-low1 { background: #8B9BB0; }
+  .conf-low2 { background: #B0BEC5; }
+
+  /* ─── GAME OUTCOMES ─── */
+  .outcome-boxes {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .outcome-box {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1.5px solid;
+  }
+  .outcome-success { background: #F0FFF4; border-color: #7DCE8A; }
+  .outcome-fail { background: #FFF5F5; border-color: #F1A5A5; }
+  .outcome-label { font-size: 11px; font-weight: 700; line-height: 1.3; }
+  .outcome-success .outcome-label { color: #1B6B2B; }
+  .outcome-fail .outcome-label { color: #A12828; }
+  .outcome-desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; line-height: 1.3; }
+
+  /* ─── RETRY INDICATOR ─── */
+  .retry-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: #F5F3FF;
+    border: 1.5px dashed #8B5CF6;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #5B21B6;
+    font-weight: 600;
+  }
+
+  /* ─── SERVER ONLY BOX ─── */
+  .server-only-box {
+    background: #FFF5F5;
+    border: 2px solid #F1A5A5;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 14px;
+    text-align: center;
+  }
+  .server-only-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #A12828;
+    line-height: 1.4;
+  }
+  .server-only-desc {
+    font-size: 10px;
+    color: #B8860B;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  /* ─── LOG FIELDS ─── */
+  .log-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .log-field {
+    padding: 3px 7px;
+    background: #EEF0F4;
+    border: 1px solid #D0D9E4;
+    border-radius: 4px;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #3D4F63;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
+  /* ─── DASHBOARD ─── */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .dashboard-item {
+    background: #F4F6F9;
+    border-radius: 6px;
+    padding: 8px 8px;
+    text-align: center;
+    border: 1px solid #D0D9E4;
+  }
+  .dashboard-item-label {
+    font-size: 9.5px;
+    color: var(--text-sub);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  /* ─── CROSS-LANE SVG ─── */
+  .cross-lane-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* ─── FOOTER ─── */
+  .diagram-footer {
+    margin-top: 32px;
+    padding: 20px 28px;
+    background: #EFF2F7;
+    border-radius: 12px;
+    border: 1px solid #D0D9E4;
+  }
+
+  .footer-row {
+    display: flex;
+    gap: 36px;
+    align-items: flex-start;
+  }
+
+  .footer-section {
+    flex: 1;
+  }
+
+  .footer-section-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--text-sub);
+    line-height: 1.4;
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 2px solid;
+    flex-shrink: 0;
+  }
+
+  .key-point {
+    font-size: 11.5px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .key-point::before {
+    content: '\25B8';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* Spacing helper */
+  .spacer { flex: 1; }
+</style>
+</head>
+<body>
+<div id="root">
+
+  <!-- HEADER -->
+  <div class="diagram-header">
+    <div class="diagram-title">Arsitektur Sistem — Interactive HITL AI Literacy Simulation</div>
+    <div class="diagram-subtitle">
+      <span class="subtitle-badge">100% Client-Side Inference</span>
+      <span class="subtitle-divider">|</span>
+      <span class="subtitle-badge">Server sebagai Data Sink</span>
+    </div>
+  </div>
+
+  <!-- SWIM-LANE + SVG OVERLAY WRAPPER -->
+  <div class="swimlane-wrapper" id="swimlaneWrapper">
+
+    <!-- SVG for cross-lane arrows -->
+    <svg class="cross-lane-svg" id="crossLaneSvg"></svg>
+
+    <!-- SWIM-LANE COLUMNS -->
+    <div class="swimlane-container">
+
+      <!-- ═══ COLUMN 1: CLIENT ═══ -->
+      <div class="swimlane swimlane-client">
+        <div class="swimlane-header">
+          <div class="swimlane-header-tag">Client</div>
+          <div>Browser (Siswa)</div>
+        </div>
+        <div class="swimlane-body">
+
+          <!-- PHASE 1 -->
+          <div class="phase-card phase-1" data-id="phase1">
+            <div class="phase-card-header">
+              <div class="phase-number">1</div>
+              <div>
+                <div class="phase-card-title">INPUT (Siswa)</div>
+                <div class="phase-card-subtitle">Pengenalan &amp; Pengumpulan Gambar</div>
+              </div>
+            </div>
+            <div class="phase-items">
+              <div class="phase-item">
+                <div class="phase-item-icon">✎</div>
+                <div>Siswa menggambar di <strong>canvas</strong> via <strong>MediaPipe Hand Tracking</strong> (jari di udara) atau mouse/sentuh</div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">⊞</div>
+                <div>Gambar ditangkap sebagai <strong>image tensor 224×224</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="connector-v">
+            <div class="connector-v-line"><div class="shaft"></div><div class="head"></div></div>
+            <div class="connector-v-label">image tensor 224×224</div>
+          </div>
+
+          <!-- PHASE 2 -->
+          <div class="phase-card phase-2" data-id="phase2">
+            <div class="phase-card-header">
+              <div class="phase-number">2</div>
+              <div>
+                <div class="phase-card-title">AI INFERENCE (Client-Side)</div>
+                <div class="phase-card-subtitle">Klasifikasi Gambar di Browser</div>
+              </div>
+            </div>
+            <div class="phase-items">
+              <div class="phase-item">
+                <div class="phase-item-icon">⬡</div>
+                <div><strong>TensorFlow.js</strong> memuat model CNN pre-trained (MobileNet, QuickDraw dataset subset)</div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">⊤</div>
+                <div>Model menghasilkan <strong>Top-3 prediksi</strong> + skor kepercayaan</div>
+              </div>
+              <div class="confidence-bar">
+                <div class="conf-segment conf-high">tangga 94%</div>
+                <div class="conf-segment conf-low1">pagar 3%</div>
+                <div class="conf-segment conf-low2">pagar 2%</div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">💬</div>
+                <div><strong>Momo</strong> (maskot AI) menampilkan prediksi dengan dialog berbasis kepribadian</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="connector-v">
+            <div class="connector-v-line"><div class="shaft"></div><div class="head"></div></div>
+            <div class="connector-v-label">Top-3 prediksi + confidence</div>
+          </div>
+
+          <!-- PHASE 3: HITL (HIGHLIGHTED) -->
+          <div class="phase-card phase-3" data-id="phase3">
+            <div class="phase-card-header">
+              <div class="phase-number">3</div>
+              <div>
+                <div class="phase-card-title">KEPUTUSAN MANUSIA (HITL)</div>
+                <div class="phase-card-subtitle">Human-in-the-Loop — Inti Inovasi Sistem</div>
+              </div>
+            </div>
+            <div class="phase-items">
+              <div class="phase-item">
+                <div class="phase-item-icon">👁</div>
+                <div>Siswa melihat <strong>Top-3 prediksi + skor kepercayaan</strong> dari Momo</div>
+              </div>
+              <div class="decision-buttons">
+                <div class="decision-btn btn-accept">✓ ACCEPT<span class="btn-sub">(top-1)</span></div>
+                <div class="decision-btn btn-correct">↻ CORRECT<span class="btn-sub">(pilih top-2/3)</span></div>
+                <div class="decision-btn btn-override">✎ OVERRIDE<span class="btn-sub">(ketik label)</span></div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">📋</div>
+                <div>Keputusan dicatat: <strong>decision_type</strong>, confidence_gap, decision_latency_ms, level_id, session_id, timestamp</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+        </div>
+      </div>
+
+      <!-- ═══ COLUMN 2: GAME ENGINE ═══ -->
+      <div class="swimlane swimlane-engine">
+        <div class="swimlane-header">
+          <div class="swimlane-header-tag">Game Engine</div>
+          <div>Kaplay.js</div>
+        </div>
+        <div class="swimlane-body">
+
+          <div class="spacer" style="flex: 1.2;"></div>
+
+          <!-- PHASE 4 -->
+          <div class="phase-card phase-4" data-id="phase4">
+            <div class="phase-card-header">
+              <div class="phase-number">4</div>
+              <div>
+                <div class="phase-card-title">PEMETAAN PERILAKU</div>
+                <div class="phase-card-subtitle">Label → Tipe Objek Game</div>
+              </div>
+            </div>
+            <div class="phase-items">
+              <div class="phase-item">
+                <div class="phase-item-icon">↦</div>
+                <div>Kaplay.js menerima <strong>label terpilih</strong> dari keputusan siswa</div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">⊞</div>
+                <div><strong>Tabel pemetaan:</strong> label → tipe (solid/danger/decoration) + sprite + fisika</div>
+              </div>
+            </div>
+            <div class="behavior-types">
+              <div class="behavior-badge behavior-solid">⬛ Solid<span class="behavior-badge-desc">tangga, jembatan, papan</span></div>
+              <div class="behavior-badge behavior-danger">☠ Danger<span class="behavior-badge-desc">pedang, pisau, paku</span></div>
+              <div class="behavior-badge behavior-decoration">✿ Decoration<span class="behavior-badge-desc">awan, bunga, pelangi</span></div>
+            </div>
+          </div>
+
+          <div class="connector-v">
+            <div class="connector-v-line"><div class="shaft"></div><div class="head"></div></div>
+            <div class="connector-v-label">objek + tipe perilaku</div>
+          </div>
+
+          <!-- PHASE 5 -->
+          <div class="phase-card phase-5" data-id="phase5">
+            <div class="phase-card-header">
+              <div class="phase-number">5</div>
+              <div>
+                <div class="phase-card-title">SIMULASI PERMAINAN</div>
+                <div class="phase-card-subtitle">Eksekusi &amp; Evaluasi Gameplay</div>
+              </div>
+            </div>
+            <div class="phase-items">
+              <div class="phase-item">
+                <div class="phase-item-icon">🎮</div>
+                <div><strong>Stickman</strong> berjalan/melompat via keyboard (WASD/arrow keys)</div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">◎</div>
+                <div><strong>Deteksi tabrakan</strong> dengan objek yang muncul menentukan hasil</div>
+              </div>
+            </div>
+            <div class="outcome-boxes">
+              <div class="outcome-box outcome-success">
+                <div class="outcome-label">✓ BERHASIL</div>
+                <div class="outcome-desc">Capai tujuan → level berikutnya</div>
+              </div>
+              <div class="outcome-box outcome-fail">
+                <div class="outcome-label">✗ GAGAL</div>
+                <div class="outcome-desc">Kena danger / jatuh → kertas robek</div>
+              </div>
+            </div>
+            <div class="retry-indicator">↻ Gagal → kembali ke Fase 1 (coba ulang / override)</div>
+          </div>
+
+          <div class="spacer"></div>
+        </div>
+      </div>
+
+      <!-- ═══ COLUMN 3: SERVER ═══ -->
+      <div class="swimlane swimlane-server">
+        <div class="swimlane-header">
+          <div class="swimlane-header-tag">Server</div>
+          <div>Data Sink</div>
+        </div>
+        <div class="swimlane-body">
+
+          <div class="spacer" style="flex: 2.8;"></div>
+
+          <!-- PHASE 6 -->
+          <div class="phase-card phase-6" data-id="phase6">
+            <div class="phase-card-header">
+              <div class="phase-number">6</div>
+              <div>
+                <div class="phase-card-title">DATA SINK (Server-Side)</div>
+                <div class="phase-card-subtitle">Penyimpanan Log Interaksi</div>
+              </div>
+            </div>
+            <div class="phase-items">
+              <div class="phase-item">
+                <div class="phase-item-icon">↑</div>
+                <div>Semua log dikirim ke server via <strong>REST API (POST)</strong></div>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">⊞</div>
+                <div>Server menyimpan data sesi per level:</div>
+              </div>
+              <div class="log-fields">
+                <span class="log-field">session_id</span>
+                <span class="log-field">level_id</span>
+                <span class="log-field">trial_number</span>
+                <span class="log-field">ai_predictions</span>
+                <span class="log-field">user_decision</span>
+                <span class="log-field">decision_type</span>
+                <span class="log-field">confidence_scores</span>
+                <span class="log-field">latency_ms</span>
+                <span class="log-field">outcome</span>
+              </div>
+              <div class="phase-item">
+                <div class="phase-item-icon">📊</div>
+                <div><strong>Dashboard peneliti</strong> memvisualisasikan:</div>
+              </div>
+              <div class="dashboard-grid">
+                <div class="dashboard-item">
+                  <div class="dashboard-item-label">Override Rate<br>per Level</div>
+                </div>
+                <div class="dashboard-item">
+                  <div class="dashboard-item-label">Distribusi<br>Decision Latency</div>
+                </div>
+                <div class="dashboard-item">
+                  <div class="dashboard-item-label">Trust Calibration<br>Index</div>
+                </div>
+              </div>
+            </div>
+            <div class="server-only-box">
+              <div class="server-only-label">⚠ SERVER TIDAK MENGIRIM DATA KEMBALI</div>
+              <div class="server-only-desc">Tidak ada retraining — server HANYA menerima log (DATA SINK ONLY)</div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+        </div>
+      </div>
+
+    </div><!-- end swimlane-container -->
+  </div><!-- end swimlane-wrapper -->
+
+  <!-- FOOTER LEGEND -->
+  <div class="diagram-footer">
+    <div class="footer-row">
+      <div class="footer-section">
+        <div class="footer-section-title">Tipe Perilaku Objek</div>
+        <div class="legend-items" style="flex-direction:column;gap:6px;">
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#F0FFF4;border-color:#7DCE8A;"></div>
+            Solid — Platform yang bisa diinjak (tangga, jembatan, papan)
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#FFF5F5;border-color:#F1A5A5;"></div>
+            Danger — Objek berbahaya, menyebabkan kegagalan (pedang, pisau, paku)
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#FFF9DB;border-color:#FFD666;"></div>
+            Decoration — Kosmetik saja, tanpa collision (awan, bunga, pelangi)
+          </div>
+        </div>
+      </div>
+      <div class="footer-section">
+        <div class="footer-section-title">Prinsip Arsitektur</div>
+        <div class="key-point">AI inference 100% di browser — tidak ada server dalam loop inferensi</div>
+        <div class="key-point">Momen keputusan HITL (Fase 3) adalah inti inovasi sistem</div>
+        <div class="key-point">Server HANYA menerima log, TIDAK PERNAH mengirim data kembali ke client</div>
+        <div class="key-point">Tiga kategori perilaku (Solid/Danger/Decoration) → tiga hasil gameplay</div>
+      </div>
+      <div class="footer-section">
+        <div class="footer-section-title">Teknologi Kunci</div>
+        <div class="legend-items" style="flex-direction:column;gap:6px;">
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#DBEAFE;border-color:#4C6EF5;"></div>
+            TensorFlow.js + MobileNet (Client-Side CNN)
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#E3EAF2;border-color:#5B7A99;"></div>
+            Kaplay.js (Game Engine 2D)
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#EEF0F4;border-color:#8B9BB0;"></div>
+            MediaPipe Hand Tracking (Gesture Input)
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch" style="background:#F5F3FF;border-color:#8B5CF6;"></div>
+            REST API POST (Data Sink Endpoint)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(drawCrossLaneArrows, 500);
+  });
+
+  function drawCrossLaneArrows() {
+    const svg = document.getElementById('crossLaneSvg');
+    const wrapper = document.getElementById('swimlaneWrapper');
+    if (!svg || !wrapper) return;
+
+    const wRect = wrapper.getBoundingClientRect();
+    svg.setAttribute('width', wRect.width);
+    svg.setAttribute('height', wRect.height);
+    svg.setAttribute('viewBox', `0 0 ${wRect.width} ${wRect.height}`);
+
+    svg.innerHTML = '';
+
+    // Arrow markers
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    defs.innerHTML = `
+      <marker id="arrGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#64748B" />
+      </marker>
+      <marker id="arrAccent" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#4C6EF5" />
+      </marker>
+      <marker id="arrPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#8B5CF6" />
+      </marker>
+    `;
+    svg.appendChild(defs);
+
+    function getBox(id) {
+      const el = document.querySelector(`[data-id="${id}"]`);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return {
+        cx: r.left + r.width / 2 - wRect.left,
+        cy: r.top + r.height / 2 - wRect.top,
+        top: r.top - wRect.top,
+        bottom: r.bottom - wRect.top,
+        left: r.left - wRect.left,
+        right: r.right - wRect.left,
+        w: r.width,
+        h: r.height
+      };
+    }
+
+    function drawCurveArrow(x1, y1, x2, y2, color, markerId, dashArray, strokeWidth) {
+      const dx = x2 - x1;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const cx1 = x1 + dx * 0.35;
+      const cy1 = y1;
+      const cx2 = x2 - dx * 0.35;
+      const cy2 = y2;
+      path.setAttribute('d', `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`);
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', strokeWidth || '2');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('marker-end', `url(#${markerId})`);
+      if (dashArray) path.setAttribute('stroke-dasharray', dashArray);
+      svg.appendChild(path);
+      return path;
+    }
+
+    function drawLabel(x, y, text, color, anchor) {
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', x);
+      t.setAttribute('y', y);
+      t.setAttribute('text-anchor', anchor || 'middle');
+      t.setAttribute('font-size', '11');
+      t.setAttribute('font-weight', '600');
+      t.setAttribute('fill', color);
+      t.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, system-ui, sans-serif');
+      t.textContent = text;
+      svg.appendChild(t);
+    }
+
+    // ─── Arrow: Phase 3 → Phase 4 (HITL → Behavior Mapping) ───
+    const p3 = getBox('phase3');
+    const p4 = getBox('phase4');
+    if (p3 && p4) {
+      const x1 = p3.right + 2;
+      const y1 = p3.top + p3.h * 0.55;
+      const x2 = p4.left - 2;
+      const y2 = p4.top + p4.h * 0.35;
+      drawCurveArrow(x1, y1, x2, y2, '#4C6EF5', 'arrAccent', null, '2.5');
+      drawLabel((x1 + x2) / 2, Math.min(y1, y2) - 10, 'label terpilih', '#4C6EF5');
+    }
+
+    // ─── Arrow: Phase 5 → Phase 6 (Game Sim → Data Sink) ───
+    const p5 = getBox('phase5');
+    const p6 = getBox('phase6');
+    if (p5 && p6) {
+      const x1 = p5.right + 2;
+      const y1 = p5.top + p5.h * 0.5;
+      const x2 = p6.left - 2;
+      const y2 = p6.top + p6.h * 0.4;
+      drawCurveArrow(x1, y1, x2, y2, '#64748B', 'arrGray', null, '2');
+      drawLabel((x1 + x2) / 2, Math.min(y1, y2) - 10, 'REST API (POST)', '#64748B');
+    }
+
+    // ─── Arrow: Phase 5 → Phase 1 (retry loop, dashed, goes left) ───
+    const p1 = getBox('phase1');
+    if (p5 && p1) {
+      const startX = p5.left - 2;
+      const startY = p5.bottom - p5.h * 0.25;
+      const farLeft = p1.left - 50;
+      const endX = p1.left - 2;
+      const endY = p1.top + p1.h * 0.5;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d',
+        `M ${startX} ${startY} L ${farLeft} ${startY} L ${farLeft} ${endY} L ${endX} ${endY}`
+      );
+      path.setAttribute('stroke', '#8B5CF6');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-dasharray', '6,4');
+      path.setAttribute('marker-end', 'url(#arrPurple)');
+      svg.appendChild(path);
+
+      // Vertical label
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', farLeft - 6);
+      t.setAttribute('y', (startY + endY) / 2);
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('font-size', '10');
+      t.setAttribute('font-weight', '600');
+      t.setAttribute('fill', '#8B5CF6');
+      t.setAttribute('font-family', '-apple-system, BlinkMacSystemFont, system-ui, sans-serif');
+      t.setAttribute('writing-mode', 'tb');
+      t.setAttribute('glyph-orientation-vertical', '0');
+      t.textContent = 'coba ulang / override';
+      svg.appendChild(t);
+    }
+
+    // ─── Arrow: Phase 3 → Phase 6 (log data to server, thin dashed) ───
+    if (p3 && p6) {
+      const x1 = p3.right + 2;
+      const y1 = p3.bottom - p3.h * 0.15;
+      const x2 = p6.left - 2;
+      const y2 = p6.top + p6.h * 0.15;
+      drawCurveArrow(x1, y1, x2, y2, '#8B9BB0', 'arrGray', '4,3', '1.5');
+      // Label along the curve
+      const midX = (x1 + x2) / 2;
+      const midY = (y1 + y2) / 2 - 10;
+      drawLabel(midX, midY, 'log keputusan', '#8B9BB0');
+    }
+  }
+</script>
+</body>
+</html>

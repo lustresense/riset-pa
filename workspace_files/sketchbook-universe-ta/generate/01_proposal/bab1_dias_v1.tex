@@ -1,0 +1,225 @@
+% ============================================================
+% PROPOSAL PROYEK AKHIR — MUHAMMAD DIAS AL-IZZAT (DIAS)
+% BAB 1 — PENDAHULUAN
+%
+% Project: Sketchbook Universe
+% Scope  : Backend / CNN MobileNet / TF.js / K-Means / REST API Logging
+% Format : PENS Standard (A4, 12pt TNR, 1.5 spacing, 4cm/3cm margin)
+% Style  : Mengikuti pola format Izzah (PilAItes 2025)
+%
+% File ini adalah STANDALONE COMPILABLE LaTeX file berisi Bab 1 saja.
+% Bab 1 Dias selaras (identik struktur) dengan Bab 1 Can — beda hanya
+% paragraf Latar Belakang dan Permasalahan yang spesifik scope backend.
+%
+% Citation numbering: skema Sitasi_Final_v1.md (Dias, 29 refs)
+% ============================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[top=4cm,left=4cm,right=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+
+% Times New Roman (pdflatex standard)
+\usepackage{times}
+\renewcommand{\rmdefault}{ptm}
+
+% Line spacing 1.5
+\setstretch{1.5}
+
+% Paragraph indent (1.25 cm, PENS standard)
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% Chapter / section / subsection formatting (pola Izzah)
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{14pt}{16.8pt}\selectfont\bfseries\centering}
+  {BAB \thechapter}
+  {12pt}
+  {\MakeUppercase}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\section}{0pt}{18pt}{12pt}
+\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+
+% Caption formatting (pola Izzah)
+\captionsetup[table]{font=small,labelfont=bf,name={Tabel},labelsep=period,justification=centering,aboveskip=6pt,belowskip=0pt,position=top}
+\captionsetup[figure]{font=small,labelfont=bf,name={Gambar},labelsep=period,justification=centering,aboveskip=0pt,belowskip=6pt,position=bottom}
+
+% Header / footer (page number top-right)
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% TOC naming
+\renewcommand{\contentsname}{DAFTAR ISI}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% Cover page (minimal, for standalone compile)
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\fontsize{14pt}{16pt}\selectfont PROPOSAL PROYEK AKHIR}\\[1cm]
+{\fontsize{14pt}{18pt}\selectfont\bfseries\MakeUppercase{Pengembangan Sistem Klasifikasi Sketsa Berbasis CNN MobileNet dengan Confidence Score dan Clustering Pola Keputusan pada Sistem Literasi Kecerdasan Buatan untuk Siswa SMP}}\\[2cm]
+{\fontsize{12pt}{14pt}\selectfont Oleh:}\\[0.3cm]
+{\fontsize{12pt}{14pt}\selectfont\bfseries Muhammad Dias Al-Izzat}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont NRP. 53226000xx}\\[2cm]
+{\fontsize{12pt}{14pt}\selectfont PROGRAM STUDI SARJANA TERAPAN TEKNOLOGI REKAYASA MULTIMEDIA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont JURUSAN TEKNOLOGI MULTIMEDIA DAN JARINGAN}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont POLITEKNIK ELEKTRONIKA NEGERI SURABAYA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont 2025}
+\end{titlepage}
+
+% ============================================================
+% BAB 1 — PENDAHULUAN (verbatim dari proposal-dias.tex existing)
+% Citation numbering: skema Sitasi_Final_v1.md (Dias)
+%   [1] Ng           -> \cite{ref1}   (A01)
+%   [2] Casal-Otero  -> \cite{ref2}   (A02)
+%   [3] Khosravi     -> \cite{ref3}   (A03)
+%   [6] Xu           -> \cite{ref6}   (C01)
+%   [7] Goh          -> \cite{ref7}   (C02)
+% ============================================================
+%% BEGIN BAB 1 CONTENT %%
+\chapter{PENDAHULUAN}
+\label{chap:bab1}
+
+% ============================================================
+\section{LATAR BELAKANG}
+\label{sec:latar-belakang}
+% ============================================================
+
+Perkembangan kecerdasan buatan telah mendorong kebutuhan literasi teknologi yang tidak hanya menekankan kemampuan menggunakan aplikasi digital, tetapi juga kemampuan memahami cara kerja sistem cerdas. Sistem kecerdasan buatan banyak bekerja melalui proses prediksi, sehingga keluaran yang diberikan tidak selalu dapat dipahami sebagai jawaban mutlak. Pada konteks pendidikan, pemahaman tersebut penting agar siswa dapat membaca hasil sistem secara lebih kritis.
+
+Literasi kecerdasan buatan mencakup kemampuan memahami, menggunakan, mengevaluasi, dan mempertimbangkan dampak penggunaan sistem berbasis kecerdasan buatan \cite{ref1}. Pada konteks K-12, pembelajaran kecerdasan buatan membutuhkan pendekatan yang dapat menghubungkan konsep teknis dengan pengalaman belajar yang konkret \cite{ref2}. Salah satu cara untuk memperlihatkan cara kerja sistem kecerdasan buatan adalah melalui aktivitas klasifikasi sketsa, karena siswa dapat melihat hubungan antara input gambar, prediksi sistem, dan nilai keyakinan model.
+
+Sistem literasi kecerdasan buatan yang dikembangkan dalam proyek ini menggunakan proses klasifikasi sketsa. Siswa menggambar objek, kemudian sistem melakukan klasifikasi terhadap gambar tersebut. Hasil klasifikasi ditampilkan dalam bentuk \textit{Top-3 prediction} dan \textit{confidence score}. \textit{Confidence score} digunakan untuk menunjukkan tingkat keyakinan model terhadap hasil prediksi. Penyajian ini penting karena siswa dapat melihat bahwa prediksi sistem memiliki tingkat keyakinan yang berbeda-beda.
+
+\textit{Explainable Artificial Intelligence} dalam pendidikan menekankan pentingnya penyajian keluaran sistem agar dapat dipahami oleh pengguna \cite{ref3}. Dalam penelitian ini, \textit{explainability} diwujudkan melalui tampilan \textit{Top-3 prediction} dan \textit{confidence score} yang kemudian digunakan pada mekanisme \textit{Human-in-the-Loop}. Siswa dapat menerima prediksi utama, memilih prediksi alternatif, atau melakukan \textit{override} terhadap hasil sistem. Dengan demikian, model klasifikasi tidak hanya menjadi komponen teknis, tetapi juga menjadi bagian dari pengalaman belajar evaluatif.
+
+Dari sisi teknis, sistem menggunakan model \textit{Convolutional Neural Network} berbasis MobileNet untuk klasifikasi sketsa. CNN dipilih karena memiliki kemampuan mengekstraksi pola visual pada citra, sedangkan MobileNet dipilih karena lebih ringan untuk kebutuhan inferensi pada perangkat pengguna. Kajian mengenai \textit{deep learning} untuk \textit{free-hand sketch} menunjukkan bahwa sketsa memiliki karakteristik visual yang berbeda dari citra fotografis, sehingga \textit{preprocessing} dan pemilihan arsitektur model perlu diperhatikan \cite{ref6}.
+
+Model yang dikembangkan direncanakan berjalan pada sisi klien menggunakan TensorFlow.js. Pendekatan \textit{client-side inference} dipilih agar proses klasifikasi dapat dilakukan di \textit{browser} tanpa server kecerdasan buatan. Server hanya digunakan untuk \textit{REST API logging} dan penyimpanan data interaksi. Kajian mengenai \textit{front-end deep learning} menunjukkan bahwa \textit{deployment} model pada aplikasi web memiliki peluang untuk membuat inferensi lebih dekat dengan pengguna, tetapi tetap membutuhkan perhatian pada ukuran model, \textit{latency}, dan kompatibilitas \textit{browser} \cite{ref7}.
+
+Selain klasifikasi, penelitian ini juga mencatat data interaksi pengguna. Data yang dicatat meliputi hasil prediksi, \textit{confidence score}, \textit{confidence gap}, keputusan pengguna, durasi pengambilan keputusan, kategori objek, \textit{retry count}, dan \textit{status level}. Data tersebut kemudian digunakan untuk menganalisis pola keputusan pengguna menggunakan \textit{K-Means clustering}. Analisis ini tidak digunakan untuk menyimpulkan peningkatan kemampuan siswa melalui \textit{pre-test} dan \textit{post-test}, tetapi untuk membaca kecenderungan perilaku pengguna terhadap keluaran probabilistik sistem.
+
+Berdasarkan kebutuhan tersebut, penelitian ini berfokus pada pengembangan sistem klasifikasi sketsa berbasis CNN MobileNet dengan \textit{confidence score} dan \textit{clustering} pola keputusan pada sistem literasi kecerdasan buatan untuk siswa SMP. Fokus utama penelitian berada pada \textit{pipeline preprocessing}, model klasifikasi, konversi TensorFlow.js, pencatatan \textit{log}, struktur \textit{database}, dan analisis pola keputusan menggunakan \textit{K-Means clustering}.
+
+% ============================================================
+\section{PERMASALAHAN}
+\label{sec:permasalahan}
+% ============================================================
+
+Sistem literasi kecerdasan buatan membutuhkan model klasifikasi yang mampu mengenali sketsa siswa dan menyajikan keluaran dalam bentuk yang dapat dievaluasi. Apabila sistem hanya menampilkan satu label akhir, pengguna berpotensi memahami hasil model sebagai jawaban mutlak. Oleh karena itu, diperlukan sistem klasifikasi sketsa berbasis CNN MobileNet yang dapat menghasilkan \textit{Top-3 prediction} dan \textit{confidence score}, menjalankan inferensi pada sisi klien menggunakan TensorFlow.js, serta mencatat \textit{log} keputusan pengguna untuk dianalisis sebagai pola perilaku terhadap keluaran probabilistik sistem.
+
+% ============================================================
+\section{BATASAN MASALAH}
+\label{sec:batasan-masalah}
+% ============================================================
+
+\begin{enumerate}
+    \item Penelitian ini dibatasi pada pengembangan model klasifikasi sketsa berbasis CNN MobileNet untuk mendukung sistem literasi kecerdasan buatan bagi siswa SMP kelas 7 sampai 9.
+    \item Model dijalankan menggunakan TensorFlow.js pada sisi klien, sehingga tidak menggunakan \textit{backend} kecerdasan buatan, \textit{server machine learning}, atau inferensi berbasis \textit{cloud}.
+    \item Dataset yang digunakan dibatasi pada subset kategori sketsa yang relevan dengan kebutuhan simulasi, yaitu kategori yang dapat dipetakan menjadi Solid, Danger, atau Decorative.
+    \item Sistem tidak melakukan pelatihan ulang model secara otomatis dari input pengguna dan tidak bersifat adaptif terhadap keputusan pengguna secara \textit{real-time}.
+    \item Server hanya digunakan untuk \textit{REST API logging} dan penyimpanan data interaksi menggunakan SQLite.
+    \item Analisis \textit{K-Means clustering} difokuskan pada pola keputusan pengguna berdasarkan \textit{log} interaksi dan tidak digunakan untuk menyimpulkan peningkatan kemampuan siswa melalui \textit{pre-test} dan \textit{post-test}.
+\end{enumerate}
+
+% ============================================================
+\section{TUJUAN}
+\label{sec:tujuan}
+% ============================================================
+
+Penelitian ini bertujuan untuk mengembangkan sistem klasifikasi sketsa berbasis CNN MobileNet yang dapat mendukung sistem literasi kecerdasan buatan siswa SMP. Tujuan khusus penelitian ini adalah menghasilkan keluaran klasifikasi berupa \textit{Top-3 prediction} dan \textit{confidence score} yang dapat digunakan pada mekanisme \textit{Human-in-the-Loop}. Penelitian ini juga bertujuan merancang \textit{pipeline client-side inference} menggunakan TensorFlow.js, sistem \textit{logging} berbasis \textit{REST API} dan SQLite, serta analisis pola keputusan menggunakan \textit{K-Means clustering}.
+
+% ============================================================
+\section{MANFAAT}
+\label{sec:manfaat}
+% ============================================================
+
+\begin{enumerate}
+    \item Bagi siswa, sistem ini dapat membantu memperlihatkan bahwa hasil kecerdasan buatan bersifat prediktif dan memiliki tingkat keyakinan tertentu.
+    \item Bagi guru atau sekolah, sistem ini dapat menjadi media pendukung pembelajaran literasi kecerdasan buatan berbasis aktivitas interaktif.
+    \item Bagi pengembang sistem, penelitian ini memberikan rancangan \textit{pipeline} klasifikasi sketsa \textit{client-side} yang dapat diintegrasikan dengan simulasi web.
+    \item Bagi peneliti, data \textit{log} dan hasil \textit{clustering} dapat menjadi dasar analisis pola keputusan pengguna terhadap keluaran probabilistik sistem.
+\end{enumerate}
+
+% ============================================================
+\section{SISTEMATIKA PENULISAN}
+\label{sec:sistematika-penulisan}
+% ============================================================
+
+BAB I Pendahuluan: membahas latar belakang, permasalahan, batasan masalah, tujuan, manfaat, dan sistematika penulisan. BAB II Kajian Pustaka: membahas deskripsi permasalahan, teori penunjang, penelitian terkait, dan \textit{state of the art}. BAB III Deskripsi Sistem: membahas deskripsi solusi, metodologi penelitian, desain sistem, rancangan pengujian, dan jadwal penelitian.
+%% END BAB 1 CONTENT %%
+
+% ============================================================
+% DAFTAR PUSTAKA (subset — hanya ref yang disitir di Bab 1)
+% Daftar pustaka lengkap (29 refs) ada di daftar_pustaka_dias_v1.tex
+% ============================================================
+\chapter*{DAFTAR PUSTAKA}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+
+\begin{thebibliography}{99}
+
+\bibitem{ref1}
+D. T. K. Ng, J. K. L. Leung, S. K. W. Chu, and M. S. Qiao, ``Conceptualizing AI literacy: An exploratory review,'' \textit{Computers and Education: Artificial Intelligence}, vol.~2, p.~100041, 2021.
+
+\bibitem{ref2}
+V. Casal-Otero \textit{et al.}, ``AI literacy in K-12: A systematic literature review,'' \textit{International Journal of STEM Education}, vol.~10, p.~29, 2023.
+
+\bibitem{ref3}
+H. Khosravi \textit{et al.}, ``Explainable Artificial Intelligence in education,'' \textit{Computers and Education: Artificial Intelligence}, vol.~3, p.~100074, 2022.
+
+\bibitem{ref6}
+L. Xu \textit{et al.}, ``Deep learning for free-hand sketch: A survey,'' \textit{IEEE Transactions on Pattern Analysis and Machine Intelligence}, vol.~45, no.~1, pp.~285--312, 2023.
+
+\bibitem{ref7}
+G. Z. L. Goh, D. Ho, and Z. A. Abas, ``Front-end deep learning web apps development and deployment: A review,'' \textit{Applied Intelligence}, vol.~53, pp.~15923--15945, 2023.
+
+\end{thebibliography}
+
+\end{document}

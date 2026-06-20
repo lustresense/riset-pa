@@ -1,0 +1,243 @@
+% ============================================================
+% BAB 2 — KAJIAN PUSTAKA
+% Scope: Frontend / UI·UX / Finger Tracking / Narrative / Probe UI / Animation
+% Proyek: Escape the Sketchbook — Interactive HITL AI Literacy Simulation
+% Penulis: Farchan Deano Muhammad (Can)
+% ============================================================
+
+\chapter{KAJIAN PUSTAKA}
+\label{chap:bab2}
+
+Bab ini menyajikan kajian pustaka yang menjadi landasan teoretis bagi perancangan sistem \textit{Escape the Sketchbook}. Kajian dimulai dari deskripsi permasalahan yang menjelaskan mengapa media yang ada saat ini belum memadai untuk memfasilitasi interaksi reflektif siswa SMP terhadap output kecerdasan buatan, dilanjutkan dengan teori penunjang yang mendasari setiap keputusan desain, serta ditutup dengan penelitian terkait dan analisis \textit{state of the art} yang memosisikan proyek ini di antara kajian-kajian sebelumnya.
+
+% ============================================================
+\section{DESKRIPSI PERMASALAHAN}
+\label{sec:deskripsi-permasalahan}
+% ============================================================
+
+Perkembangan kecerdasan buatan (KB) telah mengubah cara masyarakat berinteraksi dengan teknologi digital. Siswa SMP kelas 7--9, yang berada dalam rentang usia 13--15 tahun, merupakan generasi yang tumbuh di lingkungan jenuh sistem berbasis KB---mulai dari rekomendasi konten hingga asisten virtual. Namun, keterpaparan terhadap penggunaan sistem KB tidak serta-merta berbanding lurus dengan kemampuan mengevaluasi output yang dihasilkan oleh sistem tersebut. Ng et al.\ [1] menegaskan bahwa literasi KB bukan sekadar kemampuan menggunakan alat berbasis KB, melainkan mencakup pemahaman tentang bagaimana sistem KB menghasilkan output, mengapa output tersebut bisa keliru, dan bagaimana manusia seharusnya berinteraksi dengan output yang bersifat probabilistik.
+
+Media edukasi KB yang tersedia saat ini umumnya memiliki dua kelemahan utama. Pertama, sebagian besar media bersifat informatif-ekspositif---menyajikan penjelasan konseptual tentang KB tanpa menyediakan momen di mana siswa secara langsung menghadapi output KB yang ambigu atau keliru [2]. Tanpa pengalaman langsung menghadapi ketidakpastian output KB, siswa tidak memiliki data empiris untuk mengevaluasi sejauh mana output tersebut dapat dipercaya. Kedua, media yang bersifat interaktif seringkali memosisikan KB sebagai \textit{oracle} yang selalu benar, sehingga justru memperkuat kecenderungan penerimaan otomatis (\textit{automation bias}) tanpa memberikan ruang bagi siswa untuk mempertanyakan atau mengkoreksi output yang diberikan [4][5]. Kondisi ini bertentangan dengan prinsip \textit{Human-in-the-Loop} (HITL), yang menekankan perlunya keterlibatan manusia sebagai evaluator pada titik-titik keputusan kritis [4].
+
+Selain itu, desain antarmuka untuk siswa SMP memerlukan perhatian khusus terhadap aspek perkembangan kognitif dan motivasi. Casal-Otero et al.\ [2] menemukan bahwa strategi literasi KB untuk kalangan K-12 harus bersifat sesuai usia (\textit{age-appropriate}), berbasis pengalaman langsung, dan menghindari abstraksi yang berlebihan. Siswa SMP membutuhkan media yang konkret, bertahap, dan memberikan umpan balik kontekstual---bukan media yang hanya menyajikan teori tentang KB. Dengan demikian, dibutuhkan sebuah sistem interaktif dengan konsekuensi nyata yang memfasilitasi interaksi reflektif siswa SMP terhadap output KB, di mana siswa diberikan kesempatan untuk mengevaluasi, menolak, atau mengkoreksi output tersebut dalam konteks simulasi yang terstruktur.
+
+% ============================================================
+\section{TEORI PENUNJANG}
+\label{sec:teori-penunjang}
+% ============================================================
+
+Bagian ini membahas teori-teori yang menjadi dasar perancangan sistem \textit{Escape the Sketchbook}. Setiap sub-bagian tidak hanya menjelaskan teori secara konseptual, tetapi juga menghubungkannya dengan keputusan desain yang diambil dalam proyek ini.
+
+% ------------------------------------------------------------
+\subsection{Literasi Kecerdasan Buatan}
+\label{subsec:literasi-kb}
+% ------------------------------------------------------------
+
+Literasi kecerdasan buatan (\textit{AI literacy}) didefinisikan oleh Ng et al.\ [1] sebagai seperangkat kompetensi yang memungkinkan individu untuk memahami, menggunakan, mengevaluasi, dan mengkomunikasikan mengenai sistem kecerdasan buatan secara kritis. Dalam kerangka konseptual yang dikembangkan oleh Ng et al.\ [1], literasi KB mencakup empat dimensi utama: (1) mengetahui dan memahami KB, (2) menggunakan dan menerapkan KB, (3) mengevaluasi dan mencipta KB, serta (4) etika KB. Keempat dimensi ini menunjukkan bahwa literasi KB tidak berhenti pada kemampuan operasional---menggunakan alat berbasis KB---tetapi harus meluas hingga kemampuan evaluatif, yaitu kemampuan untuk menilai apakah output yang dihasilkan sistem KB layak diterima, perlu dipertanyakan, atau harus ditolak.
+
+Aspek penting yang sering terabaikan dalam diskusi literasi KB adalah \textbf{penalaran probabilistik} (\textit{probabilistic reasoning}). Sistem KB modern, termasuk model klasifikasi gambar, tidak menghasilkan jawaban yang bersifat deterministik; sebaliknya, output yang dihasilkan bersifat probabilistik---berupa distribusi kemungkinan atas sejumlah kategori dengan tingkat keyakinan (\textit{confidence}) yang bervariasi [1][2]. Ng et al.\ [1] secara eksplisit menekankan bahwa kemampuan memahami output probabilistik merupakan komponen integral dari literasi KB. Tanpa pemahaman ini, pengguna cenderung memperlakukan output KB sebagai kebenaran mutlak, yang mengarah pada penerimaan tanpa evaluasi. Casal-Otero et al.\ [2] memperkuat argumen ini dengan menemukan bahwa kurikulum literasi KB untuk K-12 yang efektif harus memasukkan pengalaman langsung di mana siswa dihadapkan pada output KB yang tidak pasti, sehingga siswa memiliki data untuk mengevaluasi output KB secara empiris, bukan sekadar teoretis.
+
+Dalam konteks proyek ini, literasi KB diwujudkan melalui simulasi di mana siswa SMP berinteraksi langsung dengan output klasifikasi sketsa yang bersifat probabilistik. Siswa tidak hanya melihat hasil klasifikasi, tetapi juga melihat \textit{confidence score} dan beberapa prediksi teratas (\textit{top-3 predictions}) yang memperlihatkan bahwa output KB bukan jawaban tunggal yang pasti. Dengan demikian, sistem ini memfasilitasi interaksi reflektif di mana siswa dapat mengevaluasi apakah prediksi KB tersebut masuk akal atau perlu dikoreksi.
+
+% ------------------------------------------------------------
+\subsection{Human-in-the-Loop}
+\label{subsec:hitl}
+% ------------------------------------------------------------
+
+\textit{Human-in-the-Loop} (HITL) merupakan paradigma di mana manusia dilibatkan secara aktif dalam alur kerja sistem kecerdasan buatan, khususnya pada titik-titik di mana keputusan sistem bersifat tidak pasti atau berpotensi keliru [4]. Mosqueira-Rey et al.\ [4] dalam tinjauan komprehensif mereka mendefinisikan HITL sebagai kerangka kerja yang menempatkan manusia sebagai agen evaluatif yang memiliki otoritas untuk menerima, menolak, atau mengoreksi output yang dihasilkan oleh model KB. Berbeda dengan sistem KB yang sepenuhnya otonom, sistem HITL mengakui bahwa terdapat batasan fundamental pada kemampuan prediktif model dan bahwa keterlibatan manusia merupakan mekanisme esensial untuk menjaga kualitas keputusan.
+
+Salah satu masalah utama yang menjadi rasionalisasi bagi penerapan HITL adalah \textbf{bias otomasi} (\textit{automation bias})---kecenderungan manusia untuk menerima output sistem otomatis tanpa evaluasi kritis yang memadai [4]. Mosqueira-Rey et al.\ [4] mencatat bahwa \textit{automation bias} merupakan fenomena yang terdokumentasi secara luas dalam literatur interaksi manusia-komputer, di mana pengguna cenderung memberikan kepercayaan berlebihan terhadap rekomendasi sistem, bahkan ketika bukti menunjukkan bahwa rekomendasi tersebut mungkin keliru. Dalam konteks pendidikan, Memarian \& Doleck [5] menemukan bahwa \textit{automation bias} menjadi hambatan signifikan bagi literasi KB karena mendorong siswa untuk menerima output AI secara pasif, tanpa mempertanyakan dasar logis atau tingkat keyakinan dari output tersebut. Memarian \& Doleck [5] lebih lanjut menekankan bahwa penerapan HITL dalam konteks pendidikan kecerdasan buatan (\textit{AI in Education}) harus dirancang sedemikian rupa sehingga keterlibatan manusia bukan sekadar formalitas, melainkan momen di mana siswa benar-benar harus mengambil keputusan evaluatif yang berdampak.
+
+Dalam proyek \textit{Escape the Sketchbook}, mekanisme HITL diwujudkan melalui \textit{Probe UI}---antarmuka yang menghentikan sementara alur simulasi (\textit{pause-and-evaluate}) dan meminta siswa untuk memilih antara menerima prediksi KB (\textit{Accept}), mengoreksi label (\textit{Correct}), atau menolak sepenuhnya dan mengganti dengan label yang berbeda (\textit{Override}). Keputusan yang diambil oleh siswa memiliki konsekuensi langsung dalam simulasi melalui mekanisme klasifikasi objek (\textit{Solid/Danger/Decorative}), sehingga keterlibatan manusia bukan simbolis melainkan substantif. Sistem mencatat keputusan siswa sebagai log yang kemudian dapat dianalisis untuk mengidentifikasi pola interaksi reflektif terhadap output KB.
+
+% ------------------------------------------------------------
+\subsection{Explainable Interface dan Confidence Score}
+\label{subsec:explainable-interface}
+% ------------------------------------------------------------
+
+\textit{Explainable Artificial Intelligence} (XAI) dalam konteks pendidikan menekankan pentingnya membuat proses dan output sistem KB dapat dipahami oleh pengguna awam, termasuk siswa. Khosravi et al.\ [3] mengargumentasikan bahwa transparansi sistem KB di lingkungan pendidikan bukan hanya kebutuhan teknis, melainkan prasyarat pedagogis: tanpa kemampuan untuk melihat mengapa dan seberapa yakin sistem menghasilkan output tertentu, pengguna tidak memiliki dasar untuk melakukan evaluasi. Dalam konteks ini, \textit{explainable interface} merujuk pada desain antarmuka yang menyajikan informasi mengenai proses dan tingkat keyakinan sistem secara visual dan dapat diakses oleh pengguna non-teknis.
+
+Konsep kunci yang mendasari desain antarmuka dalam proyek ini adalah \textbf{ambiguitas terkontrol} (\textit{controlled ambiguity}). Prinsip ini menyatakan bahwa sistem KB dalam simulasi \textit{Escape the Sketchbook} sengaja dirancang agar tidak selalu menghasilkan prediksi yang sempurna. Justifikasi akademis untuk keputusan desain ini berasal dari dua sumber. Pertama, Khosravi et al.\ [3] menegaskan bahwa dalam konteks pendidikan, pengguna perlu dihadapkan pada ketidakpastian output KB agar memiliki kesempatan untuk mengevaluasi; jika sistem selalu menghasilkan output yang benar, tidak akan ada momen di mana pengguna perlu berpikir evaluatif. Kedua, Karran et al.\ [10] menunjukkan bahwa visualisasi \textit{confidence score}---penyajian tingkat keyakinan model secara eksplisit---memberikan dampak signifikan terhadap cara pengguna menilai dan mempertimbangkan output KB. Ketika \textit{confidence score} rendah, pengguna cenderung lebih berhati-hati dan lebih kritis; sebaliknya, ketika \textit{confidence score} tinggi tanpa visualisasi yang memadai, pengguna cenderung menerima output tanpa pertanyaan.
+
+Dalam praktiknya, ambiguitas terkontrol diwujudkan melalui pengaturan \textit{confidence threshold} pada setiap level simulasi. Pada Level 1, \textit{confidence} model diatur tinggi ($>85\%$) untuk membangun kepercayaan awal. Pada Level 2, \textit{confidence} diturunkan ke rentang 55--70\% untuk menghadirkan ambiguitas yang membutuhkan evaluasi. Pada Level 3, \textit{confidence} berada di rentang 35--51\%, di mana ambiguitas sangat tinggi sehingga siswa hampir selalu perlu mengoverride prediksi model. Dengan demikian, desain antarmuka tidak hanya menyajikan informasi, tetapi secara sengaja mengatur derajat ketidakpastian untuk menciptakan momen-momen HITL yang bermakna.
+
+% ------------------------------------------------------------
+\subsection{Simulasi Interaktif Berlevel}
+\label{subsec:simulasi-interaktif}
+% ------------------------------------------------------------
+
+Simulasi interaktif berbasis permainan (\textit{game-based learning}/GBL) telah menunjukkan potensi signifikan dalam mendukung keterlibatan aktif siswa dalam konteks pendidikan sains komputer. Videnovik et al.\ [6] dalam tinjauan literatur mereka menemukan bahwa GBL dalam pendidikan sains komputer secara konsisten meningkatkan keterlibatan (\textit{engagement}) dan motivasi siswa, terutama ketika elemen permainan dirancang untuk mendukung tujuan pembelajaran secara langsung, bukan sekadar sebagai hiasan motivasional. Namun, Videnovik et al.\ [6] juga mencatat bahwa efektivitas GBL sangat bergantung pada desain progresi kesulitan yang tepat---progresi yang terlalu cepat menyebabkan frustrasi, sementara progresi yang terlalu lambat menyebabkan kebosanan.
+
+Prinsip pedagogis yang mendasari desain tiga level dalam proyek ini adalah \textbf{scaffolding}---pemberian bantuan yang melimpah pada tahap awal yang kemudian dikurangi secara bertahap seiring meningkatnya kompetensi siswa. Dalam kerangka scaffolding, Level 1 berfungsi sebagai tahap di mana bantuan sistem maksimal (prediksi KB dengan \textit{confidence} tinggi, instruksi jelas dari agen pedagogis), Level 2 merupakan zona transisi di mana bantuan berkurang dan siswa mulai mengambil tanggung jawab evaluatif, dan Level 3 adalah tahap di mana tanggung jawab evaluatif sepenuhnya berada di tangan siswa. Progresi ini dirancang agar siswa tidak langsung dihadapkan pada tugas evaluatif yang kompleks tanpa persiapan, sesuai dengan prinsip scaffolding yang menekankan pengurangan bantuan secara bertahap [6].
+
+Selaras dengan prinsip scaffolding, desain level juga didasarkan pada \textbf{Teori Flow} yang dikembangkan oleh Csikszentmihalyi. Teori Flow menyatakan bahwa individu mencapai pengalaman optimal (\textit{flow experience}) ketika tingkat tantangan yang dihadapi seimbang dengan tingkat keterampilan yang dimilikinya---tidak terlalu mudah (menyebabkan kebosanan) dan tidak terlalu sulit (menyebabkan kecemasan). Chan et al.\ [7] secara spesifik mengkaji penerapan Teori Flow dalam konteks GBL non-kompetitif dan menemukan bahwa keseimbangan tantangan-keterampilan (\textit{challenge-skill balance}) merupakan prediktor utama pengalaman flow dalam lingkungan berbasis permainan yang tidak bersifat kompetitif. Temuan ini sangat relevan dengan proyek \textit{Escape the Sketchbook}, yang merupakan simulasi non-kompetitif di mana siswa berinteraksi dengan sistem KB tanpa melawan pemain lain.
+
+Dalam desain level proyek ini, keseimbangan tantangan-keterampilan diwujudkan sebagai berikut: Level 1 menyajikan tantangan rendah (prediksi jelas, \textit{confidence} tinggi) sesuai keterampilan awal siswa yang masih rendah, sehingga siswa berada dalam zona \textit{flow} tanpa frustrasi. Level 2 meningkatkan tantangan secara terukur (\textit{confidence} ambigu) seiring meningkatnya pemahaman siswa terhadap mekanisme evaluasi, menjaga siswa dalam kanal \textit{flow}. Level 3 menyajikan tantangan tertinggi (\textit{confidence} sangat rendah, keputusan berdampak besar) yang menuntut keterampilan evaluatif yang telah terbangun pada dua level sebelumnya. Dengan menggabungkan scaffolding dan Teori Flow, desain tiga level memastikan bahwa progresi tidak hanya bertahap secara pedagogis tetapi juga terjaga secara pengalaman (\textit{experiential}).
+
+% ------------------------------------------------------------
+\subsection{Finger Tracking dan MediaPipe}
+\label{subsec:finger-tracking}
+% ------------------------------------------------------------
+
+Interaksi gestural merupakan paradigma interaksi manusia-komputer yang memungkinkan pengguna untuk berinteraksi dengan sistem digital menggunakan gerakan tangan secara alami, tanpa memerlukan perangkat input konvensional seperti mouse atau keyboard. Dalam konteks sistem yang menyasar siswa SMP, interaksi gestural memiliki keunggulan karena selaras dengan kecenderungan remaja untuk berinteraksi secara visual dan kinestetik dengan teknologi digital. Lebih penting lagi, dalam proyek \textit{Escape the Sketchbook}, interaksi gestural diwujudkan melalui mekanisme menggambar di kanvas---sebuah aktivitas yang secara natural melibatkan gerakan jari tangan dan memungkinkan siswa untuk ``merasakan'' proses input ke sistem KB secara langsung.
+
+MediaPipe merupakan \textit{framework} open-source yang dikembangkan oleh Google untuk pemrosesan data multimodal secara real-time, termasuk deteksi dan pelacakan tangan (\textit{hand tracking}). Meng et al.\ [9] memvalidasi penggunaan MediaPipe untuk pemantauan gestur tangan secara real-time dan menemukan bahwa sistem MediaPipe mampu mendeteksi 21 \textit{landmark} tangan dengan akurasi dan latensi yang memadai untuk aplikasi interaktif berbasis web. Dalam implementasinya, MediaPipe menggunakan arsitektur dua-tahap: pertama, deteksi telapak tangan menggunakan model \textit{bounding box}; kedua, estimasi \textit{landmark} tangan yang menghasilkan koordinat 21 titik kunci pada tangan, termasuk ujung jari, sendi, dan pergelangan tangan. Informasi \textit{landmark} ini kemudian digunakan untuk mengidentifikasi gestur spesifik, seperti posisi jari saat menggambar di kanvas.
+
+Dalam proyek ini, finger tracking berbasis MediaPipe digunakan untuk dua fungsi utama. Pertama, sebagai mekanisme input utama di mana siswa menggambar sketsa di kanvas digital menggunakan gerakan jari---sketsa tersebut kemudian menjadi input untuk model klasifikasi KB. Kedua, sebagai komponen interaksi pada tahap onboarding, di mana siswa melakukan kalibrasi gerakan jari untuk memastikan bahwa sistem dapat mendeteksi tangan siswa dengan baik sebelum simulasi dimulai. Pemilihan MediaPipe sebagai solusi finger tracking didasarkan pada kemampuannya berjalan secara real-time di browser tanpa memerlukan instalasi tambahan, yang sesuai dengan arsitektur berbasis web dari sistem ini.
+
+% ------------------------------------------------------------
+\subsection{Pedagogical Agent}
+\label{subsec:pedagogical-agent}
+% ------------------------------------------------------------
+
+Agen pedagogis (\textit{pedagogical agent}) merupakan karakter virtual yang terintegrasi dalam lingkungan pembelajaran digital dan berfungsi untuk memberikan panduan, umpan balik, atau motivasi kepada siswa. Schroeder, Davis \& Yang [8] dalam tinjauan komprehensif mereka (\textit{umbrella review}) menemukan bahwa agen pedagogis dapat mendukung proses belajar jika desainnya memenuhi tiga kondisi: (1) relevansi kontekstual---agen merespons situasi spesifik yang dihadapi siswa, bukan memberikan pesan generik; (2) kesesuaian beban kognitif---agen tidak memberikan informasi yang membebani siswa secara berlebihan; serta (3) konsistensi persona---agen memiliki identitas dan gaya komunikasi yang konsisten sepanjang interaksi.
+
+Penting untuk membedakan bahwa agen pedagogis dalam proyek ini, yaitu karakter Momo, dirancang sebagai agen berbasis aturan (\textit{rule-based}) yang non-NLP, bukan sebagai \textit{chatbot} berbasis pemrosesan bahasa alami. Keputusan desain ini didasarkan pada temuan Schroeder et al.\ [8] yang menunjukkan bahwa agen pedagogis yang sederhana dan kontekstual seringkali lebih efektif daripada agen yang kompleks dan \textit{overwhelming}. Momo memberikan umpan balik berdasarkan kondisi sistem---misalnya, ketika \textit{confidence score} rendah, ketika siswa melakukan \textit{override}, atau ketika siswa menghadapi situasi berisiko (\textit{Danger})---tanpa mencoba mensimulasikan percakapan bebas. Pendekatan ini secara akademis dapat dipertahankan karena Momo berfungsi sebagai \textit{companion} yang memandu perhatian siswa ke momen-momen penting dalam simulasi, bukan sebagai pengganti interaksi manusia-manusia.
+
+Dalam konteks proyek ini, Momo hadir sebagai karakter visual yang menyatu dengan narasi \textit{Escape the Sketchbook}. Momo muncul pada momen-momen tertentu sesuai kondisi sistem: saat onboarding untuk menjelaskan aturan, saat \textit{Probe UI} untuk mengarahkan perhatian siswa pada \textit{confidence score}, dan saat siswa membuat keputusan yang berpotensi berisiko untuk memberikan peringatan kontekstual. Dengan demikian, Momo bukan dekorasi visual, melainkan komponen fungsional yang memperlihatkan proses evaluasi terhadap output AI melalui umpan balik yang terkait langsung dengan keadaan sistem.
+
+% ------------------------------------------------------------
+\subsection{Child-Computer Interaction untuk Siswa SMP}
+\label{subsec:cci-smp}
+% ------------------------------------------------------------
+
+\textit{Child-Computer Interaction} (CCI) merupakan bidang kajian yang mempelajari bagaimana anak-anak dan remaja berinteraksi dengan teknologi digital, dengan fokus pada bagaimana karakteristik perkembangan kognitif, motorik, dan sosial memengaruhi desain interaksi yang sesuai. Dalam konteks literasi KB untuk kalangan K-12, Casal-Otero et al.\ [2] secara eksplisit menekankan bahwa strategi edukasi KB harus disesuaikan dengan tahap perkembangan usia siswa (\textit{age-appropriate strategies}). Untuk siswa SMP yang berada pada tahap operasional formal menurut teori Piaget, siswa sudah mampu berpikir abstrak namun masih membutuhkan jembatan konkrit untuk memahami konsep yang kompleks. Temuan Casal-Otero et al.\ [2] menunjukkan bahwa pendekatan berbasis pengalaman langsung (\textit{experience-based}) lebih efektif dibandingkan pendekatan ekspositif murni untuk kalangan usia ini.
+
+Implikasi desain dari prinsip CCI untuk siswa SMP meliputi beberapa aspek penting. Pertama, antarmuka harus sederhana namun tidak kekanak-kanakan---siswa SMP menolak desain yang terlalu infantil namun juga dapat mengalami \textit{choice paralysis} jika dihadapkan pada terlalu banyak pilihan [2]. Oleh karena itu, alur simulasi dalam proyek ini dirancang secara linear tanpa percabangan, agar fokus siswa tetap pada momen keputusan HITL, bukan pada navigasi antarmuka. Kedua, umpan balik harus bersifat non-menghukum---ketika siswa membuat keputusan yang kurang tepat (misalnya menerima prediksi keliru), sistem memberikan kesempatan untuk mencoba lagi (\textit{retry}) alih-alih memberikan penalti, sehingga mendorong eksplorasi tanpa tekanan. Ketiga, interaksi harus memanfaatkan modalitas yang familiar bagi remaja, seperti gestur dan antarmuka visual, yang menjadi dasar pemilihan finger tracking dan kanvas gambar sebagai mekanisme input utama.
+
+Dengan mengacu pada kerangka CCI yang diuraikan oleh Casal-Otero et al.\ [2], desain interaksi dalam proyek ini mengutamakan tiga prinsip: kesederhanaan alur, umpan balik kontekstual yang non-menghukum, dan modalitas interaksi yang sesuai dengan preferensi dan kemampuan motorik siswa SMP. Prinsip-prinsip ini memastikan bahwa sistem tidak hanya fungsional secara teknis, tetapi juga dapat diakses dan dinikmati oleh target penggunanya.
+
+% ------------------------------------------------------------
+\subsection{Usability Testing}
+\label{subsec:usability-testing}
+% ------------------------------------------------------------
+
+\textit{Usability testing} merupakan metode evaluasi yang mengukur sejauh mana sebuah sistem interaktif dapat digunakan secara efektif, efisien, dan memuaskan oleh pengguna target dalam konteks penggunaan tertentu. Dalam lingkup proyek ini, \textit{usability testing} dipilih sebagai metode evaluasi utama---bukan metode pre-post test yang mengklaim peningkatan kemampuan---karena tujuan evaluasi adalah mengukur keterbacaan alur interaksi, kejelasan mekanisme HITL, dan kesesuaian desain antarmuka dengan kemampuan siswa SMP, bukan mengukur perubahan kompetensi literasi KB. Keputusan metodologis ini sejalan dengan rekomendasi Memarian \& Doleck [5] yang menekankan bahwa dalam konteks HITL pada pendidikan KB, bukti perilaku (\textit{behavioral evidence}) berupa log interaksi dapat berfungsi sebagai \textit{proxy} yang valid untuk mengidentifikasi pola evaluatif siswa, tanpa perlu mengklaim hubungan kausal terhadap peningkatan kemampuan.
+
+Aspek-aspek usability yang diukur dalam proyek ini meliputi: (1) \textit{learnability}---seberapa mudah siswa memahami mekanisme simulasi setelah tahap onboarding; (2) \textit{efficiency}---seberapa cepat siswa dapat menyelesaikan alur simulasi dan membuat keputusan di setiap \textit{Probe UI}; (3) \textit{error rate}---seberapa sering siswa membuat kesalahan dalam navigasi atau interpretasi \textit{confidence score}; serta (4) \textit{satisfaction}---tingkat kepuasan subjektif siswa terhadap pengalaman interaksi. Pengukuran aspek-aspek ini dilakukan melalui kombinasi observasi terstruktur, analisis log interaksi, dan kuesioner pasca-simulasi. Dengan pendekatan ini, evaluasi menghasilkan data empiris mengenai kualitas desain interaksi tanpa membuat klaim yang melampaui cakupan metode yang digunakan.
+
+% ============================================================
+\section{PENELITIAN TERKAIT}
+\label{sec:penelitian-terkait}
+% ============================================================
+
+Bagian ini menyajikan kajian terhadap penelitian-penelitian sebelumnya yang relevan dengan proyek \textit{Escape the Sketchbook}. Setiap sub-bagian membahas temuan utama dari penelitian tersebut serta hubungannya dengan desain sistem ini.
+
+% ------------------------------------------------------------
+\subsection{AI Literacy in K-12}
+\label{subsec:penelitian-ai-literacy-k12}
+% ------------------------------------------------------------
+
+Casal-Otero et al.\ [2] melakukan tinjauan literatur sistematis terhadap 37 studi yang berkaitan dengan literasi KB pada jenjang K-12. Temuan utama mereka menunjukkan bahwa sebagian besar inisiatif literasi KB untuk K-12 berfokus pada tiga aspek: (1) pemahaman konseptual tentang apa itu KB dan bagaimana ia bekerja, (2) penggunaan alat berbasis KB untuk menyelesaikan tugas, dan (3) refleksi etis terhadap dampak KB pada masyarakat. Namun, aspek evaluatif---kemampuan untuk menilai output KB secara kritis---masih kurang mendapat perhatian dalam kurikulum yang ada. Casal-Otero et al.\ [2] juga menemukan bahwa strategi berbasis pengalaman langsung (\textit{experience-based strategies}), di mana siswa berinteraksi secara langsung dengan sistem KB dan mengamati outputnya, lebih efektif dibandingkan strategi ekspositif murni. Temuan ini menjadi dasar bagi desain \textit{Escape the Sketchbook}, yang menempatkan siswa dalam posisi evaluator aktif terhadap output klasifikasi KB, bukan penerima pasif informasi tentang KB.
+
+Ng et al.\ [1] mengembangkan kerangka konseptual literasi KB yang mencakup kemampuan mengevaluasi output probabilistik. Dalam konteks K-12, kerangka ini mengimplikasikan bahwa siswa perlu dihadapkan pada situasi di mana output KB bersifat tidak pasti, sehingga mereka memiliki pengalaman empiris dalam menilai dan menginterpretasikan tingkat keyakinan sistem. Penelitian Ng et al.\ [1] juga menyoroti bahwa literasi KB yang efektif harus mencakup pemahaman tentang keterbatasan KB---sebuah aspek yang menjadi inti dari mekanisme ambiguitas terkontrol dalam desain proyek ini.
+
+% ------------------------------------------------------------
+\subsection{Human-in-the-Loop Machine Learning}
+\label{subsec:penelitian-hitl-ml}
+% ------------------------------------------------------------
+
+Mosqueira-Rey et al.\ [4] menyajikan tinjauan komprehensif terhadap state of the art dalam \textit{Human-in-the-Loop Machine Learning} (HITL-ML). Mereka mengidentifikasi beberapa pola interaksi HITL yang umum, termasuk: (1) \textit{active learning}, di mana manusia memberikan label pada data yang dipilih oleh model; (2) \textit{interactive machine learning}, di mana manusia memberikan umpan balik iteratif terhadap output model; serta (3) \textit{human evaluation}, di mana manusia menilai kualitas atau kebenaran output model. Mosqueira-Rey et al.\ [4] secara khusus menekankan bahwa \textit{automation bias} merupakan tantangan mendasar dalam desain sistem HITL: tanpa desain antarmuka yang secara eksplisit memaksa pengguna untuk mengevaluasi output, keterlibatan manusia cenderung bersifat simbolis dan tidak menghasilkan peningkatan kualitas keputusan.
+
+Memarian \& Doleck [5] memfokuskan kajian mereka pada penerapan HITL dalam konteks pendidikan kecerdasan buatan (\textit{AI in Education}/AIED). Melalui analisis \textit{entity-relationship} (ER) terhadap 42 studi, mereka mengidentifikasi bahwa peran manusia dalam sistem AIED bervariasi dari \textit{data provider} hingga \textit{decision maker}. Memarian \& Doleck [5] menemukan bahwa efektivitas HITL dalam konteks pendidikan sangat bergantung pada desain mekanisme interaksi: jika keterlibatan manusia hanya bersifat reaktif (misalnya mengklik ``setuju''), maka interaksi tidak menghasilkan refleksi yang bermakna. Sebaliknya, jika keterlibatan bersifat deliberatif---di mana manusia harus mempertimbangkan beberapa opsi dan memilih dengan konsekuensi nyata---maka interaksi cenderung menghasilkan data perilaku yang lebih kaya. Temuan ini menjadi dasar bagi desain mekanisme \textit{Accept/Correct/Override} dalam \textit{Probe UI}, yang memastikan bahwa setiap keputusan siswa bersifat deliberatif dan berdampak.
+
+% ------------------------------------------------------------
+\subsection{Game-Based Learning in Computer Science}
+\label{subsec:penelitian-gbl-cs}
+% ------------------------------------------------------------
+
+Videnovik et al.\ [6] melakukan tinjauan literatur berskala (\textit{scoping literature review}) terhadap penerapan \textit{game-based learning} (GBL) dalam pendidikan sains komputer. Mencakup 62 studi, mereka menemukan bahwa GBL secara konsisten meningkatkan keterlibatan siswa, namun efektivitasnya dalam meningkatkan pemahaman konseptual sangat bergantung pada bagaimana elemen permainan diintegrasikan dengan konten pembelajaran. Videnovik et al.\ [6] mengidentifikasi bahwa GBL yang paling efektif adalah yang menerapkan \textit{consequence-driven learning}---di mana keputusan pemain memiliki konsekuensi langsung terhadap kemajuan permainan---karena mekanisme ini mendorong keterlibatan kognitif yang lebih dalam dibandingkan mekanisme berbasis poin atau lencana semata.
+
+Chan et al.\ [7] mengkaji hubungan antara Teori Flow dan \textit{game-based learning} secara empiris, dengan fokus pada lingkungan GBL non-kompetitif. Mereka menemukan bahwa keseimbangan tantangan-keterampilan (\textit{challenge-skill balance}) merupakan prediktor yang lebih kuat terhadap pengalaman flow dibandingkan elemen kompetisi. Dalam konteks GBL non-kompetitif, \textit{flow experience} dicapai ketika progresi kesulitan dirancang secara bertahap, memberikan tantangan yang cukup untuk mempertahankan perhatian tanpa menimbulkan frustrasi. Temuan Chan et al.\ [7] ini secara langsung mendukung desain tiga level dalam \textit{Escape the Sketchbook}, yang meningkatkan tantangan evaluatif secara bertahap dari Level 1 hingga Level 3 tanpa elemen kompetisi antar pemain. Mekanisme \textit{Solid/Danger/Decorative} juga merefleksikan prinsip \textit{consequence-driven learning} yang diidentifikasi oleh Videnovik et al.\ [6], di mana keputusan siswa memiliki konsekuensi langsung terhadap progres simulasi.
+
+% ------------------------------------------------------------
+\subsection{Real-Time Hand Gesture Monitoring}
+\label{subsec:penelitian-hand-gesture}
+% ------------------------------------------------------------
+
+Meng et al.\ [9] mengembangkan model pemantauan gestur tangan secara real-time berbasis sistem MediaPipe yang dapat didaftarkan (\textit{registerable system}). Penelitian mereka memvalidasi bahwa MediaPipe mampu mendeteksi \textit{landmark} tangan dengan akurasi yang memadai untuk aplikasi interaktif, dengan latensi yang rendah sehingga cocok untuk penggunaan real-time. Meng et al.\ [9] juga menunjukkan bahwa kombinasi deteksi \textit{landmark} MediaPipe dengan logika berbasis aturan untuk mengenali gestur spesifik (seperti gerakan menggambar, mengarahkan, atau memilih) menghasilkan sistem yang dapat beroperasi di lingkungan web tanpa memerlukan perangkat keras khusus.
+
+Relevansi penelitian Meng et al.\ [9] dengan proyek ini terletak pada validasi MediaPipe sebagai solusi finger tracking yang layak untuk aplikasi interaktif berbasis browser. Dalam konteks \textit{Escape the Sketchbook}, finger tracking digunakan untuk dua fungsi utama: (1) sebagai mekanisme input untuk menggambar sketsa di kanvas digital, yang kemudian diklasifikasikan oleh model KB, dan (2) sebagai komponen interaksi pada tahap onboarding untuk memastikan bahwa sistem dapat mendeteksi tangan siswa dengan baik sebelum simulasi dimulai. Pemilihan MediaPipe didasarkan pada kemampuannya berjalan secara real-time di browser, konsistensi deteksi \textit{landmark} yang telah divalidasi secara akademis [9], dan tidak adanya kebutuhan untuk instalasi perangkat lunak tambahan yang dapat menjadi hambatan bagi siswa SMP.
+
+% ------------------------------------------------------------
+\subsection{State of The Art}
+\label{subsec:state-of-the-art}
+% ------------------------------------------------------------
+
+Untuk memosisikan proyek \textit{Escape the Sketchbook} di antara penelitian-penelitian sebelumnya, dilakukan perbandingan terhadap beberapa sistem dan kajian terkait. Tabel~\ref{tab:sota} menyajikan perbandingan berdasarkan dimensi-dimensi yang relevan dengan fokus proyek ini.
+
+\begin{table}[H]
+\centering
+\caption{Perbandingan State of The Art}
+\label{tab:sota}
+\small
+\begin{tabular}{|p{3.2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+\hline
+\textbf{Sistem / Kajian} & \textbf{Literasi KB} & \textbf{Mekanisme HITL} & \textbf{Confidence Visual.} & \textbf{Interaksi Gestural} & \textbf{Progresi Berlevel} \\
+\hline
+Ng et al.\ [1] & \checkmark & -- & -- & -- & -- \\
+\hline
+Casal-Otero et al.\ [2] & \checkmark & -- & -- & -- & -- \\
+\hline
+Khosravi et al.\ [3] & -- & -- & \checkmark & -- & -- \\
+\hline
+Mosqueira-Rey et al.\ [4] & -- & \checkmark & -- & -- & -- \\
+\hline
+Memarian \& Doleck [5] & -- & \checkmark & -- & -- & -- \\
+\hline
+Videnovik et al.\ [6] & -- & -- & -- & -- & \checkmark \\
+\hline
+Chan et al.\ [7] & -- & -- & -- & -- & \checkmark \\
+\hline
+Schroeder et al.\ [8] & -- & -- & -- & -- & -- \\
+\hline
+Meng et al.\ [9] & -- & -- & -- & \checkmark & -- \\
+\hline
+Karran et al.\ [10] & -- & -- & \checkmark & -- & -- \\
+\hline
+\textbf{Escape the Sketchbook} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+\hline
+\end{tabular}
+\end{table}
+
+Berdasarkan Tabel~\ref{tab:sota}, terlihat bahwa tidak ada satupun sistem atau kajian sebelumnya yang mengintegrasikan kelima dimensi secara bersamaan. Ng et al.\ [1] dan Casal-Otero et al.\ [2] membahas literasi KB secara konseptual tanpa mengimplementasikan mekanisme HITL atau visualisasi \textit{confidence}. Khosravi et al.\ [3] dan Karran et al.\ [10] membahas aspek explainability dan visualisasi \textit{confidence} namun tidak dalam konteks simulasi interaktif berlevel. Mosqueira-Rey et al.\ [4] dan Memarian \& Doleck [5] mengkaji HITL secara komprehensif namun tidak membahas implementasi untuk kalangan K-12 dengan interaksi gestural. Videnovik et al.\ [6] dan Chan et al.\ [7] meneliti GBL dan progresi berlevel namun tidak mengintegrasikannya dengan mekanisme HITL untuk evaluasi output KB. Schroeder et al.\ [8] membahas agen pedagogis secara umum tanpa spesifikasi implementasi HITL. Meng et al.\ [9] memvalidasi finger tracking namun tidak dalam konteks literasi KB.
+
+Proyek \textit{Escape the Sketchbook} secara unik mengintegrasikan kelima dimensi tersebut: (1) literasi KB melalui pengalaman langsung berinteraksi dengan output klasifikasi probabilistik, (2) mekanisme HITL melalui \textit{Probe UI} yang menghentikan simulasi untuk evaluasi, (3) visualisasi \textit{confidence score} yang memperlihatkan tingkat keyakinan model, (4) interaksi gestural melalui finger tracking berbasis MediaPipe, dan (5) progresi berlevel berdasarkan prinsip scaffolding dan Teori Flow. Integrasi ini merupakan kontribusi utama proyek terhadap ruang kajian yang ada, memposisikan \textit{Escape the Sketchbook} sebagai sistem yang menjembatani kesenjangan antara teori literasi KB, mekanisme HITL, dan desain interaksi untuk siswa SMP.
+
+% ============================================================
+% DAFTAR PUSTAKA (sebagian dari Bab 2)
+% ============================================================
+
+\begin{thebibliography}{10}
+
+\bibitem{ref1}
+Ng, D.T.K., Leung, J.K.L., Chu, S.K.W., \& Qiao, M.S. (2021). Conceptualizing AI literacy: An exploratory review. \textit{Computers and Education: Artificial Intelligence}, 2, 100041.
+
+\bibitem{ref2}
+Casal-Otero, V., Catala, A., Fern\'andez-Morante, C., Taboada, M., Caeiro-Rodr\'iguez, M., \& Barro, S. (2023). AI literacy in K-12: A systematic literature review. \textit{International Journal of STEM Education}, 10, 29.
+
+\bibitem{ref3}
+Khosravi, H., Shum, S.B., Chen, G., Conati, C., Tsai, Y.-S., Kay, J., Knight, S., Martinez-Maldonado, R., Sadat-Milani, L., \& Ga\v{s}evi\'c, D. (2022). Explainable Artificial Intelligence in education. \textit{Computers and Education: Artificial Intelligence}, 3, 100074.
+
+\bibitem{ref4}
+Mosqueira-Rey, E., Hern\'andez-Pereira, E., Alonso-R\'ios, D., Bobillo-Ares, B., \& Moret-Bonillo, V. (2023). Human-in-the-loop machine learning: A state of the art. \textit{Artificial Intelligence Review}, 56, 3005--3054.
+
+\bibitem{ref5}
+Memarian, B., \& Doleck, T. (2024). Human-in-the-loop in artificial intelligence in education: A review and entity-relationship (ER) analysis. \textit{Computers in Human Behavior: Artificial Humans}, 2, 100053.
+
+\bibitem{ref6}
+Videnovik, M., Vlahovi\v{c}-Steti\'c, V., Kišiček, S., \& Vošner, H.B. (2023). Game-based learning in computer science education: A scoping literature review. \textit{International Journal of STEM Education}, 10, 54.
+
+\bibitem{ref7}
+Chan, K.K., Wan, K.M., \& King, R.B. (2021). Performance over enjoyment? Effect of game-based learning on learning outcome and flow experience. \textit{Frontiers in Education}, 6, 660376.
+
+\bibitem{ref8}
+Schroeder, N.L., Davis, C.S., \& Yang, Y. (2025). Designing and learning with pedagogical agents: An umbrella review. \textit{Journal of Educational Computing Research}, 62(8).
+
+\bibitem{ref9}
+Meng, Z., Fu, Z., Liu, J., Wang, H., \& Pan, Y. (2024). Real-Time Hand Gesture Monitoring Model Based on MediaPipe's Registerable System. \textit{Sensors}, 24(19), 6262.
+
+\bibitem{ref10}
+Karran, A.J., Demazure, T., \& Hudelot, C. (2022). Designing for confidence: The impact of visualizing artificial intelligence decisions. \textit{Frontiers in Neuroscience}, 16.
+
+\end{thebibliography}

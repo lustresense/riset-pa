@@ -1,0 +1,234 @@
+% ============================================================
+% PROPOSAL PROYEK AKHIR — FARCHAN DEANO MUHAMMAD (CAN)
+% BAB 1 — PENDAHULUAN
+%
+% Project: Sketchbook Universe
+% Scope  : Frontend / HITL UI / Maskot Momo / Simulasi Interaktif Berlevel
+% Format : PENS Standard (A4, 12pt TNR, 1.5 spacing, 4cm/3cm margin)
+% Style  : Mengikuti pola format Izzah (PilAItes 2025)
+%
+% File ini adalah STANDALONE COMPILABLE LaTeX file berisi Bab 1 saja.
+% Untuk merge ke proposal master (latex_skeleton_can.tex):
+%   - Copy isi antara %% BEGIN BAB 1 CONTENT %% dan %% END BAB 1 %%
+%   - Paste di antara \chapter{PENDAHULUAN} dan \chapter{KAJIAN PUSTAKA}
+%   - Atau gunakan \input{bab1_can_v1.tex} (hapus preamble terlebih dahulu)
+% ============================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[top=4cm,left=4cm,right=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+
+% Times New Roman (pdflatex standard)
+\usepackage{times}
+\renewcommand{\rmdefault}{ptm}
+
+% Line spacing 1.5
+\setstretch{1.5}
+
+% Paragraph indent (1.25 cm, PENS standard)
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% Chapter / section / subsection formatting (pola Izzah)
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{14pt}{16.8pt}\selectfont\bfseries\centering}
+  {BAB \thechapter}
+  {12pt}
+  {\MakeUppercase}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\section}{0pt}{18pt}{12pt}
+\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+
+% Caption formatting (pola Izzah)
+\captionsetup[table]{font=small,labelfont=bf,name={Tabel},labelsep=period,justification=centering,aboveskip=6pt,belowskip=0pt,position=top}
+\captionsetup[figure]{font=small,labelfont=bf,name={Gambar},labelsep=period,justification=centering,aboveskip=0pt,belowskip=6pt,position=bottom}
+
+% Header / footer (page number top-right)
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% TOC naming
+\renewcommand{\contentsname}{DAFTAR ISI}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% Cover page (minimal, for standalone compile)
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\fontsize{14pt}{16pt}\selectfont PROPOSAL PROYEK AKHIR}\\[1cm]
+{\fontsize{14pt}{18pt}\selectfont\bfseries\MakeUppercase{Pengembangan Simulasi Interaktif Berlevel dengan Mekanisme Human-in-the-Loop pada Sistem Literasi Kecerdasan Buatan untuk Siswa SMP}}\\[2cm]
+{\fontsize{12pt}{14pt}\selectfont Oleh:}\\[0.3cm]
+{\fontsize{12pt}{14pt}\selectfont\bfseries Farchan Deano Muhammad}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont NRP. 53226000xx}\\[2cm]
+{\fontsize{12pt}{14pt}\selectfont PROGRAM STUDI SARJANA TERAPAN TEKNOLOGI REKAYASA MULTIMEDIA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont JURUSAN TEKNOLOGI MULTIMEDIA DAN JARINGAN}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont POLITEKNIK ELEKTRONIKA NEGERI SURABAYA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont 2025}
+\end{titlepage}
+
+% ============================================================
+% BAB 1 — PENDAHULUAN (verbatim dari proposal-can.tex existing)
+% Citation numbering: di-update ke skema Sitasi_Final_v1.md
+%   [1] Ng           -> \cite{ref1}   (A01)
+%   [2] Casal-Otero  -> \cite{ref2}   (A02)
+%   [3] Khosravi     -> \cite{ref3}   (A03)
+%   [4] Mosqueira    -> \cite{ref4}   (A04)
+%   [6] Videnovik    -> \cite{ref6}   (A06)
+%   [8] Schroeder    -> \cite{ref9}   (B01)
+%   [9] Meng         -> \cite{ref10}  (B02, DEPRECATED post-pivot)
+% ============================================================
+%% BEGIN BAB 1 CONTENT %%
+\chapter{PENDAHULUAN}
+\label{chap:bab1}
+
+% ============================================================
+\section{LATAR BELAKANG}
+\label{sec:latar-belakang}
+% ============================================================
+
+Perkembangan kecerdasan buatan telah membawa perubahan besar dalam cara manusia memperoleh informasi, menggunakan teknologi, dan mengambil keputusan. Teknologi ini tidak hanya digunakan dalam bidang industri atau penelitian, tetapi juga mulai hadir dalam kehidupan sehari-hari melalui berbagai aplikasi digital. Kondisi tersebut membuat literasi kecerdasan buatan menjadi penting untuk diperkenalkan kepada siswa, agar mereka tidak hanya mampu menggunakan teknologi berbasis kecerdasan buatan, tetapi juga memahami cara kerja, keterbatasan, dan risiko penerimaan keluaran sistem secara pasif.
+
+Literasi kecerdasan buatan tidak cukup dipahami sebagai kemampuan mengenal istilah atau menggunakan aplikasi berbasis kecerdasan buatan. Literasi tersebut juga mencakup kemampuan memahami bagaimana sistem bekerja, bagaimana sistem digunakan, bagaimana hasil sistem dievaluasi, serta bagaimana pengguna mempertimbangkan aspek etis dalam penggunaannya \cite{ref1}. Dalam konteks pendidikan K-12, pengenalan kecerdasan buatan juga dipandang sebagai tantangan pedagogis karena siswa perlu memahami konsep yang bersifat teknis melalui pendekatan yang sesuai dengan usia dan pengalaman belajarnya \cite{ref2}.
+
+Salah satu tantangan dalam pembelajaran kecerdasan buatan adalah sifat konsepnya yang cenderung abstrak. Konsep seperti prediksi, tingkat keyakinan sistem, validasi, dan pengambilan keputusan tidak selalu mudah dipahami apabila hanya disampaikan melalui teks atau ceramah. Pada sistem klasifikasi visual, misalnya, hasil yang diberikan bukan merupakan kebenaran mutlak, melainkan keluaran prediktif yang dipengaruhi oleh data, pola, dan tingkat keyakinan model. Oleh karena itu, siswa perlu diberi pengalaman belajar yang dapat memperlihatkan bahwa sistem kecerdasan buatan dapat membantu, tetapi tetap perlu diamati dan dievaluasi.
+
+Pendekatan \textit{Explainable Artificial Intelligence} dalam pendidikan menekankan pentingnya transparansi dan penyajian keluaran sistem yang dapat dipahami oleh pengguna \cite{ref3}. Dalam konteks pembelajaran siswa SMP, penjelasan tersebut tidak harus berupa uraian teknis yang kompleks. Penyajian sederhana seperti hasil prediksi, tingkat keyakinan, dan umpan balik visual dapat digunakan untuk membantu siswa membaca keluaran sistem secara lebih sadar. Dengan demikian, siswa tidak hanya melihat hasil akhir, tetapi juga memahami bahwa terdapat proses dan ketidakpastian di balik keputusan sistem.
+
+Pendekatan \textit{Human-in-the-Loop} menjadi relevan karena menempatkan manusia sebagai bagian dari proses sistem, baik sebagai pengamat, pengoreksi, validator, maupun pengambil keputusan \cite{ref4}. Pada konteks pendidikan, mekanisme ini dapat digunakan untuk menunjukkan bahwa kecerdasan buatan tidak bekerja sebagai sistem yang sepenuhnya terlepas dari manusia. Siswa dapat diperkenalkan pada gagasan bahwa manusia tetap memiliki peran dalam mengamati hasil, menentukan keputusan, dan memperbaiki tindakan berdasarkan keluaran sistem.
+
+Untuk siswa SMP, penyampaian konsep tersebut membutuhkan media yang konkret, visual, dan bertahap. Media berbasis simulasi interaktif dapat membantu siswa mengalami proses belajar secara langsung melalui tindakan, umpan balik, dan konsekuensi. Penelitian terkait \textit{game-based learning} pada pendidikan \textit{computer science} menunjukkan bahwa media interaktif dapat digunakan untuk meningkatkan keterlibatan siswa dalam memahami konsep komputasi melalui pengalaman aktif \cite{ref6}. Oleh karena itu, simulasi interaktif berlevel dipilih sebagai pendekatan agar siswa dapat mempelajari konsep literasi kecerdasan buatan secara bertahap tanpa merasa sedang menerima materi teoritis yang berat.
+
+Simulasi interaktif yang dikembangkan pada proyek akhir ini menggunakan konsep visual berbasis buku sketsa. Konsep tersebut dipilih karena aktivitas menggambar dekat dengan proses eksplorasi visual dan sesuai dengan karakteristik bidang multimedia. Siswa berinteraksi dengan sistem melalui gerakan jari menggunakan \textit{finger tracking} berbasis MediaPipe. Teknologi MediaPipe digunakan karena mampu mendukung pemantauan gerakan tangan secara \textit{real-time} dan dapat diterapkan pada interaksi berbasis kamera \cite{ref10}. Dengan pendekatan ini, siswa dapat berinteraksi tanpa perangkat tambahan khusus, sehingga pengalaman belajar menjadi lebih natural dan aktif.
+
+Selain interaksi berbasis gerakan, sistem ini juga menggunakan mekanisme \textit{Human-in-the-Loop} dalam simulasi berlevel. Pada setiap proses interaksi, siswa tidak hanya menjalankan simulasi, tetapi juga diarahkan untuk mengamati, memilih, atau memvalidasi hasil yang ditampilkan sistem. Karakter pendamping sederhana digunakan untuk memberikan instruksi dan umpan balik. Penggunaan \textit{pedagogical agent} dalam lingkungan belajar dapat membantu proses pembelajaran melalui dukungan instruksi dan interaksi yang lebih terarah \cite{ref9}. Dalam sistem ini, karakter pendamping tidak berfungsi sebagai chatbot, melainkan sebagai pemberi umpan balik berbasis kondisi simulasi.
+
+Pengembangan sistem ini diharapkan dapat menjadi media pembelajaran literasi kecerdasan buatan yang lebih visual, interaktif, dan sesuai untuk siswa SMP. Sistem tidak ditujukan sebagai produk permainan penuh, tetapi sebagai \textit{prototype} simulasi edukatif yang menekankan pengalaman belajar bertahap. Melalui \textit{finger tracking}, simulasi berlevel, dan mekanisme \textit{Human-in-the-Loop}, siswa diharapkan dapat memahami bahwa kecerdasan buatan dapat membantu proses pengambilan keputusan, tetapi tetap membutuhkan keterlibatan manusia dalam pengamatan, koreksi, dan validasi.
+
+% ============================================================
+\section{PERMASALAHAN}
+\label{sec:permasalahan}
+% ============================================================
+
+Sistem kecerdasan buatan dalam pembelajaran sering kali dipahami sebagai alat yang memberikan jawaban akhir, sehingga pengguna berpotensi menerima keluaran sistem tanpa mempertimbangkan proses, tingkat keyakinan, maupun kemungkinan kesalahan. Pada tingkat SMP, konsep seperti prediksi, \textit{confidence}, koreksi, validasi, dan pengambilan keputusan masih dapat terasa abstrak apabila hanya disampaikan melalui teks atau penjelasan satu arah. Kondisi ini menunjukkan adanya kebutuhan terhadap media berbasis teknologi yang mampu menyajikan pengalaman interaktif, memperlihatkan hubungan antara input pengguna, keluaran sistem, keputusan manusia, dan konsekuensi yang terjadi setelah keputusan tersebut diambil. Oleh karena itu, diperlukan pengembangan simulasi interaktif berlevel berbasis \textit{finger tracking} MediaPipe dengan mekanisme \textit{Human-in-the-Loop} agar siswa dapat memahami peran manusia dalam proses pengamatan, koreksi, validasi, dan pengambilan keputusan pada sistem kecerdasan buatan.
+
+% ============================================================
+\section{BATASAN MASALAH}
+\label{sec:batasan-masalah}
+% ============================================================
+
+\begin{enumerate}
+    \item Penelitian ini dibatasi pada pengembangan \textit{prototype} simulasi interaktif berlevel berbasis web untuk mendukung literasi kecerdasan buatan bagi siswa SMP kelas 7 sampai 9.
+    \item Sistem berfokus pada perancangan antarmuka, alur interaksi, \textit{finger tracking} berbasis kamera menggunakan MediaPipe, mekanisme \textit{Human-in-the-Loop}, dan umpan balik sistem.
+    \item Materi literasi kecerdasan buatan dibatasi pada konsep dasar mengenai keluaran sistem, pengamatan, koreksi, validasi, dan pengambilan keputusan manusia dalam sistem kecerdasan buatan.
+    \item Penelitian ini tidak berfokus pada pengembangan model kecerdasan buatan kompleks, pelatihan ulang model, optimasi arsitektur model, maupun penerapan \textit{Human-in-the-Loop} sebagai sistem produksi industri.
+    \item Simulasi yang dikembangkan tidak difokuskan pada unsur gamifikasi atau fitur game lanjutan seperti \textit{multiplayer}, \textit{leaderboard}, \textit{badge}, sistem skor kompetitif, \textit{level procedural}, \textit{adaptive difficulty}, \textit{chatbot}, \textit{Large Language Model}, \textit{Retrieval-Augmented Generation}, maupun \textit{Natural Language Processing}. Pengujian difokuskan pada fungsi sistem, keterbacaan alur interaksi, dan \textit{usability} awal, sehingga penelitian ini tidak menggunakan \textit{pre-test} dan \textit{post-test} sebagai evaluasi utama serta tidak mengklaim peningkatan kemampuan siswa secara kuantitatif.
+\end{enumerate}
+
+% ============================================================
+\section{TUJUAN}
+\label{sec:tujuan}
+% ============================================================
+
+Penelitian proyek akhir ini bertujuan untuk mengembangkan \textit{prototype} simulasi interaktif berlevel berbasis web untuk mendukung literasi kecerdasan buatan pada siswa SMP dengan menggunakan \textit{finger tracking} berbasis MediaPipe dan mekanisme \textit{Human-in-the-Loop}. Tujuan khusus penelitian ini adalah merancang alur interaksi yang memungkinkan siswa menggambar, membaca keluaran sistem, menentukan keputusan, dan melihat konsekuensi keputusan tersebut di dalam simulasi. Penelitian ini juga bertujuan menguji kelayakan awal sistem dari sisi fungsi, keterbacaan alur interaksi, dan \textit{usability} awal sebagai dasar pengembangan lebih lanjut.
+
+% ============================================================
+\section{MANFAAT}
+\label{sec:manfaat}
+% ============================================================
+
+\begin{enumerate}
+    \item Bagi siswa, sistem ini dapat menjadi media pembelajaran interaktif yang membantu memahami bahwa kecerdasan buatan tidak hanya memberikan hasil akhir, tetapi juga melibatkan proses, kemungkinan, dan keputusan manusia.
+    \item Bagi guru atau sekolah, sistem ini dapat menjadi alternatif media pembelajaran literasi kecerdasan buatan yang lebih visual dan interaktif.
+    \item Bagi peneliti atau mahasiswa, penelitian ini dapat menjadi dasar pengembangan sistem edukasi berbasis interaksi natural, \textit{finger tracking}, dan \textit{Human-in-the-Loop} pada bidang multimedia interaktif.
+    \item Bagi pengembangan media pembelajaran, proyek ini dapat memberikan contoh rancangan simulasi interaktif berlevel yang menggabungkan teknologi \textit{computer vision}, antarmuka pengguna, dan konsep literasi kecerdasan buatan.
+\end{enumerate}
+
+% ============================================================
+\section{SISTEMATIKA PENULISAN}
+\label{sec:sistematika-penulisan}
+% ============================================================
+
+BAB I Pendahuluan: membahas latar belakang, permasalahan, batasan masalah, tujuan, manfaat, dan sistematika penulisan. BAB II Kajian Pustaka: membahas deskripsi permasalahan, teori penunjang, penelitian terkait, dan \textit{state of the art}. BAB III Deskripsi Sistem: membahas deskripsi solusi, metodologi penelitian, desain sistem, rancangan pengujian, dan jadwal penelitian.
+%% END BAB 1 CONTENT %%
+
+% ============================================================
+% DAFTAR PUSTAKA (subset — hanya ref yang disitir di Bab 1)
+% Daftar pustaka lengkap (32 refs) ada di daftar_pustaka_can_v1.tex
+% ============================================================
+\chapter*{DAFTAR PUSTAKA}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+
+\begin{thebibliography}{99}
+
+\bibitem{ref1}
+Ng, D.T.K., Leung, J.K.L., Chu, S.K.W., \& Qiao, M.S. (2021). Conceptualizing AI literacy: An exploratory review. \textit{Computers and Education: Artificial Intelligence}, 2, 100041.
+
+\bibitem{ref2}
+Casal-Otero, V., Catala, A., Fern\'andez-Morante, C., Taboada, M., Caeiro-Rodr\'iguez, M., \& Barro, S. (2023). AI literacy in K-12: A systematic literature review. \textit{International Journal of STEM Education}, 10, 29.
+
+\bibitem{ref3}
+Khosravi, H., Shum, S.B., Chen, G., Conati, C., Tsai, Y.-S., Kay, J., Knight, S., Martinez-Maldonado, R., Sadat-Milani, L., \& Ga\v{s}evi\'c, D. (2022). Explainable Artificial Intelligence in education. \textit{Computers and Education: Artificial Intelligence}, 3, 100074.
+
+\bibitem{ref4}
+Mosqueira-Rey, E., Hern\'andez-Pereira, E., Alonso-R\'ios, D., Bobillo-Ares, B., \& Moret-Bonillo, V. (2023). Human-in-the-loop machine learning: A state of the art. \textit{Artificial Intelligence Review}, 56(4), 3005--3054.
+
+\bibitem{ref6}
+Videnovik, M., Vlahovi\v{c}-Steti\'c, V., Kišiček, S., \& Vošner, H.B. (2023). Game-based learning in computer science education: A scoping literature review. \textit{International Journal of STEM Education}, 10, 54.
+
+\bibitem{ref9}
+Schroeder, N.L., Davis, C.S., \& Yang, Y. (2025). Designing and learning with pedagogical agents: An umbrella review. \textit{Journal of Educational Computing Research}, 62(8).
+
+\bibitem{ref10}
+Meng, Z., Fu, Z., Liu, J., Wang, H., \& Pan, Y. (2024). Real-Time Hand Gesture Monitoring Model Based on MediaPipe's Registerable System. \textit{Sensors}, 24(19), 6262. \textit{[Catatan: DEPRECATED post-pivot 16/6/26 --- login gesture diganti nomor absen + superadmin. Dipertahankan untuk dokumentasi historis canvas drawing input.]}
+
+\end{thebibliography}
+
+\end{document}

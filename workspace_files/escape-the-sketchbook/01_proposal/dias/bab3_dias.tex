@@ -1,0 +1,439 @@
+% ============================================================
+% BAB 3 — PERANCANGAN SISTEM (SCOPE: DIAS)
+% Muhammad Dias Al Izzat — D4 TRM PENS
+% ============================================================
+
+\chapter{PERANCANGAN SISTEM}
+
+% ------------------------------------------------------------
+% 3.1 Perancangan Sistem Global
+% ------------------------------------------------------------
+\section{Perancangan Sistem Global}
+
+Desain sistem dibagi menjadi desain sistem global dan desain sistem berdasarkan scope pengembangan. Desain sistem global menunjukkan alur keseluruhan sistem dari input pengguna, proses klasifikasi AI, mekanisme Human-in-the-Loop, simulasi interaktif, hingga pencatatan dan analisis data. Selanjutnya, desain sistem scope masing-masing digunakan untuk menjelaskan batas kontribusi pengembangan pada bagian AI-data dan bagian interaksi-simulasi.
+
+Pada desain global, sistem tidak hanya menerima gambar sebagai input, tetapi juga menerima keputusan user dan konteks gameplay. Hal ini diperlukan karena fokus sistem bukan sekadar klasifikasi sketsa, melainkan bagaimana siswa merespons keluaran AI dan melihat konsekuensi keputusan tersebut dalam simulasi. Inferensi AI berjalan di browser siswa menggunakan TensorFlow.js, sementara server menangani penyimpanan log, analisis data, dan dashboard guru.
+
+Desain sistem global menggunakan model Input--Process--Output (IPO) yang terbagi menjadi empat layer proses, yaitu: \textit{Interactive Simulation Layer}, \textit{AI Classification Layer}, \textit{Decision \& Consequence Layer}, dan \textit{Data \& Analysis Layer}. Pembagian ini menunjukkan bahwa sistem terdiri dari blok fungsi utama yang saling terhubung, bukan satu flow panjang tanpa struktur.
+
+\textbf{Input} berisi semua hal yang masuk ke sistem dari sisi user dan konteks permainan. Siswa memberi gesture tangan, menggambar objek, mengambil keputusan terhadap prediksi AI, dan bermain di level tertentu. Jadi input global tidak cuma gambar, karena sistem ini bukan classifier gambar biasa.
+
+\textit{Interactive Simulation Layer} adalah bagian yang membuat siswa masuk ke pengalaman sistem. Di sini ada onboarding, MediaPipe, drawing canvas, Probe UI, gameplay 2D, dan feedback Momo. Layer ini dominan scope rekan (Can) karena menyangkut interaksi, UI, gameplay, dan pengalaman user.
+
+\textit{AI Classification Layer} adalah bagian yang membaca gambar user. Gambar dari canvas masuk ke preprocessing, lalu diprediksi oleh CNN MobileNet/TensorFlow.js, kemudian menghasilkan Top-3 prediction dan confidence score. Inferensi berjalan di browser (client-side) --- model diload dari aset statis yang disediakan server, tetapi proses prediksi sendiri tidak melibatkan round-trip ke server.
+
+\textit{Decision \& Consequence Layer} adalah jembatan antara AI dan game. Setelah AI memberi prediksi, sistem tidak langsung menjalankan hasil AI. User masuk lewat Probe UI, lalu keputusan akhirnya menjadi final label. Final label itu baru dipetakan menjadi Solid, Danger, atau Decorative.
+
+\textit{Data \& Analysis Layer} menerima log dari proses interaksi dan gameplay. Data dikirim via REST API ke backend, disimpan di SQLite, lalu diproses untuk analisis pola keputusan. K-Means clustering dijalankan di server menggunakan Python (scikit-learn). Dashboard guru memvisualisasikan hasil analisis. Layer ini dominan scope penulis (Dias).
+
+% Diagram IPO Global
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/desain_sistem_global.png}
+    \caption{Desain Sistem Global (IPO)}
+    \label{fig:desain-sistem-global}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.2 Perancangan Sistem Scope Dias
+% ------------------------------------------------------------
+\section{Perancangan Sistem Scope Dias}
+
+Diagram desain sistem scope penulis difokuskan pada bagian AI classification, model training, data logging, backend API, K-Means clustering, dan dashboard admin. Bagian Interactive Simulation Layer dan HITL Interface diperlakukan sebagai input dan output dari scope penulis, bukan sebagai proses yang dikerjakan.
+
+\textbf{Input scope penulis} meliputi: dataset Quick Draw! (15--20 kategori terpilih), gambar sketsa dari user (via Canvas), konteks level (confidence range yang ditargetkan), dan interaction event dari frontend (decision data, gameplay result).
+
+\textbf{Proses scope penulis} terbagi menjadi enam sub-proses utama:
+
+\begin{enumerate}
+    \item \textit{Dataset Preparation} --- Pemilihan 15--20 kategori dari dataset Quick Draw!, pembagian data train/test, preprocessing gambar (resize 28$\times$28, normalisasi, grayscale).
+    \item \textit{Model Training} --- Training CNN MobileNet pada dataset yang telah dipreprocessing, evaluasi akurasi dan loss, iterasi hyperparameter.
+    \item \textit{Model Export} --- Konversi model dari Keras (.h5) ke TensorFlow.js format (model.json + shard files), optimasi ukuran model untuk loading di browser.
+    \item \textit{Backend API \& Logging} --- REST API endpoint untuk menerima interaction log, validasi payload, penyimpanan ke SQLite, dan query data untuk dashboard.
+    \item \textit{K-Means Clustering Analysis} --- Feature engineering dari data log, penentuan jumlah cluster (elbow method/silhouette score), eksekusi K-Means di server (Python scikit-learn), segmentasi tipe pengambil keputusan siswa.
+    \item \textit{Admin Dashboard} --- Visualisasi metrik keputusan (Accept Rate, Override Rate, Correct Rate, Confidence vs Decision), ekspor data (CSV/JSON), tampilan clustering result.
+\end{enumerate}
+
+\textbf{Output scope penulis} meliputi: model CNN MobileNet yang telah dikonversi ke TensorFlow.js, Top-3 prediction dan confidence score saat inference, backend REST API yang berjalan, dataset log interaksi, analisis pola keputusan siswa (K-Means clustering), dan dashboard guru.
+
+% Diagram IPO Scope Dias
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/desain_sistem_dias.png}
+    \caption{Desain Sistem Scope Dias (IPO)}
+    \label{fig:desain-sistem-dias}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.3 Perancangan Arsitektur Sistem
+% ------------------------------------------------------------
+\section{Perancangan Arsitektur Sistem}
+
+Proyek ini mengadopsi pola \textit{Hybrid Architecture} yang menggabungkan \textit{Browser-Based Inference} untuk klasifikasi AI dan \textit{Server-Side Services} untuk layanan pendukung. Inferensi CNN MobileNet berjalan sepenuhnya di browser siswa menggunakan TensorFlow.js, sehingga data gambar dan kamera siswa tidak pernah keluar dari perangkat mereka. Di sisi lain, server backend (Node.js/Express + SQLite) menangani layanan yang memerlukan persistensi, autentikasi, analisis, dan visualisasi --- termasuk REST API logging, JWT authentication untuk dashboard guru, K-Means clustering, dan ekspor data.
+
+Pemisahan ini bukan arbitrer. Inferensi dikategorikan client-side karena dua alasan: (1) privasi data siswa --- gambar tidak keluar device, sesuai COPPA/GDPR-K, dan (2) latensi rendah (15--100 ms vs 200--500 ms jika lewat server). Layanan pendukung dikategorikan server-side karena memerlukan persistensi data lintas sesi, akses terpusat oleh guru, dan komputasi analisis yang tidak perlu real-time di browser siswa.
+
+Dari sisi penulis (scope Dias), arsitektur backend terdiri dari komponen-komponen berikut:
+
+\begin{itemize}
+    \item \textbf{REST API (Node.js/Express)} --- Endpoint utama meliputi \texttt{POST /api/logs/interaction} untuk menerima log dari frontend, \texttt{GET /api/sessions} untuk mengambil daftar sesi, \texttt{GET /api/sessions/:id/metrics} untuk mengambil metrik keputusan, dan \texttt{GET /api/export/csv} untuk ekspor data. API menggunakan JWT authentication untuk melindungi akses dashboard guru.
+    \item \textbf{SQLite Database} --- Menyimpan interaction log, session data, dan agregasi metrik. SQLite dipilih karena ringan, tanpa konfigurasi server tambahan, dan cukup untuk skala data penelitian (puluhan siswa, bukan ribuan).
+    \item \textbf{K-Means Clustering (Python/scikit-learn)} --- Menerima data log yang telah di-feature engineering, menjalankan K-Means clustering untuk mengelompokkan tipe pengambil keputusan siswa, dan menghasilkan label cluster. Python dipilih karena scikit-learn menyediakan implementasi K-Means yang matang dan interoperabilitas dengan pandas untuk feature engineering.
+    \item \textbf{Admin Dashboard} --- Panel web yang memvisualisasikan metrik keputusan siswa dan hasil clustering. Dashboard mengakses data melalui REST API yang sama, sehingga guru tidak perlu akses langsung ke database.
+    \item \textbf{Model File Serving} --- Server menyajikan aset model TensorFlow.js (model.json + shard files) sebagai file statis. Model diload oleh browser siswa saat pertama kali membuka aplikasi, lalu di-cache untuk sesi berikutnya. Server tidak menjalankan inference --- ia hanya menyediakan file model.
+\end{itemize}
+
+% Diagram Arsitektur
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/arsitektur_sistem.png}
+    \caption{Arsitektur Sistem Hybrid --- Browser-Based Inference + Server-Side Services}
+    \label{fig:arsitektur-sistem}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.4 Perancangan Model CNN MobileNet
+% ------------------------------------------------------------
+\section{Perancangan Model CNN MobileNet}
+
+Model klasifikasi gambar menggunakan arsitektur CNN MobileNet sebagai backbone. MobileNet dipilih karena dirancang untuk perangkat dengan resource terbatas --- termasuk browser --- tanpa mengorbankan akurasi secara signifikan. Model dilatih menggunakan dataset Quick Draw! dari Google dengan 15--20 kategori terpilih.
+
+\subsection{Pemilihan Kategori Dataset}
+
+Dari ratusan kategori yang tersedia di Quick Draw!, dipilih 15--20 kategori yang memenuhi kriteria berikut: (1) relevan dengan gameplay --- kategori harus bisa dipetakan ke salah satu dari tiga behavior (Solid, Danger, Decorative), (2) mudah digambar oleh siswa SMP --- kategori tidak terlalu abstrak, (3) memiliki cukup data training --- setiap kategori memiliki minimal 50.000 sampel di Quick Draw!, dan (4) menghasilkan variasi confidence score --- ada kategori yang mudah dikenali (confidence tinggi) dan ada yang ambigu (confidence rendah).
+
+Contoh kategori yang dipilih: ladder, bridge, chair, table (Solid); knife, sword, axe (Danger); flower, cloud, sun, star (Decorative). Pemilihan kategori ini memastikan bahwa setiap level bisa menghasilkan confidence range yang berbeda secara programatik.
+
+\subsection{Arsitektur Model}
+
+Model menggunakan MobileNet V2 sebagai feature extractor, dengan layer klasifikasi kustom di atasnya. Input berupa gambar grayscale 28$\times$28 piksel (sesuai format Quick Draw!). Preprocessing meliputi: resize, normalisasi (0--1), dan konversi ke tensor. Output berupa probabilitas untuk setiap kategori menggunakan softmax.
+
+Langkah training: (1) Load dataset Quick Draw! per kategori, (2) split train/test (80/20), (3) augmentasi data (rotasi, flip, zoom), (4) training dengan optimizer Adam, learning rate 0.001, batch size 32, (5) evaluasi akurasi pada test set, (6) iterasi hyperparameter jika akurasi belum memenuhi threshold minimum (target $>85\%$ pada data test).
+
+\subsection{Konversi ke TensorFlow.js}
+
+Setelah model mencapai akurasi yang memadai, model dikonversi dari format Keras (.h5) ke format TensorFlow.js menggunakan \texttt{tensorflowjs\_converter}. Konversi menghasilkan file \texttt{model.json} (metadata model) dan shard files (bobot model). File-file ini disajikan sebagai aset statis oleh server dan diload oleh browser siswa saat aplikasi dibuka.
+
+Target ukuran model setelah konversi adalah $<$5 MB agar loading time di browser tetap cepat. Jika ukuran melebihi target, dilakukan quantization (float16 atau int8) untuk mengurangi ukuran file.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/cnn_architecture.png}
+    \caption{Arsitektur CNN MobileNet --- Training ke TensorFlow.js Export}
+    \label{fig:cnn-architecture}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.5 Perancangan User Flow
+% ------------------------------------------------------------
+\section{Perancangan User Flow}
+
+User flow dari perspektif scope penulis menekankan alur data dari momen HITL hingga analisis. Setelah siswa menggambar dan memutuskan (melalui Probe UI yang dibuat oleh rekan), interaction event dikirim ke backend untuk disimpan dan dianalisis.
+
+Alur data logging dimulai ketika Probe UI menangkap momen HITL: prediction output, confidence scores, user decision, final label, object behavior, dan gameplay result. Data ini dikemas menjadi JSON payload oleh Event Packaging Module (frontend) dan dikirim via \texttt{POST /api/logs/interaction}. Backend menerima payload, memvalidasi format, menyimpan ke SQLite, dan mengagregasi metrik untuk analisis lebih lanjut.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/user_flow_global.png}
+    \caption{Global User Flow}
+    \label{fig:user-flow-global}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.6 Perancangan Use Case
+% ------------------------------------------------------------
+\section{Perancangan Use Case}
+
+Use case diagram memetakan aktor eksternal dan tujuan utama sistem. Dari perspektif scope penulis, fokus use case berada pada aktor Admin/Guru yang berinteraksi dengan backend dan dashboard.
+
+\subsection{Aktor dan Use Case Siswa}
+
+Aktor Siswa melakukan use case yang berhubungan dengan gameplay: Memulai Permainan, Menggambar Objek, Mengevaluasi Prediksi AI, Menerima Prediksi AI (Accept), Mengoreksi Prediksi AI (Override), Menggerakkan Stickman, dan Menyelesaikan Level. Use case-use case ini berjalan di frontend (scope rekan) dan menghasilkan data yang dikirim ke backend (scope penulis).
+
+\subsection{Aktor dan Use Case Admin/Guru}
+
+Aktor Admin/Guru melakukan use case berikut yang sepenuhnya berada di scope penulis: Melihat Dashboard Interaksi, Melihat Statistik Keputusan (Accept Rate, Override Rate, Correct Rate, Confidence vs Decision), Melihat Progress Level, Melihat Hasil Clustering (K-Means), dan Mengekspor Data Log (CSV/JSON). Use case Melihat Dashboard Interaksi merupakan titik include dari use case Melihat Statistik Keputusan dan Melihat Progress Level. Use case Mengekspor Data Log merupakan extend dari use case Melihat Dashboard Interaksi.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/use_case.png}
+    \caption{Use Case Diagram}
+    \label{fig:use-case}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.7 Perancangan Data Log Schema
+% ------------------------------------------------------------
+\section{Perancangan Data Log Schema}
+
+Log interaksi menyimpan data utama dari momen Human-in-the-Loop: prediksi AI, confidence, keputusan siswa, final label, behavior objek, hasil gameplay, dan waktu keputusan. Schema ini dirancang untuk mendukung analisis pola keputusan dan K-Means clustering.
+
+\subsection{Struktur JSON Log}
+
+Setiap interaction event yang dikirim dari frontend memiliki struktur sebagai berikut:
+
+\begin{table}[ht]
+\centering
+\caption{Struktur JSON Interaction Log}
+\label{tab:json-log}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Field} & \textbf{Tipe} & \textbf{Deskripsi} \\ \hline
+session\_id & String & ID sesi permainan \\ \hline
+level\_id & Integer & ID level (1, 2, 3) \\ \hline
+top3\_predictions & Array[String] & Tiga prediksi teratas \\ \hline
+confidence\_scores & Array[Float] & Confidence score per prediksi \\ \hline
+decision\_type & String & Accept / Correct / Override \\ \hline
+final\_label & String & Label akhir setelah keputusan user \\ \hline
+object\_behavior & String & Solid / Danger / Decorative \\ \hline
+gameplay\_result & String & Success / Fail / Retry \\ \hline
+decision\_latency\_ms & Integer & Durasi keputusan dalam milidetik \\ \hline
+timestamp & String (ISO 8601) & Waktu kejadian \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Feature Engineering untuk K-Means}
+
+Sebelum data log digunakan sebagai input K-Means, dilakukan feature engineering untuk menghasilkan fitur-fitur yang merepresentasikan pola keputusan siswa. Fitur-fitur yang diekstrak meliputi:
+
+\begin{itemize}
+    \item \textbf{Accept Rate} --- Persentase keputusan Accept dari total keputusan per sesi.
+    \item \textbf{Override Rate} --- Persentase keputusan Override dari total keputusan per sesi.
+    \item \textbf{Correct Rate} --- Persentase keputusan Correct dari total keputusan per sesi.
+    \item \textbf{Average Decision Latency} --- Rata-rata waktu keputusan per sesi (dalam milidetik).
+    \item \textbf{Average Confidence Gap} --- Rata-rata selisih confidence antara Top-1 dan Top-2 per sesi.
+    \item \textbf{Risk Acceptance Rate} --- Persentase Accept pada kondisi confidence rendah ($<50\%$) per sesi.
+    \item \textbf{Fail Rate} --- Persentase gameplay result Fail dari total interaksi per sesi.
+\end{itemize}
+
+Fitur-fitur ini dinormalisasi (z-score normalization) sebelum digunakan sebagai input K-Means untuk menghindari bias akibat perbedaan skala antar fitur.
+
+
+% ------------------------------------------------------------
+% 3.8 Perancangan Backend API
+% ------------------------------------------------------------
+\section{Perancangan Backend API}
+
+Backend API dibangun menggunakan Node.js dengan framework Express.js. Database menggunakan SQLite yang diakses melalui ORM atau raw SQL query. Autentikasi dashboard guru menggunakan JWT (JSON Web Token).
+
+\subsection{Endpoint REST API}
+
+\begin{table}[ht]
+\centering
+\caption{Daftar Endpoint REST API}
+\label{tab:api-endpoints}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Method} & \textbf{Endpoint} & \textbf{Deskripsi} & \textbf{Auth} \\ \hline
+POST & /api/logs/interaction & Menerima interaction log & Tidak \\ \hline
+GET & /api/sessions & Mengambil daftar sesi & JWT \\ \hline
+GET & /api/sessions/:id/metrics & Mengambil metrik sesi & JWT \\ \hline
+GET & /api/clustering/result & Mengambil hasil K-Means & JWT \\ \hline
+GET & /api/export/csv & Ekspor data CSV & JWT \\ \hline
+GET & /api/export/json & Ekspor data JSON & JWT \\ \hline
+POST & /api/auth/login & Login guru & Tidak \\ \hline
+\end{tabular}
+\end{table}
+
+Endpoint \texttt{POST /api/logs/interaction} tidak memerlukan autentikasi karena dipanggil oleh browser siswa secara otomatis. Endpoint lainnya memerlukan JWT untuk memastikan hanya guru yang bisa mengakses data analisis.
+
+\subsection{Alur Logging}
+
+Alur logging dimulai ketika frontend mengirim interaction event ke backend. Backend menerima event, memvalidasi payload (mengekses field wajib dan tipe data), menyimpan ke SQLite, dan mengembalikan respons sukses ke frontend. Jika payload tidak valid, backend mengembalikan respons error dengan pesan deskriptif. Pengiriman bersifat asynchronous --- frontend tidak menunggu respons sebelum melanjutkan gameplay.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/backend_logging_flow.png}
+    \caption{Backend Logging Flow}
+    \label{fig:backend-logging-flow}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.9 Perancangan K-Means Clustering
+% ------------------------------------------------------------
+\section{Perancangan K-Means Clustering}
+
+K-Means clustering digunakan untuk mengelompokkan siswa berdasarkan pola keputusan mereka terhadap output AI. Tujuannya bukan hanya deskriptif flat (``sekian persen siswa Override''), tetapi menghasilkan segmentasi tipe pengambil keputusan yang bermakna secara akademis. Pendekatan ini meningkatkan kontribusi penelitian karena output analisisnya tidak hanya berupa angka agregat, tetapi juga profil perilaku siswa.
+
+\subsection{Input K-Means}
+
+Input K-Means adalah matriks fitur yang telah di-feature engineering dan dinormalisasi. Setiap baris merepresentasikan satu sesi permainan siswa, dan setiap kolom merepresentasikan satu fitur (Accept Rate, Override Rate, Correct Rate, Average Decision Latency, Average Confidence Gap, Risk Acceptance Rate, Fail Rate).
+
+\subsection{Penentuan Jumlah Cluster}
+
+Jumlah cluster ($k$) ditentukan menggunakan metode Elbow dan Silhouette Score. Elbow method memplot Within-Cluster Sum of Squares (WCSS) terhadap jumlah cluster, dan titik siku (elbow) menunjukkan jumlah cluster optimal. Silhouette Score mengukur seberapa baik setiap data point berada di cluster-nya dibandingkan cluster lain. Nilai Silhouette Score mendekati 1 menunjukkan clustering yang baik. Berdasarkan literatur dan ekspektasi awal, kandidat jumlah cluster adalah 3--5, yang masing-masing merepresentasikan tipe-tipe pengambil keputusan seperti: tipe pasif (selalu Accept), tipe evaluatif (Correct pada confidence rendah), dan tipe kritis (Override meski confidence tinggi).
+
+\subsection{Proses K-Means}
+
+Proses K-Means dilakukan secara offline di server menggunakan Python scikit-learn. Data log yang telah terkumpul di-export dari SQLite, di-feature engineering, dinormalisasi, lalu di-cluster. Hasil clustering (label cluster per sesi, centroid, dan metrik evaluasi) disimpan kembali ke database untuk diakses melalui dashboard.
+
+K-Means dijalankan secara batch, bukan real-time. Setelah sesi permainan selesai dan data log terkumpul, guru dapat memicu analisis clustering melalui dashboard. Alternatif lain, clustering dijalankan secara otomatis setelah jumlah sesi mencapai threshold minimum (misalnya 10 sesi).
+
+\subsection{Interpretasi Cluster}
+
+Setiap cluster diinterpretasikan berdasarkan centroid-nya. Contoh interpretasi:
+
+\begin{itemize}
+    \item \textbf{Cluster 1 --- Tipe Pasif (Automation Bias)} --- Accept Rate tinggi ($>70\%$), Override Rate rendah ($<10\%$), Average Decision Latency rendah ($<3000$ ms). Siswa cenderung menerima prediksi AI tanpa mengevaluasi, terutama pada confidence rendah.
+    \item \textbf{Cluster 2 --- Tipe Evaluatif (Calibrated Trust)} --- Correct Rate signifikan, Average Decision Latency sedang (4000--6000 ms), Risk Acceptance Rate rendah. Siswa mempertimbangkan prediksi alternatif dan melakukan Correct saat confidence ambigu.
+    \item \textbf{Cluster 3 --- Tipe Kritis (Human Agency)} --- Override Rate tinggi ($>30\%$), Average Decision Latency tinggi ($>7000$ ms), Fail Rate bervariasi. Siswa aktif menolak prediksi AI, terutama di Level 3.
+\end{itemize}
+
+Interpretasi ini bersifat hipotesis awal dan akan diverifikasi setelah data penelitian terkumpul. Label cluster tidak ditentukan sebelumnya --- K-Means adalah unsupervised learning, sehingga cluster muncul dari data, bukan dari asumsi peneliti.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/kmeans_pipeline.png}
+    \caption{Pipeline K-Means Clustering --- dari Data Log ke Segmentasi}
+    \label{fig:kmeans-pipeline}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.10 Perancangan Admin Dashboard
+% ------------------------------------------------------------
+\section{Perancangan Admin Dashboard}
+
+Admin dashboard digunakan untuk membaca data interaksi siswa dari sesi permainan. Panel ini membantu melihat pola keputusan terhadap AI, seperti Accept Rate, Override Rate, confidence score, dan hasil gameplay. Admin/Guru bukan bagian dari core gameplay --- admin berada pada layer analitik setelah data siswa terkumpul.
+
+\subsection{Fitur Dashboard}
+
+\begin{itemize}
+    \item \textbf{Session List} --- Menampilkan daftar semua sesi permainan yang telah dilakukan. Setiap sesi menampilkan: session ID, tanggal, level yang dimainkan, dan ringkasan keputusan.
+    \item \textbf{Decision Metrics} --- Visualisasi metrik keputusan per sesi: Accept Rate, Override Rate, Correct Rate, Confidence vs Decision (scatter plot), dan Gameplay Result distribution.
+    \item \textbf{Clustering Result} --- Visualisasi hasil K-Means clustering: scatter plot 2D (PCA/t-SNE reduction), distribusi cluster, dan profil per cluster.
+    \item \textbf{Export Data} --- Ekspor data log ke CSV atau JSON untuk analisis lebih lanjut di tools eksternal.
+\end{itemize}
+
+\subsection{Alur Penggunaan Dashboard}
+
+Alur penggunaan dashboard dimulai ketika guru membuka dashboard dan login menggunakan JWT. Setelah login, guru melihat daftar sesi. Guru memilih sesi tertentu untuk melihat metrik keputusan secara detail. Guru juga dapat melihat hasil clustering untuk membaca pola perilaku siswa secara agregat. Jika diperlukan, guru mengekspor data ke CSV/JSON.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/admin_dashboard_flow.png}
+    \caption{Admin Dashboard Flow}
+    \label{fig:admin-dashboard-flow}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.11 Perancangan Sequence Diagram
+% ------------------------------------------------------------
+\section{Perancangan Sequence Diagram}
+
+Sequence diagram menunjukkan komunikasi antar komponen saat siswa menggambar, AI memberi prediksi, siswa menentukan final label, game menampilkan konsekuensi, dan backend menyimpan log. Diagram ini menggambarkan alur temporal dari interaksi HITL secara end-to-end.
+
+Alur dimulai ketika siswa memulai level dan Web App menampilkan obstacle serta misi. Siswa menggambar objek di Canvas, yang kemudian dikirim ke TF.js Model untuk klasifikasi. Model mengembalikan Top-3 prediction dan confidence score ke Probe UI, yang menampilkannya kepada siswa. Siswa memutuskan Accept, Correct, atau Override melalui Probe UI. Probe UI mengirimkan final label ke Game World, yang kemudian memetakan object behavior dan menampilkan gameplay consequence. Secara paralel, Game World mengirim decision log dan gameplay result ke Backend API, yang menyimpannya ke Log Database.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/sequence_diagram.png}
+    \caption{Sequence Diagram --- Gameplay + AI Decision Flow}
+    \label{fig:sequence-diagram}
+\end{figure}
+
+
+% ------------------------------------------------------------
+% 3.12 Perancangan Klasifikasi Objek
+% ------------------------------------------------------------
+\section{Perancangan Klasifikasi Objek (Solid / Danger / Decorative)}
+
+Setiap gambar yang diklasifikasi oleh CNN mendapatkan label, dan label tersebut dipetakan ke salah satu dari tiga kategori behavior yang menentukan dampak objek dalam gameplay. Pemetaan ini bersifat otomatis berdasarkan kategori Quick Draw! yang dipilih, bukan diprogram oleh siswa. Pemetaan label ke behavior dilakukan menggunakan lookup table yang didefinisikan berdasarkan 15--20 kategori yang dipilih dari dataset Quick Draw!.
+
+\begin{itemize}
+    \item \textbf{Solid} --- Objek yang bisa dipijak, membentuk platform, atau membantu Stickman bergerak maju. Contoh: ladder, chair, table, bridge, plank.
+    \item \textbf{Danger} --- Objek yang menyebabkan gagal atau reset. Contoh: knife, sword, axe, scorpion, crocodile.
+    \item \textbf{Decorative} --- Objek netral yang tidak memiliki efek fisik terhadap gameplay. Contoh: cloud, sun, rainbow, flower, star.
+\end{itemize}
+
+Lookup table ini bersifat statis dan tidak berubah selama permainan berlangsung. Sistem tidak melakukan fine-tuning dari data override siswa --- data log hanya digunakan untuk analisis penelitian.
+
+\begin{table}[ht]
+\centering
+\caption{Contoh Pemetaan Label ke Behavior}
+\label{tab:behavior-mapping}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Label} & \textbf{Behavior} \\ \hline
+ladder & Solid \\ \hline
+bridge & Solid \\ \hline
+chair & Solid \\ \hline
+knife & Danger \\ \hline
+sword & Danger \\ \hline
+flower & Decorative \\ \hline
+cloud & Decorative \\ \hline
+\end{tabular}
+\end{table}
+
+
+% ------------------------------------------------------------
+% 3.13 Perancangan Technology Stack
+% ------------------------------------------------------------
+\section{Perancangan Technology Stack (Scope Dias)}
+
+Technology stack untuk scope penulis (backend dan AI) dipilih berdasarkan kebutuhan analisis, stabilitas, dan interoperabilitas.
+
+\begin{table}[ht]
+\centering
+\caption{Technology Stack Scope Dias}
+\label{tab:tech-stack-dias}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Komponen} & \textbf{Teknologi} & \textbf{Alasan} \\ \hline
+CNN Training & TensorFlow/Keras & Ekosistem matang, MobileNet tersedia \\ \hline
+Model Export & tensorflowjs\_converter & Konversi .h5 ke TF.js format \\ \hline
+Backend API & Node.js + Express & Ringan, async, kompatibel dengan JSON \\ \hline
+Database & SQLite & Tanpa konfigurasi, cukup untuk skala riset \\ \hline
+Clustering & Python + scikit-learn & Implementasi K-Means matang \\ \hline
+Authentication & JWT (jsonwebtoken) & Standar, stateless, mudah diimplementasi \\ \hline
+Data Processing & pandas + numpy & Feature engineering dan normalisasi \\ \hline
+\end{tabular}
+\end{table}
+
+TensorFlow/Keras dipilih untuk training karena menyediakan arsitektur MobileNet V2 yang sudah pre-trained dan bisa di-fine-tune pada dataset Quick Draw!. Python dipilih untuk analisis K-Means karena scikit-learn menyediakan pipeline yang lengkap (preprocessing, clustering, evaluasi). Node.js/Express dipilih untuk backend API karena ringan, mendukung asynchronous I/O, dan kompatibel dengan format JSON yang digunakan di seluruh sistem.
+
+
+% ------------------------------------------------------------
+% 3.14 Perancangan Kontrak Data Dias--Can
+% ------------------------------------------------------------
+\section{Perancangan Kontrak Data Dias--Can}
+
+Kontrak data menjelaskan batas tanggung jawab antara scope penulis (Dias) dan scope rekan (Can). Rekan bertanggung jawab membentuk interaction event di frontend dan mengirimkannya ke backend via REST API. Penulis bertanggung jawab menerima event, menyimpan ke database, dan melakukan analisis.
+
+Data yang diterima penulis dari frontend berformat JSON dengan struktur berikut:
+
+\begin{verbatim}
+{
+    "session_id": "S001",
+    "level_id": 2,
+    "top3_predictions": ["fence", "ladder", "bridge"],
+    "confidence_scores": [0.46, 0.41, 0.08],
+    "decision_type": "correct",
+    "final_label": "ladder",
+    "object_behavior": "solid",
+    "gameplay_result": "success",
+    "decision_latency_ms": 5200,
+    "timestamp": "2026-06-15T10:30:00Z"
+}
+\end{verbatim}
+
+Endpoint yang digunakan adalah \texttt{POST /api/logs/interaction}. Frontend mengirim data secara asynchronous setelah setiap momen HITL selesai, sehingga pengiriman data tidak memblokir gameplay. Backend melakukan validasi payload sebelum menyimpan ke database.
+
+Selain menerima log, penulis juga menyediakan model CNN MobileNet yang telah dikonversi ke TensorFlow.js. Model disajikan sebagai aset statis oleh server dan diload oleh browser siswa saat aplikasi dibuka. Kontrak data ini memastikan bahwa rekan tidak perlu memahami detail training model, dan penulis tidak perlu memahami detail interaksi gameplay.
+
+Pembagian kerja dalam proyek ini tidak terpisah secara ketat. Penulis menyiapkan model AI, output prediksi, backend log, dan analisis. Rekan merancang pengalaman interaksi dan gameplay. Keduanya bertemu di Probe UI sebagai momen Human-in-the-Loop. Probe UI adalah titik temu di mana output dari AI (Top-3 + confidence) dan input dari user (keputusan) bergabung, kemudian menghasilkan gameplay consequence dan interaction event.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{gambar/kontrak_data.png}
+    \caption{Kontrak Data Dias--Can}
+    \label{fig:kontrak-data}
+\end{figure}

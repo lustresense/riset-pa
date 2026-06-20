@@ -1,0 +1,190 @@
+================================================================================
+FILES MANIFEST - All 184 files in workspace
+================================================================================
+
+    1. [ 33.1 KB] 2026-06-16 18:16:44 | sketchbook-universe-ta/generate/01_proposal/User_Flow_Placement_v1.md
+    2. [ 23.6 KB] 2026-06-16 18:14:20 | sketchbook-universe-ta/generate/01_proposal/Maskot_Section_v1.md
+    3. [416.4 KB] 2026-06-16 17:52:31 | sketchbook-universe-ta/generate/01_proposal/draf_proposal_dias_v0.0.0.pdf
+    4. [439.0 KB] 2026-06-16 17:52:29 | sketchbook-universe-ta/generate/01_proposal/draf_proposal_can_v0.0.0.pdf
+    5. [128.4 KB] 2026-06-16 17:52:28 | sketchbook-universe-ta/generate/01_proposal/draf_proposal_can_v0.0.0.tex
+    6. [118.9 KB] 2026-06-16 17:52:28 | sketchbook-universe-ta/generate/01_proposal/draf_proposal_dias_v0.0.0.tex
+    7. [ 38.6 KB] 2026-06-16 17:46:27 | sketchbook-universe-ta/generate/01_proposal/bab2_dias_v1.tex
+    8. [ 36.4 KB] 2026-06-16 17:46:22 | sketchbook-universe-ta/generate/01_proposal/bab2_can_v1.tex
+    9. [  6.2 KB] 2026-06-16 17:45:35 | sketchbook-universe-ta/generate/01_proposal/daftar_pustaka_dias_v1.tex
+   10. [  8.0 KB] 2026-06-16 17:45:15 | sketchbook-universe-ta/generate/01_proposal/daftar_pustaka_can_v1.tex
+   11. [ 67.3 KB] 2026-06-16 17:34:48 | sketchbook-universe-ta/generate/01_proposal/bab3_dias_v1.tex
+   12. [ 77.7 KB] 2026-06-16 17:34:41 | sketchbook-universe-ta/generate/01_proposal/bab3_can_v1.tex
+   13. [228.7 KB] 2026-06-16 17:34:19 | sketchbook-universe-ta/generate/06_diagram/fishbone_6m.png
+   14. [  2.5 KB] 2026-06-16 17:34:15 | sketchbook-universe-ta/generate/06_diagram/fishbone_6m.mmd
+   15. [ 14.5 KB] 2026-06-16 17:25:20 | sketchbook-universe-ta/generate/01_proposal/bab1_dias_v1.tex
+   16. [ 17.5 KB] 2026-06-16 17:24:37 | sketchbook-universe-ta/generate/01_proposal/bab1_can_v1.tex
+   17. [ 19.9 KB] 2026-06-16 17:17:37 | sketchbook-universe-ta/generate/01_proposal/latex_skeleton_dias.tex
+   18. [ 19.4 KB] 2026-06-16 17:16:44 | sketchbook-universe-ta/generate/01_proposal/latex_skeleton_can.tex
+   19. [ 47.9 KB] 2026-06-16 17:16:37 | sketchbook-universe-ta/generate/01_proposal/Sitasi_Final_v1.md
+   20. [ 36.5 KB] 2026-06-16 17:15:40 | sketchbook-universe-ta/generate/01_proposal/Style_Guide_v1.md
+   21. [ 27.4 KB] 2026-06-16 17:14:00 | sketchbook-universe-ta/generate/01_proposal/Use_Case_Superadmin_v1.md
+   22. [ 47.2 KB] 2026-06-16 16:17:58 | sketchbook-universe-ta/generate/01_proposal/Outline_dan_Sitasi_PreLatex.md
+   23. [ 94.8 KB] 2026-06-16 16:08:28 | sketchbook-universe-ta/generate/03_maskot/maskot_options_comparison.md
+   24. [  8.6 KB] 2026-06-16 15:25:46 | sketchbook-universe-ta/generate/MEMORY.md
+   25. [  7.0 KB] 2026-06-16 15:25:24 | sketchbook-universe-ta/generate/04_game_design/discussion_notes_16jun26.md
+   26. [ 58.4 KB] 2026-06-16 14:59:00 | sketchbook-universe-ta/generate/04_game_design/quickdraw_category_analysis.md
+   27. [  5.2 KB] 2026-06-16 14:55:21 | sketchbook-universe-ta/generate/CHANGELOG.md
+   28. [346.3 KB] 2026-06-16 11:21:51 | sketchbook-universe-ta/generate/06_diagram/01_global_ipo.png
+   29. [ 51.8 KB] 2026-06-16 11:21:51 | sketchbook-universe-ta/generate/06_diagram/03_arsitektur_hybrid.png
+   30. [ 69.7 KB] 2026-06-16 11:21:51 | sketchbook-universe-ta/generate/06_diagram/04_level_progression.png
+   31. [103.3 KB] 2026-06-16 11:21:50 | sketchbook-universe-ta/generate/06_diagram/02_game_loop.png
+   32. [  3.8 KB] 2026-06-16 11:21:40 | sketchbook-universe-ta/generate/02_desain_sistem/desain_sistem_mermaid.md
+   33. [  6.4 KB] 2026-06-16 11:00:49 | sketchbook-universe-ta/generate/03_maskot/MASKOT_README.md
+   34. [ 22.1 KB] 2026-06-16 11:00:13 | sketchbook-universe-ta/generate/03_maskot/maskot_ip_safety_report.md
+   35. [ 28.9 KB] 2026-06-16 10:58:14 | sketchbook-universe-ta/generate/03_maskot/maskot_animation_bible.md
+   36. [ 79.1 KB] 2026-06-16 10:55:35 | sketchbook-universe-ta/generate/04_game_design/hitl_loophole_analysis.md
+   37. [ 17.8 KB] 2026-06-16 10:52:50 | sketchbook-universe-ta/generate/03_maskot/maskot_research_clawd_analysis.md
+   38. [ 75.3 KB] 2026-06-16 09:08:15 | sketchbook-universe-ta/generate/03_maskot/maskot_concept.md
+   39. [ 14.1 KB] 2026-06-16 09:00:22 | sketchbook-universe-ta/generate/08_cache/merged_context_analysis.md
+   40. [  4.2 KB] 2026-06-16 08:38:01 | sketchbook-universe-ta/README.md
+   41. [ 81.8 KB] 2026-06-16 08:36:36 | sketchbook-universe-ta/generate/05_metodologi/mixed_method_integration.md
+   42. [ 62.9 KB] 2026-06-16 08:33:35 | sketchbook-universe-ta/generate/02_desain_sistem/desain_sistem_global_v2.md
+   43. [ 43.4 KB] 2026-06-16 08:32:21 | sketchbook-universe-ta/generate/02_desain_sistem/api_data_log_spec.md
+   44. [ 37.9 KB] 2026-06-16 08:32:19 | sketchbook-universe-ta/generate/04_game_design/game_design_document.md
+   45. [ 37.9 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/01_proposal/can/bab2_can.tex
+   46. [ 49.3 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/01_proposal/can/bab3_can.tex
+   47. [115.1 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/01_proposal/can/proposal-can.tex
+   48. [ 44.1 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/01_proposal/dias/bab2_dias.tex
+   49. [ 30.7 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/01_proposal/dias/bab3_dias.tex
+   50. [104.0 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/01_proposal/dias/proposal-dias.tex
+   51. [665.7 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/01_arsitektur_sistem.png
+   52. [1006.6 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/02_user_flow.png
+   53. [  2.3 MB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/03_level_design.png
+   54. [708.5 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/04_cnn_behavior_mapping.png
+   55. [ 24.3 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/daffa_architecture_diagram.png
+   56. [ 50.6 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/harun_page39_img0.png
+   57. [ 31.8 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/sources/architecture_diagram.html
+   58. [ 39.7 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/sources/cnn_behavior_mapping.html
+   59. [ 54.1 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/sources/level_design.html
+   60. [ 44.6 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/06_diagram/sources/user_flow.html
+   61. [   992 B] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/07_scripts/capture_cnn_behavior.js
+   62. [  1.1 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/07_scripts/capture_level_design.js
+   63. [ 56.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/07_scripts/generate_pdf_body.py
+   64. [  1.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/07_scripts/render_flow.py
+   65. [ 31.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/api_spec_raw.md
+   66. [ 35.8 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/desain_sistem_v1_raw.md
+   67. [ 39.4 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/level_design_raw.md
+   68. [ 34.5 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/maskot_momo_raw.md
+   69. [ 52.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/metodologi_raw.md
+   70. [  9.1 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/poin_bu_hesti_raw.md
+   71. [ 11.7 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/referensi_akademik_raw.md
+   72. [  4.1 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_eksperimen.json
+   73. [  4.7 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_fishbone_category.json
+   74. [  4.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_fishbone_it.json
+   75. [  4.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_fishbone_quali.json
+   76. [  5.3 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_metopen1.json
+   77. [  4.6 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_metopen2.json
+   78. [  4.2 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_metopen_game.json
+   79. [  4.3 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_metopen_pens.json
+   80. [  4.3 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_sdlc.json
+   81. [  4.3 KB] 2026-06-16 08:24:27 | sketchbook-universe-ta/generate/08_cache/search_sugiyono.json
+   82. [  1.3 MB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/contoh_daffa.pdf
+   83. [  1.2 MB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/contoh_harun.pdf
+   84. [125.3 KB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/notulensi_bu_hesti_15jun26.md
+   85. [331.7 KB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/reference_images/architecture_referensi.png
+   86. [ 48.5 KB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/reference_images/pasted_image_1781473587058.png
+   87. [ 52.5 KB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/reference_images/pasted_image_1781473594444.png
+   88. [  1.3 MB] 2026-06-16 08:24:09 | sketchbook-universe-ta/upload/reference_images/pasted_image_1781489014032.png
+   89. [ 34.5 KB] 2026-06-16 08:08:57 | escape-the-sketchbook/02_riset/06_Desain_Momo.md
+   90. [ 52.2 KB] 2026-06-16 08:07:33 | escape-the-sketchbook/02_riset/04_Riset_Metode_Penelitian.md
+   91. [ 39.4 KB] 2026-06-16 08:06:12 | escape-the-sketchbook/02_riset/01_Desain_Level.md
+   92. [  9.1 KB] 2026-06-16 08:05:44 | escape-the-sketchbook/02_riset/05_Poin_Bu_Hesti.md
+   93. [ 35.8 KB] 2026-06-16 08:05:06 | escape-the-sketchbook/02_riset/02_Desain_Sistem.md
+   94. [ 31.2 KB] 2026-06-16 08:04:08 | escape-the-sketchbook/03_diagram/sources/api_spec.md
+   95. [  8.5 KB] 2026-06-16 08:03:34 | escape-the-sketchbook/02_riset/00_Audit_File.md
+   96. [125.3 KB] 2026-06-16 07:56:41 | escape-the-sketchbook/02_riset/Notes_Notulensi_Bimbingan.txt
+   97. [331.7 KB] 2026-06-16 07:56:41 | escape-the-sketchbook/03_diagram/sources/referensi_desain_sistem_teman.png
+   98. [  3.4 KB] 2026-06-16 07:56:30 | escape-the-sketchbook/02_riset/memory.md
+   99. [  6.3 KB] 2026-06-15 08:56:53 | escape-the-sketchbook/README.md
+  100. [  1.3 MB] 2026-06-15 08:56:02 | escape-the-sketchbook/07_referensi_kating/daffa_proposal_pa_fix.pdf
+  101. [  1.2 MB] 2026-06-15 08:56:02 | escape-the-sketchbook/07_referensi_kating/harun_proposal_pa_fix.pdf
+  102. [115.1 KB] 2026-06-15 07:42:26 | escape-the-sketchbook/01_proposal/can/proposal-can.tex
+  103. [115.1 KB] 2026-06-15 07:42:26 | proposal-can.tex
+  104. [104.0 KB] 2026-06-15 07:04:03 | escape-the-sketchbook/01_proposal/dias/proposal-dias.tex
+  105. [104.0 KB] 2026-06-15 07:04:03 | proposal-dias.tex
+  106. [ 32.7 KB] 2026-06-15 06:00:04 | Riset_Metode_Penelitian.md
+  107. [  4.2 KB] 2026-06-15 05:54:55 | escape-the-sketchbook/06_raw/search_metopen_game.json
+  108. [  4.2 KB] 2026-06-15 05:54:55 | search_metopen_game.json
+  109. [  4.2 KB] 2026-06-15 05:54:41 | escape-the-sketchbook/06_raw/search_fishbone_quali.json
+  110. [  4.2 KB] 2026-06-15 05:54:41 | search_fishbone_quali.json
+  111. [  4.1 KB] 2026-06-15 05:54:39 | escape-the-sketchbook/06_raw/search_eksperimen.json
+  112. [  4.1 KB] 2026-06-15 05:54:39 | search_eksperimen.json
+  113. [  4.3 KB] 2026-06-15 05:54:25 | escape-the-sketchbook/06_raw/search_sugiyono.json
+  114. [  4.3 KB] 2026-06-15 05:54:25 | search_sugiyono.json
+  115. [  4.3 KB] 2026-06-15 05:54:23 | escape-the-sketchbook/06_raw/search_sdlc.json
+  116. [  4.3 KB] 2026-06-15 05:54:23 | search_sdlc.json
+  117. [  4.7 KB] 2026-06-15 05:54:20 | escape-the-sketchbook/06_raw/search_fishbone_category.json
+  118. [  4.7 KB] 2026-06-15 05:54:20 | search_fishbone_category.json
+  119. [  4.3 KB] 2026-06-15 05:53:56 | escape-the-sketchbook/06_raw/search_metopen_pens.json
+  120. [  4.3 KB] 2026-06-15 05:53:56 | search_metopen_pens.json
+  121. [  4.2 KB] 2026-06-15 05:53:54 | escape-the-sketchbook/06_raw/search_fishbone_it.json
+  122. [  4.2 KB] 2026-06-15 05:53:54 | search_fishbone_it.json
+  123. [  4.6 KB] 2026-06-15 05:53:52 | escape-the-sketchbook/06_raw/search_metopen2.json
+  124. [  4.6 KB] 2026-06-15 05:53:52 | search_metopen2.json
+  125. [  5.3 KB] 2026-06-15 05:53:37 | escape-the-sketchbook/06_raw/search_metopen1.json
+  126. [  5.3 KB] 2026-06-15 05:53:37 | search_metopen1.json
+  127. [ 24.3 KB] 2026-06-15 03:23:07 | daffa_architecture_diagram.png
+  128. [ 24.3 KB] 2026-06-15 03:23:07 | escape-the-sketchbook/03_diagram/daffa_architecture_diagram.png
+  129. [ 50.6 KB] 2026-06-15 03:23:07 | escape-the-sketchbook/03_diagram/harun_page39_img0.png
+  130. [ 50.6 KB] 2026-06-15 03:23:07 | harun_page39_img0.png
+  131. [ 94.9 KB] 2026-06-15 02:53:15 | escape-the-sketchbook/01_proposal/dias/proposal-dias_v1_a4.tex
+  132. [ 94.9 KB] 2026-06-15 02:53:15 | proposal-Dias.tex
+  133. [101.8 KB] 2026-06-15 02:43:01 | escape-the-sketchbook/01_proposal/can/proposal-can_v1_a4.tex
+  134. [101.8 KB] 2026-06-15 02:43:01 | proposal-Can.tex
+  135. [ 44.1 KB] 2026-06-15 02:19:08 | Bab2_Dias_Latex.tex
+  136. [ 44.1 KB] 2026-06-15 02:19:08 | escape-the-sketchbook/01_proposal/dias/bab2_dias.tex
+  137. [ 49.3 KB] 2026-06-15 02:10:45 | Bab3_Can_Latex.tex
+  138. [ 49.3 KB] 2026-06-15 02:10:45 | escape-the-sketchbook/01_proposal/can/bab3_can.tex
+  139. [ 37.9 KB] 2026-06-15 02:04:22 | Bab2_Can_Latex.tex
+  140. [ 37.9 KB] 2026-06-15 02:04:22 | escape-the-sketchbook/01_proposal/can/bab2_can.tex
+  141. [ 11.7 KB] 2026-06-15 01:59:01 | 00_Referensi_Akademik_Fitur.md
+  142. [ 11.7 KB] 2026-06-15 01:59:01 | escape-the-sketchbook/02_riset/00_Referensi_Akademik_Fitur.md
+  143. [ 30.7 KB] 2026-06-15 00:07:17 | Bab3_Dias_Latex.tex
+  144. [ 30.7 KB] 2026-06-15 00:07:17 | escape-the-sketchbook/01_proposal/dias/bab3_dias.tex
+  145. [ 31.4 KB] 2026-06-14 23:28:49 | Brief_PPT_Escape_the_Sketchbook.md
+  146. [ 31.4 KB] 2026-06-14 23:28:49 | escape-the-sketchbook/04_dokumen/Brief_PPT.md
+  147. [ 29.2 KB] 2026-06-14 23:13:14 | 03_Riset_Arsitektur_Escape_the_Sketchbook.md
+  148. [ 29.2 KB] 2026-06-14 23:13:14 | escape-the-sketchbook/02_riset/03_Riset_Arsitektur.md
+  149. [ 43.2 KB] 2026-06-14 23:11:12 | 02_Desain_Sistem_Escape_the_Sketchbook.md
+  150. [ 25.5 KB] 2026-06-14 22:02:10 | 03_Riset_Arsitektur_Client_Side_Inference.md
+  151. [ 29.7 KB] 2026-06-14 21:57:45 | 01_Desain_Level_Escape_the_Sketchbook.md
+  152. [  5.5 MB] 2026-06-14 20:46:10 | Dokumen_Desain_Sistem_HITL.pdf
+  153. [  5.4 MB] 2026-06-14 20:46:10 | body_hitl.pdf
+  154. [  5.5 MB] 2026-06-14 20:46:10 | escape-the-sketchbook/04_dokumen/Dokumen_Desain_Sistem_HITL.pdf
+  155. [  5.4 MB] 2026-06-14 20:46:10 | escape-the-sketchbook/04_dokumen/body_hitl.pdf
+  156. [ 56.2 KB] 2026-06-14 20:46:01 | escape-the-sketchbook/05_scripts/generate_pdf_body.py
+  157. [ 56.2 KB] 2026-06-14 20:46:01 | generate_pdf_body.py
+  158. [ 71.8 KB] 2026-06-14 20:44:10 | cover_hitl.pdf
+  159. [ 71.8 KB] 2026-06-14 20:44:10 | escape-the-sketchbook/04_dokumen/cover_hitl.pdf
+  160. [  4.7 KB] 2026-06-14 20:44:06 | cover_hitl.html
+  161. [  4.7 KB] 2026-06-14 20:44:06 | escape-the-sketchbook/04_dokumen/sources/cover_hitl.html
+  162. [708.5 KB] 2026-06-14 20:34:28 | 04_cnn_behavior_mapping.png
+  163. [708.5 KB] 2026-06-14 20:34:28 | escape-the-sketchbook/03_diagram/04_cnn_behavior_mapping.png
+  164. [   992 B] 2026-06-14 20:34:19 | capture_cnn_behavior.js
+  165. [   992 B] 2026-06-14 20:34:19 | escape-the-sketchbook/05_scripts/capture_cnn_behavior.js
+  166. [ 39.7 KB] 2026-06-14 20:33:27 | 04_cnn_behavior_mapping.html
+  167. [ 39.7 KB] 2026-06-14 20:33:27 | escape-the-sketchbook/03_diagram/sources/cnn_behavior_mapping.html
+  168. [1006.6 KB] 2026-06-14 20:28:58 | 02_user_flow.png
+  169. [1006.6 KB] 2026-06-14 20:28:58 | escape-the-sketchbook/03_diagram/02_user_flow.png
+  170. [ 44.6 KB] 2026-06-14 20:28:53 | escape-the-sketchbook/03_diagram/sources/user_flow.html
+  171. [ 44.6 KB] 2026-06-14 20:28:53 | user_flow.html
+  172. [665.7 KB] 2026-06-14 20:27:52 | 01_arsitektur_sistem.png
+  173. [665.7 KB] 2026-06-14 20:27:52 | escape-the-sketchbook/03_diagram/01_arsitektur_sistem.png
+  174. [ 31.8 KB] 2026-06-14 20:27:43 | architecture_diagram.html
+  175. [ 31.8 KB] 2026-06-14 20:27:43 | escape-the-sketchbook/03_diagram/sources/architecture_diagram.html
+  176. [  2.3 MB] 2026-06-14 20:26:11 | 03_level_design.png
+  177. [  2.3 MB] 2026-06-14 20:26:11 | escape-the-sketchbook/03_diagram/03_level_design.png
+  178. [  1.1 KB] 2026-06-14 20:26:00 | capture_level_design.js
+  179. [  1.1 KB] 2026-06-14 20:26:00 | escape-the-sketchbook/05_scripts/capture_level_design.js
+  180. [  1.2 KB] 2026-06-14 20:25:52 | escape-the-sketchbook/05_scripts/render_flow.py
+  181. [  1.2 KB] 2026-06-14 20:25:52 | render_flow.py
+  182. [ 54.1 KB] 2026-06-14 20:25:29 | 03_level_design.html
+  183. [ 54.1 KB] 2026-06-14 20:25:29 | escape-the-sketchbook/03_diagram/sources/level_design.html
+  184. [    34 B] 2026-06-14 19:34:35 | README.md
+
+Total: 184 files, 49.4 MB

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --text: #1F2937;
+    --text-sub: #4B5563;
+    --text-muted: #6B7280;
+    --text-light: #9CA3AF;
+    --bg: #F5F7FA;
+    --surface: #E6ECF2;
+    --border: #CBD5E1;
+    --border-light: #E2E8F0;
+    --accent: #3AAFA9;
+    --accent-dark: #2B8A85;
+    --accent-light: #E0F5F4;
+    --connector: #94A3B8;
+    --success: #10B981;
+    --success-bg: #F0FDF4;
+    --success-border: #A7F3D0;
+    --fail: #EF4444;
+    --fail-bg: #FEF2F2;
+    --fail-border: #FECACA;
+    --warn: #F59E0B;
+    --warn-bg: #FFFBEB;
+    --override: #3B82F6;
+    --override-bg: #EFF6FF;
+    --override-border: #BFDBFE;
+    --purple: #8B5CF6;
+    --purple-bg: #F5F3FF;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  #root {
+    width: fit-content;
+    min-width: 1500px;
+    margin: 0 auto;
+    padding: 48px 56px 56px;
+  }
+
+  /* ══════════ TITLE ══════════ */
+  .main-title {
+    font-size: 28px; font-weight: 800; color: var(--text);
+    text-align: center; margin-bottom: 4px; letter-spacing: -0.5px;
+  }
+  .main-subtitle {
+    font-size: 14px; color: var(--text-muted);
+    text-align: center; margin-bottom: 36px;
+    letter-spacing: 0.2px;
+  }
+  .title-accent {
+    display: block; width: 60px; height: 3px; margin: 10px auto 0;
+    background: var(--accent); border-radius: 2px;
+  }
+
+  /* ══════════ PHASE GROUP ══════════ */
+  .phase-group {
+    background: #FFFFFF;
+    border-radius: 16px;
+    margin-bottom: 0;
+    border: 1.5px solid var(--border);
+    overflow: visible;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .phase-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 15px 24px;
+    border-radius: 15px 15px 0 0;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .phase-header .phase-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    font-size: 14px; font-weight: 800; color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  }
+  .phase-body { padding: 22px 26px 26px; }
+
+  /* Phase colors — same-hue blue-gray with cyan accent progression */
+  .phase-1 .phase-header { background: #EDF2F7; color: #2D3748; }
+  .phase-1 .phase-num { background: #718096; }
+  .phase-2 .phase-header { background: #E2EAF2; color: #1A365D; }
+  .phase-2 .phase-num { background: #5B7FA5; }
+  .phase-3 .phase-header { background: #D8E2EE; color: #1A365D; }
+  .phase-3 .phase-num { background: #4A6F96; }
+  .phase-4 .phase-header { background: #CED9E8; color: #1A365D; }
+  .phase-4 .phase-num { background: #3A5F86; }
+
+  /* ══════════ PHASE CONNECTOR ══════════ */
+  .phase-connector {
+    display: flex; justify-content: center; align-items: center;
+    padding: 6px 0;
+    position: relative;
+  }
+  .phase-connector .connector-line {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .phase-connector .connector-line .line {
+    width: 2.5px; height: 20px; background: var(--accent); border-radius: 2px;
+  }
+  .phase-connector .connector-line .arrow {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--accent);
+  }
+
+  /* ══════════ VERTICAL STEP LIST ══════════ */
+  .vstep-list { display: flex; flex-direction: column; gap: 6px; }
+  .vstep-item {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .vstep-connector {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0; width: 26px; padding-top: 2px;
+  }
+  .vstep-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 3px;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.8);
+  }
+  .vstep-line {
+    width: 2px; flex: 1; background: #D1D5DB;
+    min-height: 8px;
+  }
+  .vstep-content { flex: 1; min-width: 0; padding-bottom: 6px; }
+  .vstep-item:last-child .vstep-content { padding-bottom: 0; }
+  .vstep-item:last-child .vstep-line { display: none; }
+  .vstep-title { font-size: 13.5px; font-weight: 600; color: var(--text); line-height: 1.45; }
+  .vstep-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+
+  /* ══════════ DIALOG BUBBLE ══════════ */
+  .dialog-bubble {
+    background: #F0FDFA;
+    border-left: 3px solid var(--accent);
+    padding: 7px 12px;
+    border-radius: 0 8px 8px 0;
+    font-size: 12px; font-style: italic;
+    color: #0F766E;
+    margin-top: 5px;
+    line-height: 1.45;
+  }
+  .dialog-bubble.momo-green {
+    background: #F0FDF4; border-left-color: var(--success); color: #065F46;
+  }
+  .dialog-bubble.momo-yellow {
+    background: #FFFBEB; border-left-color: var(--warn); color: #92400E;
+  }
+  .dialog-bubble.momo-red {
+    background: #FEF2F2; border-left-color: var(--fail); color: #991B1B;
+  }
+
+  /* ══════════ MOMO EMOTION ══════════ */
+  .momo-emotion {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 12px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .momo-emotion .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .momo-emotion.confident { background: #D1FAE5; color: #065F46; }
+  .momo-emotion.confident .dot { background: var(--success); box-shadow: 0 0 4px rgba(16,185,129,0.5); }
+  .momo-emotion.confused { background: #FEF3C7; color: #92400E; }
+  .momo-emotion.confused .dot { background: var(--warn); box-shadow: 0 0 4px rgba(245,158,11,0.5); }
+  .momo-emotion.wrong { background: #FEE2E2; color: #991B1B; }
+  .momo-emotion.wrong .dot { background: var(--fail); box-shadow: 0 0 4px rgba(239,68,68,0.5); }
+
+  /* ══════════ DECISION NODE ══════════ */
+  .decision-box {
+    background: #FFFBEB;
+    border: 2px solid var(--warn);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-top: 6px;
+    max-width: 480px;
+  }
+  .decision-box .q-text {
+    font-size: 13px; font-weight: 600; color: #92400E;
+    text-align: center;
+  }
+  .decision-branches {
+    display: flex; gap: 12px; margin-top: 8px;
+    justify-content: center;
+  }
+  .decision-tag {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 14px; border-radius: 14px;
+  }
+  .decision-tag.ya { background: var(--accent-light); color: var(--accent-dark); }
+  .decision-tag.tidak { background: #F1F5F9; color: #475569; }
+
+  /* ══════════ CAROUSEL ══════════ */
+  .carousel-row {
+    display: flex; gap: 10px; margin-top: 8px;
+  }
+  .carousel-slide {
+    flex: 1;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .carousel-slide .slide-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent-dark);
+    font-size: 11px; font-weight: 800; margin-bottom: 5px;
+  }
+  .carousel-slide .slide-title {
+    font-size: 12.5px; font-weight: 700; color: var(--text);
+  }
+  .carousel-slide .slide-desc {
+    font-size: 11px; color: var(--text-muted); margin-top: 2px;
+  }
+
+  /* ══════════ LEVEL CONTAINER ══════════ */
+  .level-container {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-light);
+    border-radius: 14px;
+    overflow: visible;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .level-title-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 20px;
+    font-size: 14px; font-weight: 700;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .level-title-bar.lv1 { background: #F0F4F8; color: #334155; }
+  .level-title-bar.lv2 { background: #E8EDF2; color: #1E3A5F; }
+  .level-title-bar.lv3 { background: #E0E7EF; color: #1E3050; }
+
+  .level-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 2px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 800; color: #fff;
+    letter-spacing: 0.5px;
+  }
+  .level-badge.l1 { background: var(--accent); }
+  .level-badge.l2 { background: #5B7FA5; }
+  .level-badge.l3 { background: #4A6F96; }
+
+  .level-subtitle {
+    font-size: 12px; font-weight: 400; color: var(--text-muted);
+    margin-left: 4px;
+  }
+
+  .level-body { padding: 18px 20px; }
+
+  /* ══════════ BRANCH LAYOUT ══════════ */
+  .branch-layout {
+    display: flex; gap: 18px; width: 100%;
+    align-items: flex-start;
+  }
+  .branch-main {
+    flex: 1; min-width: 0;
+  }
+  .branch-side {
+    width: 380px; flex-shrink: 0;
+  }
+
+  /* ══════════ SUCCESS BOX ══════════ */
+  .success-box {
+    background: var(--success-bg);
+    border: 2px solid var(--success);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .success-box .box-title {
+    font-size: 12px; font-weight: 700; color: #065F46;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 5px;
+  }
+  .success-box .box-step {
+    font-size: 12px; color: #065F46; padding: 2px 0;
+    line-height: 1.5;
+  }
+
+  /* ══════════ FAIL BOX ══════════ */
+  .fail-box {
+    background: var(--fail-bg);
+    border: 2px solid var(--fail);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .fail-box .box-title {
+    font-size: 12px; font-weight: 700; color: #991B1B;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 5px;
+  }
+  .fail-box .box-step {
+    font-size: 12px; color: #7F1D1D; padding: 2px 0;
+    line-height: 1.5;
+  }
+
+  /* ══════════ OVERRIDE BOX ══════════ */
+  .override-box {
+    background: var(--override-bg);
+    border: 2px solid var(--override);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+  .override-box .box-title {
+    font-size: 12px; font-weight: 700; color: #1E40AF;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 5px;
+  }
+  .override-box .box-step {
+    font-size: 12px; color: #1E40AF; padding: 2px 0;
+    line-height: 1.5;
+  }
+
+  /* ══════════ PAPER TEAR ══════════ */
+  .paper-tear {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px;
+    background: #FEE2E2;
+    border: 1px solid #FECACA;
+    border-radius: 4px;
+    font-size: 10.5px; font-weight: 800; color: #991B1B;
+    letter-spacing: 0.5px;
+  }
+
+  /* ══════════ RETRY LOOP ══════════ */
+  .retry-loop {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #FFF7ED;
+    border: 2px dashed var(--warn);
+    border-radius: 10px;
+    font-size: 12px; font-weight: 500; color: #92400E;
+  }
+
+  /* ══════════ EPILOG ══════════ */
+  .epilog-box {
+    background: linear-gradient(135deg, #F0FDFA 0%, #E0F2FE 100%);
+    border: 2px solid var(--accent);
+    border-radius: 14px;
+    padding: 18px 24px;
+    text-align: center;
+    margin-top: 8px;
+  }
+  .epilog-box .epilog-quote {
+    font-size: 14px; font-style: italic; color: #0F766E;
+    line-height: 1.65;
+    max-width: 640px; margin: 0 auto;
+  }
+  .epilog-box .epilog-attr {
+    font-size: 11px; color: var(--text-muted); margin-top: 8px;
+    font-weight: 600;
+  }
+
+  /* ══════════ METRICS ══════════ */
+  .metric-row {
+    display: flex; gap: 14px; margin-top: 10px;
+  }
+  .metric-card {
+    flex: 1;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+  }
+  .metric-card .metric-icon {
+    font-size: 18px; margin-bottom: 4px;
+    color: var(--accent);
+  }
+  .metric-card .metric-name {
+    font-size: 11px; color: var(--text-muted); margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .metric-card .metric-val {
+    font-size: 13px; font-weight: 700; color: var(--accent-dark);
+  }
+
+  /* ══════════ LEGEND ══════════ */
+  .legend-bar {
+    display: flex; gap: 18px; justify-content: center; align-items: center;
+    margin-top: 36px; padding: 16px 28px;
+    background: #FFFFFF; border-radius: 12px;
+    border: 1.5px solid var(--border);
+    flex-wrap: wrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11.5px; color: var(--text-sub); font-weight: 500;
+  }
+  .legend-swatch {
+    width: 14px; height: 14px; border-radius: 4px;
+    border: 2px solid;
+  }
+
+  /* ══════════ ANNO ══════════ */
+  .anno {
+    font-size: 11px; color: var(--text-light);
+    margin-top: 3px; line-height: 1.4;
+  }
+
+  /* ══════════ TAG ══════════ */
+  .tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 5px;
+    font-size: 10px; font-weight: 800;
+    letter-spacing: 0.4px;
+    vertical-align: middle;
+  }
+  .tag-green { background: #D1FAE5; color: #065F46; }
+  .tag-blue { background: #DBEAFE; color: #1E40AF; }
+
+  /* ══════════ GAMEPLAY GRID ══════════ */
+  .gameplay-grid {
+    display: flex; flex-direction: column; gap: 18px;
+  }
+
+  /* ══════════ NO-FAIL NOTE ══════════ */
+  .note-box {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #F8FAFC;
+    border-left: 3px solid var(--connector);
+    border-radius: 0 8px 8px 0;
+    font-size: 11.5px; color: var(--text-muted); font-weight: 500;
+  }
+
+  /* ══════════ FLOW BETWEEN LEVELS ══════════ */
+  .level-connector {
+    display: flex; justify-content: center; align-items: center;
+    padding: 4px 0;
+  }
+  .level-connector .connector-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+  }
+  .level-connector .connector-line-h {
+    width: 2px; height: 12px; background: var(--accent); border-radius: 1px;
+  }
+
+  /* ══════════ SVG ICONS ══════════ */
+  .icon-check {
+    width: 14px; height: 14px; flex-shrink: 0;
+  }
+  .icon-x {
+    width: 14px; height: 14px; flex-shrink: 0;
+  }
+  .icon-info {
+    width: 14px; height: 14px; flex-shrink: 0;
+  }
+  .icon-retry {
+    width: 18px; height: 18px; flex-shrink: 0;
+  }
+
+  /* ══════════ TRUST PROGRESSION BAR ══════════ */
+  .trust-bar {
+    display: flex; align-items: center; gap: 0;
+    margin-top: 16px; margin-bottom: 4px;
+    padding: 0 20px;
+  }
+  .trust-segment {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .trust-segment .trust-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .trust-arrow {
+    color: var(--border); font-size: 16px; font-weight: 300;
+    padding: 0 2px;
+  }
+</style>
+</head>
+<body>
+<div id="root">
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- TITLE -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="main-title">Alur Penggunaan — Escape the Sketchbook</div>
+  <div class="main-subtitle">Diagram alir interaksi pengguna dengan simulasi literasi AI berbasis sketsa</div>
+  <div class="title-accent"></div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- PHASE 1: ONBOARDING -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="phase-group phase-1" style="margin-top:32px;">
+    <div class="phase-header">
+      <span class="phase-num">1</span>
+      FASE ONBOARDING — Pengenalan & Tutorial
+    </div>
+    <div class="phase-body">
+      <div class="vstep-list">
+        <!-- Step 1 -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--accent)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Aplikasi Dimulai</div>
+            <div class="vstep-desc">Halaman buku sketsa kosong ditampilkan, suara ambient diputar</div>
+          </div>
+        </div>
+        <!-- Step 2: Decision -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--warn)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Pemeriksaan Pemain Baru</div>
+            <div class="decision-box">
+              <div class="q-text">"Apakah ini pertama kali kamu bermain?"</div>
+              <div class="decision-branches">
+                <span class="decision-tag ya">Ya → Lanjut ke Tutorial</span>
+                <span class="decision-tag tidak">Tidak → Langsung Pilih Level</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Step 3: Momo Intro -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--accent)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Jika <span class="tag tag-green">YA</span> — Momo Muncul & Memperkenalkan Diri</div>
+            <div class="dialog-bubble">
+              "Halo! Gue Momo, asisten ilustrator di buku sketsa ini."
+            </div>
+            <div class="anno">Momo tampil sebagai karakter pendamping, membangun hubungan awal</div>
+          </div>
+        </div>
+        <!-- Step 4: Tutorial -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--accent)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Karusel Tutorial — 3 Slide Aturan Main</div>
+            <div class="carousel-row">
+              <div class="carousel-slide">
+                <div class="slide-num">1</div>
+                <div class="slide-title">Gambar Objek</div>
+                <div class="slide-desc">Pemain menggambar sesuatu di buku sketsa</div>
+              </div>
+              <div class="carousel-slide">
+                <div class="slide-num">2</div>
+                <div class="slide-title">Momo Menebak</div>
+                <div class="slide-desc">AI mengklasifikasi gambar + tampilkan skor kepercayaan</div>
+              </div>
+              <div class="carousel-slide">
+                <div class="slide-num">3</div>
+                <div class="slide-title">Kamu Putuskan</div>
+                <div class="slide-desc">Terima / Koreksi / Override tebakan Momo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Step 5: Confirm -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--success)"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Thumbs Up Konfirmasi → Mulai Level 1</div>
+            <div class="anno">Pemain menekan thumbs up, masuk ke siklus bermain</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PHASE CONNECTOR ═══ -->
+  <div class="phase-connector">
+    <div class="connector-line">
+      <div class="line"></div>
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- PHASE 2: GAMEPLAY LOOP -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="phase-group phase-2">
+    <div class="phase-header">
+      <span class="phase-num">2</span>
+      FASE SIKLUS BERMAIN — Tiga Level Progresif
+    </div>
+    <div class="phase-body">
+      <!-- Trust Progression Indicator -->
+      <div class="trust-bar">
+        <div class="trust-segment" style="background:#D1FAE5;">
+          <div class="trust-dot" style="background:var(--success);"></div>
+          L1: Percaya Diri
+        </div>
+        <div class="trust-arrow">→</div>
+        <div class="trust-segment" style="background:#FEF3C7;">
+          <div class="trust-dot" style="background:var(--warn);"></div>
+          L2: Bingung
+        </div>
+        <div class="trust-arrow">→</div>
+        <div class="trust-segment" style="background:#FEE2E2;">
+          <div class="trust-dot" style="background:var(--fail);"></div>
+          L3: Salah
+        </div>
+      </div>
+
+      <div class="gameplay-grid">
+
+        <!-- ──────────── LEVEL 1 ──────────── -->
+        <div class="level-container">
+          <div class="level-title-bar lv1">
+            <span class="level-badge l1">L1</span>
+            "Turun dari Tebing"
+            <span class="level-subtitle">— Pembangunan Kepercayaan</span>
+          </div>
+          <div class="level-body">
+            <div class="vstep-list">
+              <!-- Scene -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:#64748B"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Adegan: Stickman di tepi tebing, harus turun</div>
+                </div>
+              </div>
+              <!-- Momo Prompt -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--accent)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Momo meminta:</div>
+                  <div class="dialog-bubble momo-green">"Gambar TANGGA biar Stickman bisa turun!"</div>
+                </div>
+              </div>
+              <!-- Draw -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--purple)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Pemain menggambar → AI mengklasifikasi</div>
+                </div>
+              </div>
+              <!-- Momo Response -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--success)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Momo menjawab: <span class="momo-emotion confident"><span class="dot"></span>Percaya Diri</span></div>
+                  <div class="dialog-bubble momo-green">"Aku 96% yakin ini tangga!"</div>
+                  <div class="anno">Gelembung hijau — kepercayaan tinggi, klasifikasi benar</div>
+                </div>
+              </div>
+              <!-- Decision -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--success)"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="success-box">
+                    <div class="box-title">
+                      <svg class="icon-check" viewBox="0 0 20 20" fill="#10B981"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                      KEPUTUSAN: TERIMA → Berhasil
+                    </div>
+                    <div class="box-step">Tangga muncul → Stickman berjalan turun → <strong style="color:#065F46">BERHASIL</strong></div>
+                  </div>
+                  <div class="note-box">
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="#94A3B8"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                    Tidak ada jalur gagal di Level 1 — membangun kepercayaan dasar pemain terhadap AI
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level connector -->
+        <div class="level-connector">
+          <div class="connector-line-h"></div>
+          <div class="connector-dot"></div>
+          <div class="connector-line-h"></div>
+        </div>
+
+        <!-- ──────────── LEVEL 2 ──────────── -->
+        <div class="level-container">
+          <div class="level-title-bar lv2">
+            <span class="level-badge l2">L2</span>
+            "Pintu Kunci"
+            <span class="level-subtitle">— Menavigasi Ambiguitas</span>
+          </div>
+          <div class="level-body">
+            <div class="vstep-list">
+              <!-- Scene -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:#64748B"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Adegan: Dua pintu, satu aman satu terjebak</div>
+                </div>
+              </div>
+              <!-- Momo Prompt -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--accent)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Momo meminta:</div>
+                  <div class="dialog-bubble momo-green">"Gambar KUNCI untuk buka pintu!"</div>
+                </div>
+              </div>
+              <!-- Draw -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--purple)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Pemain menggambar → AI bingung mengklasifikasi</div>
+                </div>
+              </div>
+              <!-- Momo Response -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--warn)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Momo ragu: <span class="momo-emotion confused"><span class="dot"></span>Bingung</span></div>
+                  <div class="dialog-bubble momo-yellow">"Hmm... 62% kunci, 58% palu"</div>
+                  <div class="anno">Gelembung kuning — kepercayaan terbelah, dua klasifikasi berdekatan</div>
+                </div>
+              </div>
+              <!-- Decision Branch -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--warn)"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title" style="margin-bottom:10px;">Keputusan Pemain:</div>
+                  <div class="branch-layout">
+                    <!-- LEFT: Success Path -->
+                    <div class="branch-main">
+                      <div class="success-box">
+                        <div class="box-title">
+                          <svg class="icon-check" viewBox="0 0 20 20" fill="#10B981"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                          KOREKSI → Kunci (Benar)
+                        </div>
+                        <div class="box-step">Pintu aman terbuka → Stickman lewat dengan selamat</div>
+                        <div class="box-step" style="margin-top:2px;"><strong style="color:#065F46">✦ BERHASIL</strong></div>
+                      </div>
+                    </div>
+                    <!-- RIGHT: Fail Path -->
+                    <div class="branch-side">
+                      <div class="fail-box">
+                        <div class="box-title">
+                          <svg class="icon-x" viewBox="0 0 20 20" fill="#EF4444"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+                          TERIMA → Palu (Salah)
+                        </div>
+                        <div class="box-step">Pintu jebakan terbuka → Stickman terpukul</div>
+                        <div class="box-step" style="margin-top:2px;"><span class="paper-tear">✕ KERTAS SOBEK!</span></div>
+                        <div class="box-step" style="margin-top:6px;"><strong>Momo panik:</strong></div>
+                        <div class="dialog-bubble momo-red" style="margin-top:3px;">"Aduh! Kertas sobek! Coba koreksi tebakan gue!"</div>
+                      </div>
+                      <!-- Retry Loop -->
+                      <div class="retry-loop">
+                        <svg class="icon-retry" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                        <div>
+                          <strong>Coba Ulangi</strong><br>
+                          <span style="font-size:11px;color:#B45309;">Kembali ke fase menggambar → Override atau Koreksi → Berhasil</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level connector -->
+        <div class="level-connector">
+          <div class="connector-line-h"></div>
+          <div class="connector-dot"></div>
+          <div class="connector-line-h"></div>
+        </div>
+
+        <!-- ──────────── LEVEL 3 ──────────── -->
+        <div class="level-container">
+          <div class="level-title-bar lv3">
+            <span class="level-badge l3">L3</span>
+            "Hiasan Mematikan"
+            <span class="level-subtitle">— Koreksi Kritis</span>
+          </div>
+          <div class="level-body">
+            <div class="vstep-list">
+              <!-- Scene -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:#64748B"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Adegan: Jalan terhalang patung hiasan indah (dekorasi)</div>
+                </div>
+              </div>
+              <!-- Momo Prompt (open) -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--accent)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Momo meminta (petunjuk terbuka):</div>
+                  <div class="dialog-bubble momo-green">"Gambar sesuatu untuk LEWAT"</div>
+                  <div class="anno">Tidak ada petunjuk objek spesifik — pemain bebas menggambar apa saja</div>
+                </div>
+              </div>
+              <!-- Draw -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--purple)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Pemain menggambar palu → AI salah klasifikasi</div>
+                </div>
+              </div>
+              <!-- Momo Response (WRONG) -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--fail)"></div>
+                  <div class="vstep-line"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title">Momo salah tapi percaya diri: <span class="momo-emotion wrong"><span class="dot"></span>Salah</span></div>
+                  <div class="dialog-bubble momo-red">"Aku 51% yakin ini BUNGA!"</div>
+                  <div class="anno">Gelembung merah — AI percaya diri tapi klasifikasi salah total</div>
+                </div>
+              </div>
+              <!-- Decision Branch -->
+              <div class="vstep-item">
+                <div class="vstep-connector">
+                  <div class="vstep-dot" style="background:var(--warn)"></div>
+                </div>
+                <div class="vstep-content">
+                  <div class="vstep-title" style="margin-bottom:10px;">Keputusan Pemain:</div>
+                  <div class="branch-layout">
+                    <!-- LEFT: Override Path -->
+                    <div class="branch-main">
+                      <div class="override-box">
+                        <div class="box-title">
+                          <svg class="icon-info" viewBox="0 0 20 20" fill="#3B82F6"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                          OVERRIDE → Ketik "palu"
+                        </div>
+                        <div class="box-step">Palu muncul → Patung hancur → Jalan terbuka</div>
+                        <div class="box-step" style="margin-top:2px;"><strong style="color:#1E40AF;">✦ BERHASIL</strong></div>
+                      </div>
+                    </div>
+                    <!-- RIGHT: Fail Path -->
+                    <div class="branch-side">
+                      <div class="fail-box">
+                        <div class="box-title">
+                          <svg class="icon-x" viewBox="0 0 20 20" fill="#EF4444"><path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/></svg>
+                          TERIMA → Bunga (Salah)
+                        </div>
+                        <div class="box-step">Bunga hiasan muncul → Tidak ada efek</div>
+                        <div class="box-step">Stickman terjebak selamanya</div>
+                        <div class="box-step" style="margin-top:2px;"><span class="paper-tear">✕ KERTAS SOBEK!</span></div>
+                        <div class="box-step" style="margin-top:6px;"><strong>Momo menyesal:</strong></div>
+                        <div class="dialog-bubble momo-red" style="margin-top:3px;">"Gue... gue salah. Maaf. Tolong koreksi gue."</div>
+                      </div>
+                      <!-- Retry Loop -->
+                      <div class="retry-loop">
+                        <svg class="icon-retry" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                        <div>
+                          <strong>Coba Ulangi</strong><br>
+                          <span style="font-size:11px;color:#B45309;">Kembali ke fase menggambar → Override AI → Berhasil</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /gameplay-grid -->
+    </div>
+  </div>
+
+  <!-- ═══ PHASE CONNECTOR ═══ -->
+  <div class="phase-connector">
+    <div class="connector-line">
+      <div class="line"></div>
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- PHASE 3: REFLECTION & EPILOG -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="phase-group phase-3">
+    <div class="phase-header">
+      <span class="phase-num">3</span>
+      FASE REFLEKSI & EPILOG — Penutup Narasi
+    </div>
+    <div class="phase-body">
+      <div class="vstep-list">
+        <!-- Victory -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--success)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Layar Kemenangan</div>
+            <div class="vstep-desc">Semua 3 level berhasil diselesaikan — perayaan di buku sketsa</div>
+          </div>
+        </div>
+        <!-- Epilog -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--accent)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Epilog Momo — Pencapaian Narasi</div>
+            <div class="epilog-box">
+              <div class="epilog-quote">
+                "Aku dulu pikir harus selalu benar. Tapi sekarang aku tahu... ada seseorang yang mau mengoreksiku."
+              </div>
+              <div class="epilog-attr">— Momo, Asisten Ilustrator</div>
+            </div>
+          </div>
+        </div>
+        <!-- Stickman Alive -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:var(--accent)"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Stickman Hidup Sepenuhnya</div>
+            <div class="vstep-desc">Stickman bergerak bebas di Pusat Halaman — simbol keberhasilan kolaborasi manusia-AI</div>
+          </div>
+        </div>
+        <!-- Data Log -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:#5B7FA5"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Ringkasan Log Data</div>
+            <div class="vstep-desc">Data perilaku ditampilkan kepada peneliti (bukan siswa) untuk analisis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PHASE CONNECTOR ═══ -->
+  <div class="phase-connector">
+    <div class="connector-line">
+      <div class="line"></div>
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- PHASE 4: DATA EXPORT -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="phase-group phase-4">
+    <div class="phase-header">
+      <span class="phase-num">4</span>
+      FASE EKSPOR DATA — Analisis Peneliti
+    </div>
+    <div class="phase-body">
+      <div class="vstep-list">
+        <!-- Export -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:#3A5F86"></div>
+            <div class="vstep-line"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Ekspor Log Perilaku ke Server</div>
+            <div class="vstep-desc">Semua log perilaku selama bermain diekspor secara otomatis ke backend peneliti</div>
+          </div>
+        </div>
+        <!-- Dashboard -->
+        <div class="vstep-item">
+          <div class="vstep-connector">
+            <div class="vstep-dot" style="background:#3A5F86"></div>
+          </div>
+          <div class="vstep-content">
+            <div class="vstep-title">Dashboard Analisis Peneliti</div>
+            <div class="metric-row">
+              <div class="metric-card">
+                <div class="metric-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3AAFA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                </div>
+                <div class="metric-name">Rasio Override</div>
+                <div class="metric-val">Override Rate</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3AAFA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="metric-name">Latensi Keputusan</div>
+                <div class="metric-val">Decision Latency</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3AAFA9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                </div>
+                <div class="metric-name">Analisis Kesenjangan Kepercayaan</div>
+                <div class="metric-val">Confidence Gap</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- LEGEND -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="legend-bar">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#F0FDF4;border-color:#10B981;"></div>
+      Jalur Berhasil
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#FEF2F2;border-color:#EF4444;"></div>
+      Jalur Gagal
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#EFF6FF;border-color:#3B82F6;"></div>
+      Override (Koreksi AI)
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#FFFBEB;border-color:#F59E0B;"></div>
+      Keputusan
+    </div>
+    <div class="legend-item">
+      <span class="momo-emotion confident" style="margin:0;padding:2px 7px;"><span class="dot"></span>Percaya Diri</span>
+    </div>
+    <div class="legend-item">
+      <span class="momo-emotion confused" style="margin:0;padding:2px 7px;"><span class="dot"></span>Bingung</span>
+    </div>
+    <div class="legend-item">
+      <span class="momo-emotion wrong" style="margin:0;padding:2px 7px;"><span class="dot"></span>Salah</span>
+    </div>
+    <div class="legend-item">
+      <div style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;background:#FFF7ED;border:1.5px dashed #F59E0B;border-radius:6px;font-size:10.5px;color:#92400E;font-weight:700;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        Coba Ulangi
+      </div>
+    </div>
+    <div class="legend-item">
+      <span class="paper-tear" style="font-size:10px;">KERTAS SOBEK</span>
+    </div>
+  </div>
+
+</div><!-- /root -->
+</body>
+</html>

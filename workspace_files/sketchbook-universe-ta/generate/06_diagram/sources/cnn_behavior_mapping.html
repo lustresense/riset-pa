@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Klasifikasi CNN & Pemetaan Perilaku</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --text: #37352F;
+    --bg: #FFFFFF;
+    --block: #F7F7F7;
+    --accent: #2383E2;
+    --accent-light: #EFF6FF;
+    --accent-border: #93C5FD;
+    --solid-green: #10B981;
+    --solid-bg: #F0FDF4;
+    --solid-border: #6EE7B7;
+    --danger-red: #EF4444;
+    --danger-bg: #FEF2F2;
+    --danger-border: #FCA5A5;
+    --deco-amber: #F59E0B;
+    --deco-bg: #FFFBEB;
+    --deco-border: #FCD34D;
+    --border-light: #E5E5E5;
+    --border-lighter: #F0F0F0;
+    --text-secondary: #6B6B6B;
+    --text-tertiary: #9B9B9B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    width: 1680px;
+    padding: 48px 56px;
+    line-height: 1.5;
+  }
+
+  /* ═══════════ TITLE ═══════════ */
+  .main-title {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .main-title h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .main-title .subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* ═══════════ PART LABEL ═══════════ */
+  .part-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 36px;
+    margin-bottom: 18px;
+  }
+  .part-badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 4px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .part-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .part-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-left: auto;
+    font-weight: 400;
+  }
+
+  /* ═══════════ PART A: PIPELINE FLOW ═══════════ */
+  .pipeline-container {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 28px 0;
+    position: relative;
+  }
+
+  .pipeline-stage {
+    flex: 1;
+    min-width: 0;
+    background: var(--block);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 22px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pipeline-stage .stage-number {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .pipeline-stage .stage-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .pipeline-stage .stage-content {
+    flex: 1;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .pipeline-stage .stage-content .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .pipeline-stage .stage-content .item:last-child {
+    margin-bottom: 0;
+  }
+  .pipeline-stage .stage-content .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  /* Stage-specific accents */
+  .stage-input { border-top: 3px solid var(--accent); }
+  .stage-preprocess { border-top: 3px solid #6366F1; }
+  .stage-model { border-top: 3px solid #8B5CF6; }
+  .stage-output { border-top: 3px solid var(--solid-green); }
+
+  .stage-model {
+    flex: 1.35;
+    background: #FAFAFE;
+  }
+
+  /* Arrow connectors between stages */
+  .pipeline-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .pipeline-arrow .arrow-line {
+    width: 28px;
+    height: 2px;
+    background: var(--accent);
+    position: relative;
+  }
+  .pipeline-arrow .arrow-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid var(--accent);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+  .pipeline-arrow .arrow-label {
+    position: absolute;
+    bottom: 20px;
+    font-size: 9px;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  /* CNN Architecture inner box */
+  .cnn-arch {
+    background: #FFFFFF;
+    border: 1px dashed var(--accent-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+  .cnn-arch .arch-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cnn-flow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .cnn-layer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid #DBEAFE;
+    white-space: nowrap;
+  }
+  .cnn-arrow-small {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .note-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  .note-badge.warn {
+    background: #FFF7ED;
+    color: #C2410C;
+    border: 1px solid #FED7AA;
+  }
+
+  /* Canvas mockup */
+  .canvas-mockup {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-light);
+    border-radius: 8px;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .canvas-mockup .sketch-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .canvas-mockup .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .canvas-mockup .sketch-line {
+    position: absolute;
+    top: 24px;
+    left: 20px;
+  }
+  .canvas-mockup .finger-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    font-size: 10px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+  .canvas-mockup .size-badge {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    background: var(--block);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* Output predictions */
+  .prediction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .prediction-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    border: 1px solid var(--border-lighter);
+  }
+  .prediction-item.top {
+    border: 1.5px solid var(--solid-green);
+    background: var(--solid-bg);
+  }
+  .prediction-rank {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    width: 20px;
+    text-align: center;
+  }
+  .prediction-item.top .prediction-rank {
+    color: var(--solid-green);
+  }
+  .prediction-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .prediction-bar-wrap {
+    width: 80px;
+    height: 6px;
+    background: var(--border-lighter);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .prediction-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+  .prediction-item.top .prediction-bar { background: var(--solid-green); }
+  .prediction-item:not(.top) .prediction-bar { background: var(--accent-border); }
+  .prediction-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    width: 38px;
+    text-align: right;
+  }
+
+  /* Momo dialog */
+  .momo-box {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--accent-light);
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    position: relative;
+  }
+  .momo-box .momo-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .momo-box .momo-text {
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ═══════════ PART B: BEHAVIOR MAPPING ═══════════ */
+  .mapping-section {
+    margin-top: 8px;
+  }
+
+  .mapping-table-wrap {
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .mapping-table thead {
+    background: var(--text);
+  }
+  .mapping-table thead th {
+    color: #FFFFFF;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .mapping-table thead th:first-child { padding-left: 20px; }
+
+  .mapping-table tbody tr {
+    border-bottom: 1px solid var(--border-lighter);
+    transition: background 0.15s;
+  }
+  .mapping-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .mapping-table tbody td {
+    padding: 11px 16px;
+    vertical-align: middle;
+    color: var(--text);
+  }
+  .mapping-table tbody td:first-child { padding-left: 20px; }
+
+  /* Category-specific row backgrounds */
+  .row-solid { background: #F0FDF4; }
+  .row-solid:hover { background: #DCFCE7; }
+  .row-danger { background: #FEF2F2; }
+  .row-danger:hover { background: #FEE2E2; }
+  .row-deco { background: #FFFBEB; }
+  .row-deco:hover { background: #FEF3C7; }
+
+  .label-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .label-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    background: #FFFFFF;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border-light);
+  }
+  .label-en {
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .cat-solid {
+    background: #D1FAE5;
+    color: #065F46;
+  }
+  .cat-danger {
+    background: #FECACA;
+    color: #991B1B;
+  }
+  .cat-deco {
+    background: #FEF3C7;
+    color: #92400E;
+  }
+
+  .behavior-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text);
+    background: rgba(255,255,255,0.7);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .visual-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .visual-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .visual-dot.green { background: var(--solid-green); }
+  .visual-dot.red { background: var(--danger-red); }
+  .visual-dot.amber { background: var(--deco-amber); }
+  .visual-name {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .level-badges {
+    display: flex;
+    gap: 4px;
+  }
+  .level-badge {
+    font-size: 11px;
+    font-weight: 600;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(0,0,0,0.08);
+    color: var(--text);
+  }
+
+  /* ═══════════ CATEGORY SUMMARY ═══════════ */
+  .category-summary {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .category-card {
+    flex: 1;
+    border-radius: 10px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .category-card.solid-card {
+    background: var(--solid-bg);
+    border: 1.5px solid var(--solid-border);
+  }
+  .category-card.danger-card {
+    background: var(--danger-bg);
+    border: 1.5px solid var(--danger-border);
+  }
+  .category-card.deco-card {
+    background: var(--deco-bg);
+    border: 1.5px solid var(--deco-border);
+  }
+
+  .category-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .category-card .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .solid-card .card-icon { background: #D1FAE5; color: #065F46; }
+  .danger-card .card-icon { background: #FECACA; color: #991B1B; }
+  .deco-card .card-icon { background: #FEF3C7; color: #92400E; }
+
+  .category-card .card-type {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .solid-card .card-type { color: #065F46; }
+  .danger-card .card-type { color: #991B1B; }
+  .deco-card .card-type { color: #92400E; }
+
+  .category-card .card-subtitle {
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+
+  .category-card .card-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.75);
+  }
+  .solid-card .flow-step { color: #065F46; border: 1px solid #A7F3D0; }
+  .danger-card .flow-step { color: #991B1B; border: 1px solid #FCA5A5; }
+  .deco-card .flow-step { color: #92400E; border: 1px solid #FCD34D; }
+
+  .flow-arrow {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .category-card .card-outcome {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .solid-card .card-outcome { background: #065F46; color: #FFFFFF; }
+  .danger-card .card-outcome { background: #991B1B; color: #FFFFFF; }
+  .deco-card .card-outcome { background: #92400E; color: #FFFFFF; }
+
+  .category-card .card-labels {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .card-label-tag {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .solid-card .card-label-tag { background: #D1FAE5; color: #065F46; }
+  .danger-card .card-label-tag { background: #FECACA; color: #991B1B; }
+  .deco-card .card-label-tag { background: #FEF3C7; color: #92400E; }
+
+  /* ═══════════ CODE SNIPPET ═══════════ */
+  .code-section {
+    background: #1E1E2E;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-top: 0;
+    position: relative;
+  }
+  .code-section .code-label {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #585870;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .code-section pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    color: #CDD6F4;
+    margin: 0;
+    white-space: pre;
+  }
+  .code-section .keyword { color: #CBA6F7; }
+  .code-section .string { color: #A6E3A1; }
+  .code-section .prop { color: #89DCEB; }
+  .code-section .bool { color: #FAB387; }
+  .code-section .num { color: #FAB387; }
+  .code-section .comment { color: #585870; font-style: italic; }
+
+  /* ═══════════ FOOTER ═══════════ */
+  .footer {
+    margin-top: 36px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-lighter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  /* ═══════════ DIVIDER ═══════════ */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+    margin: 8px 0 0 0;
+  }
+
+  /* SVG sketch in canvas */
+  .sketch-svg {
+    position: absolute;
+    top: 8px;
+    left: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ TITLE ═══════════ -->
+<div class="main-title">
+  <h1>Pipeline Klasifikasi CNN & Pemetaan Perilaku (Behavior Mapping)</h1>
+  <div class="subtitle">"Escape the Sketchbook" — QuickDraw CNN &rarr; KAPLAY.js Game Object Mapping</div>
+</div>
+
+<!-- ═══════════ PART A: CNN PIPELINE ═══════════ -->
+<div class="part-label">
+  <span class="part-badge">Part A</span>
+  <span class="part-title">Pipeline Klasifikasi CNN</span>
+  <span class="part-desc">Alur horizontal: Input &rarr; Preprocessing &rarr; Model &rarr; Output</span>
+</div>
+
+<div class="pipeline-container">
+
+  <!-- STAGE 1: INPUT -->
+  <div class="pipeline-stage stage-input">
+    <div class="stage-number">Tahap 1</div>
+    <div class="stage-title">INPUT — Gambar Sketsa</div>
+    <div class="canvas-mockup">
+      <div class="grid-bg"></div>
+      <svg class="sketch-svg" width="140" height="90" viewBox="0 0 140 90">
+        <!-- Ladder sketch -->
+        <line x1="20" y1="10" x2="20" y2="80" stroke="#37352F" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="50" y1="10" x2="50" y2="80" stroke="#37352F" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="50" y2="20" stroke="#37352F" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="40" x2="50" y2="40" stroke="#37352F" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="60" x2="50" y2="60" stroke="#37352F" stroke-width="2" stroke-linecap="round"/>
+        <!-- Finger drawing indicator -->
+        <circle cx="60" cy="35" r="3" fill="#2383E2" opacity="0.6"/>
+        <path d="M 62 33 Q 75 25 85 38" stroke="#2383E2" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="3,2"/>
+      </svg>
+      <div class="size-badge">224 × 224 px</div>
+      <div class="finger-icon">☝ Finger/Mouse Tracking (MediaPipe)</div>
+    </div>
+    <div class="stage-content">
+      <div class="item"><span class="dot"></span><span>Pengguna menggambar sketsa di canvas</span></div>
+      <div class="item"><span class="dot"></span><span>Finger tracking via MediaPipe atau mouse</span></div>
+      <div class="item"><span class="dot"></span><span>Gambar di-capture saat tombol "Selesai"</span></div>
+      <div class="item"><span class="dot"></span><span>Resolusi capture: 224 × 224 pixel</span></div>
+    </div>
+  </div>
+
+  <!-- ARROW 1 -->
+  <div class="pipeline-arrow">
+    <div class="arrow-line"></div>
+    <span class="arrow-label">Image Data</span>
+  </div>
+
+  <!-- STAGE 2: PREPROCESSING -->
+  <div class="pipeline-stage stage-preprocess">
+    <div class="stage-number">Tahap 2</div>
+    <div class="stage-title">PREPROCESSING</div>
+    <div class="stage-content">
+      <div class="item"><span class="dot" style="background:#6366F1"></span><span><strong>Normalize</strong> — Pixel values 0–255 &rarr; 0.0–1.0</span></div>
+      <div class="item"><span class="dot" style="background:#6366F1"></span><span><strong>Grayscale</strong> — Konversi RGB &rarr; 1 channel</span></div>
+      <div class="item"><span class="dot" style="background:#6366F1"></span><span><strong>Resize</strong> — Sesuai input model (224×224)</span></div>
+      <div class="item"><span class="dot" style="background:#6366F1"></span><span><strong>Batch dim</strong> — Tambah dimensi batch [1, 224, 224, 1]</span></div>
+    </div>
+    <div style="margin-top: 14px; padding: 10px 14px; background: #EEF2FF; border-radius: 6px; border: 1px solid #C7D2FE;">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4338CA; line-height: 1.6;">
+        <span style="color:#6366F1; font-weight:600;">input</span> = tf.image.<span style="font-weight:600;">resize</span>(img, [224,224])<br>
+        <span style="color:#6366F1; font-weight:600;">input</span> = tf.image.<span style="font-weight:600;">rgbToGrayscale</span>(input)<br>
+        <span style="color:#6366F1; font-weight:600;">input</span> = input.<span style="font-weight:600;">div</span>(255.0)<br>
+        <span style="color:#6366F1; font-weight:600;">input</span> = input.<span style="font-weight:600;">expandDims</span>(0)
+      </div>
+    </div>
+  </div>
+
+  <!-- ARROW 2 -->
+  <div class="pipeline-arrow">
+    <div class="arrow-line"></div>
+    <span class="arrow-label">Tensor [1,224,224,1]</span>
+  </div>
+
+  <!-- STAGE 3: CNN MODEL -->
+  <div class="pipeline-stage stage-model">
+    <div class="stage-number">Tahap 3</div>
+    <div class="stage-title">CNN MODEL — MobileNet-based</div>
+    <div class="stage-content">
+      <div class="item"><span class="dot" style="background:#8B5CF6"></span><span>Arsitektur MobileNet (lightweight, untuk browser)</span></div>
+      <div class="item"><span class="dot" style="background:#8B5CF6"></span><span>Trained pada <strong>QuickDraw dataset subset</strong> (11 kelas)</span></div>
+      <div class="item"><span class="dot" style="background:#8B5CF6"></span><span>Model loaded via <strong>TensorFlow.js</strong> di browser</span></div>
+      <div class="item"><span class="dot" style="background:#8B5CF6"></span><span>Inference 100% client-side (tidak perlu server)</span></div>
+    </div>
+    <div class="cnn-arch">
+      <div class="arch-label">Arsitektur Layer</div>
+      <div class="cnn-flow">
+        <span class="cnn-layer">Input 224×224×1</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">Conv2D</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">BatchNorm</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">ReLU</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">Conv2D</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">BatchNorm</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">ReLU</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">GlobalAvgPool</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">Dense(11)</span>
+        <span class="cnn-arrow-small">&rarr;</span>
+        <span class="cnn-layer">Softmax</span>
+      </div>
+    </div>
+    <div class="note-badge warn">
+      &#9888; Model TIDAK di-retrain dari data user — model statis, pre-trained
+    </div>
+  </div>
+
+  <!-- ARROW 3 -->
+  <div class="pipeline-arrow">
+    <div class="arrow-line"></div>
+    <span class="arrow-label">Probabilities [11]</span>
+  </div>
+
+  <!-- STAGE 4: OUTPUT -->
+  <div class="pipeline-stage stage-output">
+    <div class="stage-number">Tahap 4</div>
+    <div class="stage-title">OUTPUT — Top-3 Prediksi</div>
+    <div class="prediction-list">
+      <div class="prediction-item top">
+        <span class="prediction-rank">#1</span>
+        <span class="prediction-label">tangga</span>
+        <div class="prediction-bar-wrap"><div class="prediction-bar" style="width:94%"></div></div>
+        <span class="prediction-pct">94%</span>
+      </div>
+      <div class="prediction-item">
+        <span class="prediction-rank">#2</span>
+        <span class="prediction-label">pagar</span>
+        <div class="prediction-bar-wrap"><div class="prediction-bar" style="width:3%"></div></div>
+        <span class="prediction-pct">3%</span>
+      </div>
+      <div class="prediction-item">
+        <span class="prediction-rank">#3</span>
+        <span class="prediction-label">papan</span>
+        <div class="prediction-bar-wrap"><div class="prediction-bar" style="width:2%"></div></div>
+        <span class="prediction-pct">2%</span>
+      </div>
+    </div>
+    <div class="momo-box">
+      <div class="momo-label">MOMO DIALOG</div>
+      <div class="momo-text">"Aku yakin 94% ini tangga! Stickman bisa turun pakai ini~"</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════ PART B: BEHAVIOR MAPPING TABLE ═══════════ -->
+<div class="part-label" style="margin-top: 32px;">
+  <span class="part-badge">Part B</span>
+  <span class="part-title">Pemetaan Perilaku — 11 Label QuickDraw</span>
+  <span class="part-desc">Label klasifikasi &rarr; KAPLAY.js behavior &rarr; Game outcome</span>
+</div>
+
+<div class="mapping-section">
+  <div class="mapping-table-wrap">
+    <table class="mapping-table">
+      <thead>
+        <tr>
+          <th style="width:22%">Label (QuickDraw)</th>
+          <th style="width:14%">Kategori</th>
+          <th style="width:28%">KAPLAY Behavior</th>
+          <th style="width:18%">Visual</th>
+          <th style="width:12%">Level Aktif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- SOLID -->
+        <tr class="row-solid">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">tangga</span>
+              <span class="label-en">(ladder)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-solid">SOLID</span></td>
+          <td><span class="behavior-code">body.static=true, walkable</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot green"></span>
+              <span class="visual-name">Platform sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">1</span>
+              <span class="level-badge">2</span>
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-solid">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">jembatan</span>
+              <span class="label-en">(bridge)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-solid">SOLID</span></td>
+          <td><span class="behavior-code">body.static=true, walkable</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot green"></span>
+              <span class="visual-name">Bridge sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">1</span>
+              <span class="level-badge">2</span>
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-solid">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">papan</span>
+              <span class="label-en">(plank)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-solid">SOLID</span></td>
+          <td><span class="behavior-code">body.static=true, walkable</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot green"></span>
+              <span class="visual-name">Plank sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">1</span>
+              <span class="level-badge">2</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-solid">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">kunci</span>
+              <span class="label-en">(key)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-solid">SOLID</span></td>
+          <td><span class="behavior-code">triggers door unlock</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot green"></span>
+              <span class="visual-name">Key icon</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">2</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-solid">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">palu</span>
+              <span class="label-en">(hammer)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-solid">SOLID</span></td>
+          <td><span class="behavior-code">destroys obstacle</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot green"></span>
+              <span class="visual-name">Hammer sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <!-- DANGER -->
+        <tr class="row-danger">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">pedang</span>
+              <span class="label-en">(sword)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-danger">DANGER</span></td>
+          <td><span class="behavior-code">damage=100, kills stickman</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot red"></span>
+              <span class="visual-name">Spike sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">2</span>
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-danger">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">pisau</span>
+              <span class="label-en">(knife)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-danger">DANGER</span></td>
+          <td><span class="behavior-code">damage=100, kills stickman</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot red"></span>
+              <span class="visual-name">Blade sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">2</span>
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-danger">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">paku</span>
+              <span class="label-en">(nail/spike)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-danger">DANGER</span></td>
+          <td><span class="behavior-code">damage=100, kills stickman</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot red"></span>
+              <span class="visual-name">Spike sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">2</span>
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <!-- DEKORASI -->
+        <tr class="row-deco">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">awan</span>
+              <span class="label-en">(cloud)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-deco">DEKORASI</span></td>
+          <td><span class="behavior-code">no collision, visual only</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot amber"></span>
+              <span class="visual-name">Cloud sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-deco">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">bunga</span>
+              <span class="label-en">(flower)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-deco">DEKORASI</span></td>
+          <td><span class="behavior-code">no collision, visual only</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot amber"></span>
+              <span class="visual-name">Flower sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="row-deco">
+          <td>
+            <div class="label-cell">
+              <span class="label-id">pelangi</span>
+              <span class="label-en">(rainbow)</span>
+            </div>
+          </td>
+          <td><span class="cat-badge cat-deco">DEKORASI</span></td>
+          <td><span class="behavior-code">no collision, visual only</span></td>
+          <td>
+            <div class="visual-cell">
+              <span class="visual-dot amber"></span>
+              <span class="visual-name">Rainbow sprite</span>
+            </div>
+          </td>
+          <td>
+            <div class="level-badges">
+              <span class="level-badge">3</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════ CATEGORY SUMMARY CARDS ═══════════ -->
+  <div class="category-summary">
+    <!-- SOLID -->
+    <div class="category-card solid-card">
+      <div class="card-header">
+        <div class="card-icon">&#9679;</div>
+        <div>
+          <div class="card-type">SOLID</div>
+          <div class="card-subtitle">5 label: tangga, jembatan, papan, kunci, palu</div>
+        </div>
+      </div>
+      <div class="card-flow">
+        <span class="flow-step">Walkable</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">body.static=true</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">Collision ON</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">Stickman traverse</span>
+      </div>
+      <div class="card-outcome">HASIL: SUCCESS — Stickman berhasil lewat</div>
+      <div class="card-labels">
+        <span class="card-label-tag">tangga</span>
+        <span class="card-label-tag">jembatan</span>
+        <span class="card-label-tag">papan</span>
+        <span class="card-label-tag">kunci</span>
+        <span class="card-label-tag">palu</span>
+      </div>
+    </div>
+
+    <!-- DANGER -->
+    <div class="category-card danger-card">
+      <div class="card-header">
+        <div class="card-icon">&#9632;</div>
+        <div>
+          <div class="card-type">DANGER</div>
+          <div class="card-subtitle">3 label: pedang, pisau, paku</div>
+        </div>
+      </div>
+      <div class="card-flow">
+        <span class="flow-step">Harmful</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">damage=100</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">Stickman hit</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">Kertas Sobek!</span>
+      </div>
+      <div class="card-outcome">HASIL: FAIL — Kertas sobek, stickman mati</div>
+      <div class="card-labels">
+        <span class="card-label-tag">pedang</span>
+        <span class="card-label-tag">pisau</span>
+        <span class="card-label-tag">paku</span>
+      </div>
+    </div>
+
+    <!-- DEKORASI -->
+    <div class="category-card deco-card">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-type">DEKORASI</div>
+          <div class="card-subtitle">3 label: awan, bunga, pelangi</div>
+        </div>
+      </div>
+      <div class="card-flow">
+        <span class="flow-step">Visual only</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">collision=false</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">No effect</span>
+        <span class="flow-arrow">&rarr;</span>
+        <span class="flow-step">Stickman tembus</span>
+      </div>
+      <div class="card-outcome">HASIL: FAIL (jika diandalkan) — Tidak bisa diinjak</div>
+      <div class="card-labels">
+        <span class="card-label-tag">awan</span>
+        <span class="card-label-tag">bunga</span>
+        <span class="card-label-tag">pelangi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CODE SNIPPET ═══════════ -->
+  <div class="code-section">
+    <span class="code-label">KAPLAY.js</span>
+    <pre><span class="comment">// Pemetaan label CNN → behavior KAPLAY.js</span>
+<span class="keyword">const</span> <span class="prop">behaviorMap</span> = {
+  <span class="string">"tangga"</span>:  { <span class="prop">type</span>: <span class="string">"solid"</span>,   <span class="prop">sprite</span>: <span class="string">"ladder"</span>,  <span class="prop">collision</span>: <span class="bool">true</span>,  <span class="prop">walkable</span>: <span class="bool">true</span>  },
+  <span class="string">"jembatan"</span>:{ <span class="prop">type</span>: <span class="string">"solid"</span>,   <span class="prop">sprite</span>: <span class="string">"bridge"</span>,   <span class="prop">collision</span>: <span class="bool">true</span>,  <span class="prop">walkable</span>: <span class="bool">true</span>  },
+  <span class="string">"papan"</span>:  { <span class="prop">type</span>: <span class="string">"solid"</span>,   <span class="prop">sprite</span>: <span class="string">"plank"</span>,    <span class="prop">collision</span>: <span class="bool">true</span>,  <span class="prop">walkable</span>: <span class="bool">true</span>  },
+  <span class="string">"kunci"</span>:  { <span class="prop">type</span>: <span class="string">"solid"</span>,   <span class="prop">sprite</span>: <span class="string">"key"</span>,      <span class="prop">collision</span>: <span class="bool">true</span>,  <span class="prop">trigger</span>: <span class="string">"unlock"</span> },
+  <span class="string">"palu"</span>:   { <span class="prop">type</span>: <span class="string">"solid"</span>,   <span class="prop">sprite</span>: <span class="string">"hammer"</span>,   <span class="prop">collision</span>: <span class="bool">true</span>,  <span class="prop">trigger</span>: <span class="string">"destroy"</span>},
+  <span class="string">"pedang"</span>: { <span class="prop">type</span>: <span class="string">"danger"</span>,  <span class="prop">sprite</span>: <span class="string">"spikes"</span>,   <span class="prop">damage</span>: <span class="num">100</span> },
+  <span class="string">"pisau"</span>:  { <span class="prop">type</span>: <span class="string">"danger"</span>,  <span class="prop">sprite</span>: <span class="string">"blade"</span>,    <span class="prop">damage</span>: <span class="num">100</span> },
+  <span class="string">"paku"</span>:   { <span class="prop">type</span>: <span class="string">"danger"</span>,  <span class="prop">sprite</span>: <span class="string">"spike"</span>,    <span class="prop">damage</span>: <span class="num">100</span> },
+  <span class="string">"awan"</span>:   { <span class="prop">type</span>: <span class="string">"deco"</span>,    <span class="prop">sprite</span>: <span class="string">"cloud"</span>,    <span class="prop">collision</span>: <span class="bool">false</span> },
+  <span class="string">"bunga"</span>:  { <span class="prop">type</span>: <span class="string">"deco"</span>,    <span class="prop">sprite</span>: <span class="string">"flower"</span>,   <span class="prop">collision</span>: <span class="bool">false</span> },
+  <span class="string">"pelangi"</span>:{ <span class="prop">type</span>: <span class="string">"deco"</span>,    <span class="prop">sprite</span>: <span class="string">"rainbow"</span>,  <span class="prop">collision</span>: <span class="bool">false</span> },
+};</pre>
+  </div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div class="footer">
+  <span>"Escape the Sketchbook" — HITL AI Literacy Simulation</span>
+  <span>Diagram 04: CNN Pipeline & Behavior Mapping</span>
+</div>
+
+</body>
+</html>

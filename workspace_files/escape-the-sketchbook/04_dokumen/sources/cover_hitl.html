@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=794">
+<title>Cover - Dokumen Desain Sistem</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #da2644;
+    --text-primary: #1c1b19;
+    --text-muted: #7c7870;
+    --bg-surface: #e3dfd9;
+    --bg-page: #f0efed;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 794px;
+    height: 1123px;
+    overflow: hidden;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    background: #ffffff;
+    position: relative;
+  }
+
+  /* Layer 1: Background */
+  .cover-bg-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* Right-side vertical watermark */
+  .watermark {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 140px;
+    color: var(--accent);
+    opacity: 0.04;
+    white-space: nowrap;
+    letter-spacing: 12px;
+    user-select: none;
+  }
+
+  /* Layer 2: Structure */
+  .cover-line-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .color-dash {
+    position: absolute;
+    left: 9.5%;
+    top: 15%;
+    width: 50px;
+    height: 5px;
+    background: var(--accent);
+  }
+
+  .meta-accent-line {
+    position: absolute;
+    left: 9.5%;
+    top: 68%;
+    width: 2px;
+    height: 120px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
+
+  /* Layer 3: Content */
+  .cover-text-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+  }
+
+  .kicker {
+    position: absolute;
+    left: 9.5%;
+    top: 20%;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .hero-title {
+    position: absolute;
+    left: 9.5%;
+    top: 26%;
+    width: 55%;
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+
+  .hero-title .accent-text {
+    color: var(--accent);
+  }
+
+  .summary {
+    position: absolute;
+    left: 9.5%;
+    top: 48%;
+    width: 50%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--text-primary);
+    opacity: 0.85;
+  }
+
+  .meta {
+    position: absolute;
+    left: 12%;
+    top: 70%;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2.2;
+    color: var(--text-primary);
+  }
+
+  .meta .label {
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .meta .value {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .footer {
+    position: absolute;
+    right: 8%;
+    bottom: 7%;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    opacity: 0.6;
+    text-align: right;
+    letter-spacing: 1px;
+  }
+
+  /* Subtle top-right decorative element */
+  .deco-corner {
+    position: absolute;
+    right: 8%;
+    top: 8%;
+    width: 60px;
+    height: 60px;
+    border-top: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+    opacity: 0.3;
+  }
+</style>
+</head>
+<body>
+  <!-- Layer 1: Background -->
+  <div class="cover-bg-layer">
+    <div class="watermark">DOKUMEN DESAIN</div>
+  </div>
+
+  <!-- Layer 2: Structure -->
+  <div class="cover-line-layer">
+    <div class="color-dash"></div>
+    <div class="meta-accent-line"></div>
+    <div class="deco-corner"></div>
+  </div>
+
+  <!-- Layer 3: Content -->
+  <div class="cover-text-layer">
+    <div class="kicker">Dokumen Desain Sistem</div>
+
+    <div class="hero-title">
+      Interactive <span class="accent-text">Human-in-the-Loop</span> AI Literacy Simulation
+    </div>
+
+    <div class="summary">
+      Simulasi interaktif berbasis web untuk mengukur literasi AI siswa SMP melalui mekanisme trust calibration. Siswa menggambar, AI mengklasifikasi, siswa memutuskan — dan keputusan mereka membentuk dunia game.
+    </div>
+
+    <div class="meta">
+      <span class="label">Penyusun</span>
+      <span class="value">Can (Farchan) &amp; Dias</span>
+      <br>
+      <span class="label">Institusi</span>
+      <span class="value">D4 TRM — Politeknik Elektronika Negeri Surabaya</span>
+      <br>
+      <span class="label">Pembimbing</span>
+      <span class="value">Bu Hesti &amp; Pak TB</span>
+    </div>
+
+    <div class="footer">
+      Juni 2026<br>
+      Escape the Sketchbook
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,619 @@
+% ============================================================
+% PROPOSAL PROYEK AKHIR — MUHAMMAD DIAS AL-IZZAT
+% PENGEMBANGAN SISTEM KLASIFIKASI SKETSA BERBASIS CNN MOBILENET
+% DENGAN CONFIDENCE SCORE DAN CLUSTERING POLA KEPUTUSAN
+% PADA SISTEM LITERASI KECERDASAN BUATAN UNTUK SISWA SMP
+%
+% Format: PENS Standard (A4, 12pt TNR, 1.5 spacing, 4cm/3cm margin)
+% Mengikuti pola format Izzah (PilAItes 2025)
+% Skeleton file — empty sections siap diisi Phase 2
+% ============================================================
+
+\documentclass[12pt,a4paper,oneside,openany]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[top=4cm,left=4cm,right=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+
+% Times New Roman (pdflatex standard)
+\usepackage{times}
+\renewcommand{\rmdefault}{ptm}
+
+% ============================================================
+% LINE SPACING 1.5
+% ============================================================
+\setstretch{1.5}
+
+% ============================================================
+% PARAGRAPH INDENT (1.25 cm, PENS standard)
+% ============================================================
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+% ============================================================
+% CHAPTER / SECTION / SUBSECTION FORMATTING
+% ============================================================
+\titleformat{\chapter}[display]
+  {\normalfont\fontsize{14pt}{16.8pt}\selectfont\bfseries\centering}
+  {BAB \thechapter}
+  {12pt}
+  {\MakeUppercase}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries\itshape}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\section}{0pt}{18pt}{12pt}
+\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+
+% ============================================================
+% CAPTION FORMATTING (Pola Izzah)
+% - Tabel: caption DI ATAS, font 11pt, label bold
+% - Gambar: caption DI BAWAH, font 11pt, label bold
+% ============================================================
+\captionsetup[table]{font=small,labelfont=bf,name={Tabel},labelsep=period,justification=centering,aboveskip=6pt,belowskip=0pt,position=top}
+\captionsetup[figure]{font=small,labelfont=bf,name={Gambar},labelsep=period,justification=centering,aboveskip=0pt,belowskip=6pt,position=bottom}
+
+% ============================================================
+% HEADER / FOOTER (page number top-right)
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% ============================================================
+% BLANK PAGE COMMAND
+% ============================================================
+\newcommand{\blankpage}{%
+  \afterpage{%
+    \null
+    \vfill
+    \begin{center}
+      {\small Halaman ini sengaja dikosongkan}
+    \end{center}
+    \vfill
+    \thispagestyle{plain}
+    \newpage
+  }%
+}
+
+% ============================================================
+% CUSTOM COMMANDS
+% ============================================================
+% \gbr{filename}{caption}{label}
+\newcommand{\gbr}[3]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{#1}
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+% \gbrsrc{filename}{caption}{label}{source}
+\newcommand{\gbrsrc}[4]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{#1}
+    \caption{#2}
+    \label{#3}
+    \begin{center}\small (Sumber: #4)\end{center}
+  \end{figure}
+}
+
+% \tabel{caption}{content}{label}
+\newcommand{\tabel}[3]{%
+  \begin{table}[H]
+    \centering
+    \caption{#1}
+    \label{#3}
+    #2
+  \end{table}
+}
+
+% ============================================================
+% TOC FORMATTING
+% ============================================================
+\renewcommand{\contentsname}{DAFTAR ISI}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% ============================================================
+% 1. COVER PAGE
+% ============================================================
+\begin{titlepage}
+\centering
+\vspace*{1cm}
+
+{\fontsize{14pt}{16pt}\selectfont PROPOSAL PROYEK AKHIR}
+
+\vspace{2cm}
+
+{\fontsize{14pt}{18pt}\selectfont\bfseries\MakeUppercase{Pengembangan Sistem Klasifikasi Sketsa Berbasis CNN MobileNet dengan Confidence Score dan Clustering Pola Keputusan pada Sistem Literasi Kecerdasan Buatan untuk Siswa SMP}}
+
+\vspace{3cm}
+
+{\fontsize{12pt}{14pt}\selectfont Oleh:}\\[0.3cm]
+{\fontsize{12pt}{14pt}\selectfont\bfseries Muhammad Dias Al-Izzat}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont NRP. 53226000xx}
+
+\vspace{3cm}
+
+{\fontsize{12pt}{14pt}\selectfont Dosen Pembimbing:}\\[0.3cm]
+{\fontsize{12pt}{14pt}\selectfont [Nama Dosen Pembimbing]}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont NIP. [NIP]}
+
+\vspace{3cm}
+
+{\fontsize{12pt}{14pt}\selectfont PROGRAM STUDI SARJANA TERAPAN TEKNOLOGI REKAYASA MULTIMEDIA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont JURUSAN TEKNOLOGI MULTIMEDIA DAN JARINGAN}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont POLITEKNIK ELEKTRONIKA NEGERI SURABAYA}\\[0.2cm]
+{\fontsize{12pt}{14pt}\selectfont 2025}
+
+\end{titlepage}
+
+% ============================================================
+% 2. BLANK PAGE
+% ============================================================
+\blankpage
+
+% ============================================================
+% 3. HALAMAN PENGESAHAN
+% ============================================================
+\chapter*{HALAMAN PENGESAHAN}
+\addcontentsline{toc}{chapter}{HALAMAN PENGESAHAN}
+
+Proposal Proyek Akhir ini disusun dan diajukan oleh:
+
+\vspace{0.4cm}
+
+\begin{tabular}{ll}
+Nama & : Muhammad Dias Al-Izzat \\
+NRP & : 53226000xx \\
+Program Studi & : Sarjana Terapan Teknologi Rekayasa Multimedia \\
+Jurusan & : Teknologi Multimedia dan Jaringan \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+Telah diperiksa dan disahkan oleh Dosen Pembimbing pada tanggal: \underline{\hspace{3cm}}
+
+\vspace{1.5cm}
+
+\begin{tabular}{ll}
+Dosen Pembimbing, & \\
+\\
+\\
+\\
+\underline{\hspace{5cm}} & \\
+[Nama Dosen Pembimbing] & \\
+NIP. \underline{\hspace{3cm}} & \\
+\end{tabular}
+
+\blankpage
+
+% ============================================================
+% 4. ABSTRAK
+% ============================================================
+\chapter*{ABSTRAK}
+\addcontentsline{toc}{chapter}{ABSTRAK}
+
+% TODO Phase 2: Isi abstrak 200-250 kata + kata kunci
+% Template: konteks → masalah → solusi → metode → hasil yang diharapkan
+%
+% [ABSTRAK — ISI DI SINI]
+
+\vspace{0.5cm}
+
+\noindent\textbf{Kata Kunci}: % [kata kunci 1, kata kunci 2, ...]
+
+\blankpage
+
+% ============================================================
+% 5. ABSTRACT (English)
+% ============================================================
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+% TODO Phase 2: English version of abstrak
+% [ABSTRACT — ISI DI SINI]
+
+\vspace{0.5cm}
+
+\noindent\textbf{Keywords}: % [keywords in English]
+
+\blankpage
+
+% ============================================================
+% 6. DAFTAR ISI
+% ============================================================
+\chapter*{DAFTAR ISI}
+\addcontentsline{toc}{chapter}{DAFTAR ISI}
+
+\tableofcontents
+\clearpage
+
+% ============================================================
+% 7. DAFTAR GAMBAR
+% ============================================================
+\chapter*{DAFTAR GAMBAR}
+\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+
+\listoffigures
+\clearpage
+
+% ============================================================
+% 8. DAFTAR TABEL
+% ============================================================
+\chapter*{DAFTAR TABEL}
+\addcontentsline{toc}{chapter}{DAFTAR TABEL}
+
+\listoftables
+\clearpage
+
+% ============================================================
+% BAB 1 — PENDAHULUAN
+% (UNCHANGED from existing proposal — JANGAN diubah, hanya format convert)
+% Total target: ~5 halaman
+% IDENTIK dengan Can — pastikan selaras
+% ============================================================
+\chapter{PENDAHULUAN}
+\label{chap:bab1}
+
+% ------------------------------------------------------------
+\section{LATAR BELAKANG}
+\label{sec:latar-belakang}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.1 dari proposal-dias.tex existing
+% Estimasi: ~2 halaman, 5-6 paragraf
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{PERMASALAHAN}
+\label{sec:permasalahan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.2 dari proposal-dias.tex existing
+% Estimasi: ~0.5 halaman, 1 paragraf
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{BATASAN MASALAH}
+\label{sec:batasan-masalah}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.3 dari proposal-dias.tex existing
+% Estimasi: ~0.5 halaman, bullet list 4-5 poin
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{TUJUAN}
+\label{sec:tujuan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.4 dari proposal-dias.tex existing
+% Estimasi: ~0.5 halaman
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{MANFAAT}
+\label{sec:manfaat}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.5 dari proposal-dias.tex existing
+% Estimasi: ~0.5 halaman, bullet 4 poin
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{SISTEMATIKA PENULISAN}
+\label{sec:sistematika-penulisan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy Bab 1.6 dari proposal-dias.tex existing + REVISE
+% Estimasi: ~0.5 halaman, paragraf per BAB
+% REVISE: ubah mention "BAB III Perancangan Sistem" → "BAB III Deskripsi Sistem"
+% + tambah mention jadwal penelitian
+% [ISI DI SINI]
+
+% ============================================================
+% BAB 2 — KAJIAN PUSTAKA
+% BEDA Can vs Dias — Dias fokus Backend/CNN/Data Analysis
+% Total target: ~8-10 halaman
+% Pola Izzah: ringkas, detail di Bab 3
+% ============================================================
+\chapter{KAJIAN PUSTAKA}
+\label{chap:bab2}
+
+% Paragraf pembuka bab — TODO Phase 2
+% [PARAGRAF PEMBUKA BAB 2]
+
+% ------------------------------------------------------------
+\section{DESKRIPSI PERMASALAHAN}
+\label{sec:deskripsi-permasalahan}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy dari proposal-dias.tex existing + ringkas
+% Estimasi: ~1 halaman, 3 paragraf
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{TEORI PENUNJANG}
+\label{sec:teori-penunjang}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy dari proposal-dias.tex existing + ringkas (detail di Bab 3)
+% Estimasi: ~5-6 halaman total, 0.5-1 hal per teori
+% Format pola Izzah: definisi → penjelasan → posisi dalam penelitian
+
+\subsection{Literasi Kecerdasan Buatan}
+\label{subsec:literasi-ai}
+% [ISI DI SINI]
+
+\subsection{Human-in-the-Loop pada Sistem Klasifikasi}
+\label{subsec:hitl-klasifikasi}
+% [ISI DI SINI]
+
+\subsection{Convolutional Neural Network dan MobileNet}
+\label{subsec:cnn-mobilenet}
+% [ISI DI SINI]
+
+\subsection{TensorFlow.js dan Client-Side Inference}
+\label{subsec:tfjs}
+% [ISI DI SINI]
+
+\subsection{Confidence Score}
+\label{subsec:confidence-score}
+% [ISI DI SINI]
+
+\subsection{Data Logging}
+\label{subsec:data-logging}
+% [ISI DI SINI]
+
+\subsection{K-Means Clustering}
+\label{subsec:kmeans}
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{PENELITIAN TERKAIT}
+\label{sec:penelitian-terkait}
+% ------------------------------------------------------------
+% TODO Phase 2: 4 penelitian terkait + Tabel State of the Art
+% Estimasi: ~2-3 halaman
+
+\subsection{Deep Learning for Free-Hand Sketch Recognition}
+\label{subsec:penelitian-1}
+% [ISI DI SINI — Xu et al. [6]]
+
+\subsection{Front-End Deep Learning Web Applications}
+\label{subsec:penelitian-2}
+% [ISI DI SINI — Goh et al. [7]]
+
+\subsection{Confidence Visualization}
+\label{subsec:penelitian-3}
+% [ISI DI SINI — Karran et al. [9]]
+
+\subsection{K-Means untuk Pola Belajar}
+\label{subsec:penelitian-4}
+% [ISI DI SINI — Pansri [10] + Alzahrani [11]]
+
+\subsection{State of the Art}
+\label{subsec:state-of-the-art}
+% TODO Phase 2: Tabel 2.1 State of the Art (POLosan, format Izzah)
+% Kolom: No | Penelitian | Fokus | Metode | Temuan | Celah yang Diisi
+% [ISI DI SINI + Tabel 2.1]
+
+% ============================================================
+% BAB 3 — DESKRIPSI SISTEM
+% BEDA Can vs Dias — DETAIL, scope Backend/CNN/Data Analysis
+% Total target: ~18-22 halaman
+% Urutan pola Izzah: Deskripsi Solusi → Metodologi → Desain Sistem → Jadwal
+% Judul: "DESKRIPSI SISTEM" (BUKAN "PERANCANGAN SISTEM" seperti existing)
+% ============================================================
+\chapter{DESKRIPSI SISTEM}
+\label{chap:bab3}
+
+% Paragraf pembuka bab — TODO Phase 2
+% [PARAGRAF PEMBUKA BAB 3]
+
+% ------------------------------------------------------------
+\section{DESKRIPSI SOLUSI}
+\label{sec:deskripsi-solusi}
+% ------------------------------------------------------------
+% TODO Phase 2: Copy dari proposal-dias.tex existing Bab 3.1
+% Estimasi: ~1-2 halaman
+% Konten: 4 prinsip (CNN MobileNet, TF.js, REST API logging, K-Means)
+% + 5 komponen teknis
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{METODOLOGI PENELITIAN}
+\label{sec:metodologi-penelitian}
+% ------------------------------------------------------------
+% TODO Phase 2: PINDAH dari posisi akhir (existing 3.15) ke sini (3.2)
+% Estimasi: ~2-3 halaman
+% Konten WAJIB: Waterfall (SDLC) 5 tahap + Fishbone 6M + SUS + Black-Box + akurasi model
+% [ISI DI SINI]
+
+\subsection{Pendekatan dan Jenis Penelitian}
+\label{subsec:pendekatan-penelitian}
+% [ISI DI SINI — Mixed Methods + R&D]
+
+\subsection{Metode Pengembangan}
+\label{subsec:metode-pengembangan}
+% [ISI DI SINI — SDLC Waterfall 5 tahap]
+
+\subsection{Analisis Masalah (Fishbone 6M)}
+\label{subsec:analisis-masalah}
+% [ISI DI SINI — Fishbone 6M: Man, Machine, Method, Material, Measurement, Environment]
+% TODO: Tambahkan Gambar Fishbone Diagram
+
+\subsection{Teknik Pengumpulan Data}
+\label{subsec:teknik-pengumpulan-data}
+% [ISI DI SINI — Data Log + Kuesioner SUS + Observasi]
+
+\subsection{Teknik Analisis Data}
+\label{subsec:teknik-analisis-data}
+% [ISI DI SINI — Statistik Deskriptif + K-Means + Fishbone + Thematic]
+
+\subsection{Metode Pengujian}
+\label{subsec:metode-pengujian}
+% [ISI DI SINI — Black-Box + Akurasi Model + SUS]
+
+% ------------------------------------------------------------
+\section{DESAIN SISTEM}
+\label{sec:desain-sistem}
+% ------------------------------------------------------------
+% TODO Phase 2: Sub-sections detail scope Dias
+% Estimasi: ~12-15 halaman total
+% Konsolidasi 15 section existing jadi 4 main sections dengan subsections
+
+\subsection{Perancangan Sistem Global (IPO)}
+\label{subsec:sistem-global}
+% TODO Phase 2: Copy dari existing 3.1 Perancangan Sistem Global
+% Estimasi: ~1.5 halaman
+% Konten: Input → 4 Layer (Interactive Sim, AI Classification, Decision & Consequence, Data & Analysis) → Output
+% [ISI DI SINI + Gambar 3.x Desain Sistem Global]
+
+\subsection{Arsitektur Sistem Hybrid}
+\label{subsec:arsitektur}
+% TODO Phase 2: Copy dari existing 3.3 Perancangan Arsitektur Sistem
+% Estimasi: ~1.5 halaman
+% Konten: Browser-based inference + server-side services, Node.js/Express, SQLite
+% [ISI DI SINI + Gambar 3.x Arsitektur Sistem]
+
+\subsection{Model CNN MobileNet}
+\label{subsec:cnn-model}
+% TODO Phase 2: Copy dari existing 3.4 + 3.4.1-3.4.3
+% Estimasi: ~2 halaman
+% Konten: pemilihan kategori dataset, arsitektur, training, konversi TF.js
+% [ISI DI SINI + Tabel 3.x Hyperparameter + Gambar 3.x Arsitektur CNN]
+
+\subsection{Skema Data Log dan Backend API}
+\label{subsec:data-log-api}
+% TODO Phase 2: Konsolidasi dari existing 3.7 + 3.8
+% Estimasi: ~2 halaman
+% Konten: struktur JSON log (Tabel), endpoint REST API (Tabel), alur logging
+% [ISI DI SINI + Tabel 3.x Struktur JSON Log + Tabel 3.x Endpoint REST API]
+
+\subsection{K-Means Clustering}
+\label{subsec:kmeans-clustering}
+% TODO Phase 2: Copy dari existing 3.9
+% Estimasi: ~2 halaman
+% Konten: feature engineering, penentuan k (Elbow/Silhouette), interpretasi cluster
+% [ISI DI SINI + Gambar 3.x K-Means Pipeline]
+
+\subsection{Admin Dashboard}
+\label{subsec:admin-dashboard}
+% TODO Phase 2: Copy dari existing 3.10 + tambah wireframe mockup
+% Estimasi: ~1.5 halaman
+% Konten: fitur dashboard, alur penggunaan, mockup dashboard
+% [ISI DI SINI + Gambar 3.x Wireframe Admin Dashboard]
+
+\subsection{Pembagian Tugas dan Alur Pengerjaan}
+\label{subsec:pembagian-tugas}
+% TODO Phase 2: ADD section baru — DUO PATTERN (dari Daffa 3.2.2)
+% Estimasi: ~1.5 halaman
+% Diagram pembagian tugas (BIRU=Can, ABU=Dias)
+% Narasi: penulis (Dias) ↔ rekan (Can)
+% Titik temu: Probe UI
+% [ISI DI SINI + Gambar 3.x Pembagian Tugas]
+
+\subsection{Kontrak Data Dias--Can}
+\label{subsec:kontrak-data}
+% TODO Phase 2: Copy dari existing 3.14 + rapikan
+% Estimasi: ~1 halaman
+% Konten: format JSON payload, endpoint, batas tanggung jawab
+% [ISI DI SINI + Gambar 3.x Kontrak Data]
+
+\subsection{Rancangan Pengujian}
+\label{subsec:rancangan-pengujian}
+% TODO Phase 2: Black-Box + akurasi model (confusion matrix) + SUS untuk dashboard
+% Estimasi: ~1.5 halaman
+% [ISI DI SINI]
+
+% ------------------------------------------------------------
+\section{JADWAL PENELITIAN}
+\label{sec:jadwal-penelitian}
+% ------------------------------------------------------------
+% TODO Phase 2: Tabel timeline SINKRON dengan Can
+% Estimasi: ~1 halaman
+% Format: 1 tabel shared, kolom Bulan 1-12, rows kegiatan + inisial C/D
+% Lihat Style_Guide_v1.md Section 7.3 untuk daftar kegiatan
+%
+% [ISI DI SINI + Tabel 3.x Timeline]
+
+% ============================================================
+% DAFTAR PUSTAKA
+% ============================================================
+\chapter*{DAFTAR PUSTAKA}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+
+% TODO Phase 2: Daftar Pustaka format PENS-IEEE
+% Urut by nomor [1], [2], ... sesuai urutan muncul
+% Format: Author. (Year). Title. Venue, vol. X, no. Y, pp. Z-W. doi: ...
+%
+% Referensi Dias (22 total — lihat proposal-dias.tex existing):
+% [1] Ng et al. - AI literacy
+% [2] Casal-Otero et al. - AI literacy K-12
+% [3] Khosravi et al. - XAI in education
+% [4] Mosqueira-Rey et al. - HITL ML state of the art
+% [5] Memarian & Doleck - HITL in AIED
+% [6] Xu et al. - Deep learning for free-hand sketch
+% [7] Goh et al. - Front-end deep learning web apps
+% [8] Smilkov et al. - TensorFlow.js
+% [9] Karran et al. - Confidence visualization
+% [10] Pansri et al. - K-Means clustering student learning
+% [11] Alzahrani et al. - K-Means student engagement
+% [12] Videnovik et al. - GBL CS education
+% [13] Chan, Wan & King - Flow Theory
+% [14] Schroeder et al. - Pedagogical agents
+% [15] Meng et al. - MediaPipe (NOTE: bisa DEPRECATED bila Can tidak pakai finger tracking login)
+% [16] Pressman - Software Engineering
+% [17] Sommerville - Software Engineering
+% [18] Sugiyono - R&D
+% [19] Creswell - Mixed Methods
+% [20] Ishikawa - Quality Control
+% [21] Brooke - SUS
+% [22] Bangor et al. - SUS empirical
+% [ISI DI SINI]
+
+\end{document}
