@@ -771,9 +771,9 @@ Preamble di bawah ini adalah **template PENS standard** yang diadopsi dari forma
 
 ## 9. Path Output Files
 
-1. **Style Guide**: `/home/z/my-project/download/sketchbook-universe-ta/generate/01_proposal/Style_Guide_v1.md` (file ini)
-2. **LaTeX Skeleton Can**: `/home/z/my-project/download/sketchbook-universe-ta/generate/01_proposal/latex_skeleton_can.tex`
-3. **LaTeX Skeleton Dias**: `/home/z/my-project/download/sketchbook-universe-ta/generate/01_proposal/latex_skeleton_dias.tex`
+1. **Style Guide**: `Style_Guide_v1.md` (file ini)
+2. **LaTeX Skeleton Can**: `latex_skeleton_can.tex`
+3. **LaTeX Skeleton Dias**: `latex_skeleton_dias.tex`
 
 ---
 
@@ -781,7 +781,7 @@ Preamble di bawah ini adalah **template PENS standard** yang diadopsi dari forma
 
 - **Izzah proposal**: `/tmp/izzah.txt` (Nurul Izzah — PilAItes, PENS 2025)
 - **Daffa proposal**: `/tmp/daffa.txt` (Muhammad Daffa Husen Nadia — RFID+AR+Blockchain, PENS 2025)
-- **Existing Can proposal**: `/home/z/my-project/download/escape-the-sketchbook/01_proposal/can/proposal-can.tex`
-- **Existing Dias proposal**: `/home/z/my-project/download/escape-the-sketchbook/01_proposal/dias/proposal-dias.tex`
-- **MEMORY.md**: `/home/z/my-project/download/sketchbook-universe-ta/generate/MEMORY.md` (pivot decisions 16/6/26, RSI-1)
+- **Existing Can proposal**: `../archive_escape_the_sketchbook/01_proposal/can/proposal-can.tex`
+- **Existing Dias proposal**: `../archive_escape_the_sketchbook/01_proposal/dias/proposal-dias.tex`
+- **MEMORY.md**: `../../../MEMORY.md` (pivot decisions 16/6/26, RSI-1)
 - **Worklog**: `/home/z/my-project/worklog.md`

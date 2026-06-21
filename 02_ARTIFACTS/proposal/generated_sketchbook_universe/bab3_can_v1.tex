@@ -1,32 +1,18 @@
 % ============================================================
-% DRAF PROPOSAL PROYEK AKHIR — FARCHAN DEANO MUHAMMAD (CAN)
-% Versi: v0.0.0
-% Tanggal: 17 Juni 2026
+% BAB 3 — DESKRIPSI SISTEM (SCOPE: CAN) — v1
+% Farchan Deano Muhammad — D4 TRM PENS
 % Project: Sketchbook Universe
-% Scope: Frontend / HITL UI / Maskot Momo / Simulasi Interaktif Berlevel
 % Format: PENS Standard (A4, 12pt TNR, 1.5 spacing, 4cm/3cm margin)
-% 
-% Compiled dari:
-%   - bab1_can_v1.tex (Bab 1 verbatim, tidak diubah)
-%   - bab2_can_v1.tex (Bab 2 ringkas, hapus MediaPipe, ganti Children Behavioral Patterns)
-%   - bab3_can_v1.tex (Bab 3 detail, pivot 16/6/26 applied)
-%   - daftar_pustaka_can_v1.tex (32 refs)
-% 
-% Post-pivot 16/6/26 applied:
-%   #1 Login: nomor absen + superadmin (BUKAN gesture MediaPipe)
-%   #2 Override: Top-6 check (BUKAN Override Budget)
-%   #3 Timer count-up + time_spent_ms
-%   #4 Resize/Rotate buttons UI (NOT slider, NOT gesture)
-%   #5 Hapus Decorative category (Solid/Danger only)
-% 
-% CATATAN: Bab 1 masih mention MediaPipe (verbatim per arahan user).
-%          Pertimbangkan update di iterasi v0.0.1.
+% Pola: Izzah (Deskripsi Solusi → Metodologi → Desain Sistem → Jadwal)
+% Post-pivot 16/6/26: nomor absen + superadmin, Top-6 check, timer count-up,
+%                     resize/rotate buttons, hapus Decorative category
+% Output: 18-22 halaman DETAIL
 % ============================================================
 
 \documentclass[12pt,a4paper,oneside,openany]{report}
 
 % ============================================================
-% PACKAGES — PENS Standard
+% PACKAGES
 % ============================================================
 \usepackage[top=4cm,left=4cm,right=3cm,bottom=3cm]{geometry}
 \usepackage{graphicx}
@@ -50,18 +36,18 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=false, pdfborder={0 0 0}}
 
-% Times New Roman
+% Times New Roman (pdflatex standard)
 \usepackage{times}
 \renewcommand{\rmdefault}{ptm}
 
 % Line spacing 1.5
 \setstretch{1.5}
 
-% Paragraph indent
+% Paragraph indent (PENS standard)
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{0pt}
 
-% Chapter / section formatting
+% Chapter / Section / Subsection formatting
 \titleformat{\chapter}[display]
   {\normalfont\fontsize{14pt}{16.8pt}\selectfont\bfseries\centering}
   {BAB \thechapter}
@@ -70,368 +56,62 @@
 
 \titleformat{\section}
   {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
-  {\thesection}{1em}{}
+  {\thesection}
+  {1em}
+  {\MakeUppercase}
 
 \titleformat{\subsection}
-  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries\itshape}
-  {\thesubsection}{1em}{}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries}
+  {\thesubsection}
+  {1em}
+  {}
 
-% Placeholder figure macro (POLOSAN, no color) — minimal version untuk hemat halaman
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12pt}{14.4pt}\selectfont\bfseries\itshape}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+\titlespacing*{\chapter}{0pt}{0pt}{24pt}
+\titlespacing*{\section}{0pt}{18pt}{12pt}
+\titlespacing*{\subsection}{0pt}{14pt}{8pt}
+
+% Caption formatting (Pola Izzah)
+\captionsetup[table]{font=small,labelfont=bf,name={Tabel},labelsep=period,justification=centering,aboveskip=6pt,belowskip=0pt,position=top}
+\captionsetup[figure]{font=small,labelfont=bf,name={Gambar},labelsep=period,justification=centering,aboveskip=0pt,belowskip=6pt,position=bottom}
+
+% Header / Footer (page number top-right)
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[R]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% TOC formatting
+\renewcommand{\contentsname}{DAFTAR ISI}
+\renewcommand{\listfigurename}{DAFTAR GAMBAR}
+\renewcommand{\listtablename}{DAFTAR TABEL}
+
+% Placeholder figure helper (POLOSAN — empty box for unmade figures)
 \newcommand{\placeholderfig}[2]{%
   \begin{figure}[H]
     \centering
-    \fbox{\parbox{0.85\textwidth}{\centering\vspace{0.4cm}\textit{\small[Placeholder: #1 — akan dilengkapi pada tahap implementasi]}\vspace{0.4cm}}}
+    \fbox{\parbox{0.9\textwidth}{\centering\vspace{4cm}\textit{[Placeholder: #1 — akan dilengkapi pada tahap implementasi]}\vspace{4cm}}}
     \caption{#2}
     \label{fig:#2}
   \end{figure}
 }
 
-% Caption compact
-\captionsetup{font=small, labelfont=bf, skip=4pt}
-\captionsetup[table]{position=above, skip=4pt}
-\captionsetup[figure]{position=below, skip=4pt}
-
-% Hyperref settings
-\hypersetup{
-  colorlinks=false,
-  pdfborder={0 0 0},
-  bookmarksnumbered=true
-}
-
-\graphicspath{
-  {../06_diagram/}
-  {../03_maskot/}
-  {./}
-}
-
-
-% ============================================================
-% FRONTMATTER
-% ============================================================
-
 \begin{document}
 
-% --- Halaman Judul ---
-\begin{titlepage}
-\thispagestyle{empty}
-\begin{center}
-\textbf{PROPOSAL PROYEK AKHIR}\\[1cm]
-\textbf{}\\[0.5cm]
-\textbf{SKETCHBOOK UNIVERSE: SIMULASI INTERAKTIF BERBASIS HUMAN-IN-THE-LOOP UNTUK LITERASI KECERDASAN BUATAN SISWA SMP}\\[0.5cm]
-\textbf{SKETCHBOOK UNIVERSE: INTERACTIVE SIMULATION BASED ON HUMAN-IN-THE-LOOP FOR AI LITERACY OF JUNIOR HIGH SCHOOL STUDENTS}\\[2cm]
-\textbf{Diajukan Untuk Memenuhi Salah Satu Syarat Memperoleh Gelar Sarjana Teknik}\\[0.5cm]
-\textbf{pada Program Studi D4 Teknologi Rekayasa Multimedia}\\[0.5cm]
-\textbf{Politeknik Elektronika Negeri Surabaya}\\[2cm]
-\textbf{Farchan Deano Muhammad}\\[0.3cm]
-\textbf{NRP: 5322600011}\\[2cm]
-\textbf{Dosen Pembimbing:}\\[0.3cm]
-\textbf{[Nama Dosen Pembimbing]}\\[2cm]
-\textbf{POLITEKNIK ELEKTRONIKA NERI SURABAYA}\\[0.3cm]
-\textbf{TAHUN 2026}
-\end{center}
-\end{titlepage}
-
-% --- Halaman Pengesahan ---
-\chapter*{HALAMAN PENGESAHAN}
-\addcontentsline{toc}{chapter}{HALAMAN PENGESAHAN}
-\thispagestyle{empty}
-\begin{center}
-\textbf{PROPOSAL PROYEK AKHIR}\\[0.5cm]
-\textbf{SKETCHBOOK UNIVERSE: SIMULASI INTERAKTIF BERBASIS HUMAN-IN-THE-LOOP UNTUK LITERASI KECERDASAN BUATAN SISWA SMP}\\[1cm]
-\end{center}
-Diajukan oleh:
-\begin{itemize}
-\item \textbf{Nama:} Farchan Deano Muhammad
-\item \textbf{NRP:} 5322600011
-\item \textbf{Program Studi:} D4 Teknologi Rekayasa Multimedia
-\end{itemize}
-Telah disetujui dan disahkan sebagai Proposal Proyek Akhir di Politeknik Elektronika Negeri Surabaya pada tanggal \underline{\hspace{2cm}}.
-\vspace{1cm}
-\begin{flushright}
-Surabaya, \underline{\hspace{3cm}}\\[1cm]
-Dosen Pembimbing,\\[2cm]
-\underline{\hspace{5cm}}\\[0.3cm]
-\textbf{[Nama Dosen Pembimbing]}
-\end{flushright}
-\newpage
-
-% --- Abstrak (Indonesia) ---
-\chapter*{ABSTRAK}
-\addcontentsline{toc}{chapter}{ABSTRAK}
-\thispagestyle{empty}
-\textbf{SKETCHBOOK UNIVERSE: SIMULASI INTERAKTIF BERBASIS HUMAN-IN-THE-LOOP UNTUK LITERASI KECERDASAN BUATAN SISWA SMP}\\[0.5cm]
-\textbf{Nama:} Farchan Deano Muhammad \quad \textbf{NRP:} 5322600011\\[1cm]
-Kecerdasan buatan (AI) telah menjadi bagian tak terpisahkan dari kehidupan sehari-hari, termasuk bagi siswa Sekolah Menengah Pertama (SMP). Namun, paparan terhadap AI tanpa scaffolding yang tepat berisiko menimbulkan automation bias, yaitu kecenderungan menerima output AI secara otomatis tanpa evaluasi kritis. Penelitian ini mengusulkan Sketchbook Universe, sebuah simulasi interaktif berbasis Human-in-the-Loop (HITL) yang dirancang untuk memfasilitasi interaksi reflektif siswa SMP terhadap output AI. Sistem ini mengintegrasikan canvas drawing, klasifikasi sketsa berbasis Convolutional Neural Network (CNN) MobileNet melalui TensorFlow.js, mekanisme Top-6 check anti-cheat, maskot pedagogical agent Momo berbasis rule-based non-NLP, serta tiga level progression (Trust Build, Ambiguity, Override). Penelitian ini menggunakan metode Mixed Methods dengan pendekatan Research and Development (R\&D), metode pengembangan SDLC Waterfall, dan teknik analisis Fishbone 6M. Pengujian dilakukan menggunakan System Usability Scale (SUS) dan analisis pola perilaku melalui K-Means clustering. Scope penelitian mencakup frontend, UI/UX, maskot Momo, level design, dan mekanisme HITL, sementara backend, CNN, dan K-Means ditangani oleh rekan penelitian sebagai proyek kelompok.\\[1cm]
-\textbf{Kata Kunci:} Human-in-the-Loop, Literasi AI, Siswa SMP, Sketch Recognition, Pedagogical Agent, System Usability Scale
-\newpage
-
-% --- Abstract (English) ---
-\chapter*{ABSTRACT}
-\addcontentsline{toc}{chapter}{ABSTRACT}
-\thispagestyle{empty}
-\textbf{SKETCHBOOK UNIVERSE: INTERACTIVE SIMULATION BASED ON HUMAN-IN-THE-LOOP FOR AI LITERACY OF JUNIOR HIGH SCHOOL STUDENTS}\\[0.5cm]
-\textbf{Name:} Farchan Deano Muhammad \quad \textbf{NRP:} 5322600011\\[1cm]
-Artificial Intelligence (AI) has become an inseparable part of daily life, including for junior high school students. However, exposure to AI without proper scaffolding risks automation bias, the tendency to accept AI output automatically without critical evaluation. This research proposes Sketchbook Universe, an interactive simulation based on Human-in-the-Loop (HITL) designed to facilitate reflective interaction of junior high school students with AI output. The system integrates canvas drawing, sketch classification based on Convolutional Neural Network (CNN) MobileNet via TensorFlow.js, Top-6 check anti-cheat mechanism, Momo pedagogical agent (rule-based non-NLP), and three-level progression (Trust Build, Ambiguity, Override). The research uses Mixed Methods with Research and Development (R\&D) approach, SDLC Waterfall development method, and Fishbone 6M analysis technique. Testing is conducted using System Usability Scale (SUS) and behavioral pattern analysis through K-Means clustering. The research scope covers frontend, UI/UX, Momo mascot, level design, and HITL mechanism, while backend, CNN, and K-Means are handled by the research partner as a group project.\\[1cm]
-\textbf{Keywords:} Human-in-the-Loop, AI Literacy, Junior High School Students, Sketch Recognition, Pedagogical Agent, System Usability Scale
-\newpage
-
-% --- Daftar Isi ---
-\tableofcontents
-\newpage
-
-% --- Daftar Gambar ---
-\listoffigures
-\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
-\newpage
-
-% --- Daftar Tabel ---
-\listoftables
-\addcontentsline{toc}{chapter}{DAFTAR TABEL}
-\newpage
-
-\clearpage
-
-
 % ============================================================
-% BAB 1 — PENDAHULUAN
-% ============================================================
-\chapter{PENDAHULUAN}
-\label{chap:bab1}
-
-% ============================================================
-\section{LATAR BELAKANG}
-\label{sec:latar-belakang}
-% ============================================================
-
-Perkembangan kecerdasan buatan telah membawa perubahan besar dalam cara manusia memperoleh informasi, menggunakan teknologi, dan mengambil keputusan. Teknologi ini tidak hanya digunakan dalam bidang industri atau penelitian, tetapi juga mulai hadir dalam kehidupan sehari-hari melalui berbagai aplikasi digital. Kondisi tersebut membuat literasi kecerdasan buatan menjadi penting untuk diperkenalkan kepada siswa, agar mereka tidak hanya mampu menggunakan teknologi berbasis kecerdasan buatan, tetapi juga memahami cara kerja, keterbatasan, dan risiko penerimaan keluaran sistem secara pasif.
-
-Literasi kecerdasan buatan tidak cukup dipahami sebagai kemampuan mengenal istilah atau menggunakan aplikasi berbasis kecerdasan buatan. Literasi tersebut juga mencakup kemampuan memahami bagaimana sistem bekerja, bagaimana sistem digunakan, bagaimana hasil sistem dievaluasi, serta bagaimana pengguna mempertimbangkan aspek etis dalam penggunaannya \cite{ref1}. Dalam konteks pendidikan K-12, pengenalan kecerdasan buatan juga dipandang sebagai tantangan pedagogis karena siswa perlu memahami konsep yang bersifat teknis melalui pendekatan yang sesuai dengan usia dan pengalaman belajarnya \cite{ref2}.
-
-Salah satu tantangan dalam pembelajaran kecerdasan buatan adalah sifat konsepnya yang cenderung abstrak. Konsep seperti prediksi, tingkat keyakinan sistem, validasi, dan pengambilan keputusan tidak selalu mudah dipahami apabila hanya disampaikan melalui teks atau ceramah. Pada sistem klasifikasi visual, misalnya, hasil yang diberikan bukan merupakan kebenaran mutlak, melainkan keluaran prediktif yang dipengaruhi oleh data, pola, dan tingkat keyakinan model. Oleh karena itu, siswa perlu diberi pengalaman belajar yang dapat memperlihatkan bahwa sistem kecerdasan buatan dapat membantu, tetapi tetap perlu diamati dan dievaluasi.
-
-Pendekatan \textit{Explainable Artificial Intelligence} dalam pendidikan menekankan pentingnya transparansi dan penyajian keluaran sistem yang dapat dipahami oleh pengguna \cite{ref3}. Dalam konteks pembelajaran siswa SMP, penjelasan tersebut tidak harus berupa uraian teknis yang kompleks. Penyajian sederhana seperti hasil prediksi, tingkat keyakinan, dan umpan balik visual dapat digunakan untuk membantu siswa membaca keluaran sistem secara lebih sadar. Dengan demikian, siswa tidak hanya melihat hasil akhir, tetapi juga memahami bahwa terdapat proses dan ketidakpastian di balik keputusan sistem.
-
-Pendekatan \textit{Human-in-the-Loop} menjadi relevan karena menempatkan manusia sebagai bagian dari proses sistem, baik sebagai pengamat, pengoreksi, validator, maupun pengambil keputusan \cite{ref4}. Pada konteks pendidikan, mekanisme ini dapat digunakan untuk menunjukkan bahwa kecerdasan buatan tidak bekerja sebagai sistem yang sepenuhnya terlepas dari manusia. Siswa dapat diperkenalkan pada gagasan bahwa manusia tetap memiliki peran dalam mengamati hasil, menentukan keputusan, dan memperbaiki tindakan berdasarkan keluaran sistem.
-
-Untuk siswa SMP, penyampaian konsep tersebut membutuhkan media yang konkret, visual, dan bertahap. Media berbasis simulasi interaktif dapat membantu siswa mengalami proses belajar secara langsung melalui tindakan, umpan balik, dan konsekuensi. Penelitian terkait \textit{game-based learning} pada pendidikan \textit{computer science} menunjukkan bahwa media interaktif dapat digunakan untuk meningkatkan keterlibatan siswa dalam memahami konsep komputasi melalui pengalaman aktif \cite{ref6}. Oleh karena itu, simulasi interaktif berlevel dipilih sebagai pendekatan agar siswa dapat mempelajari konsep literasi kecerdasan buatan secara bertahap tanpa merasa sedang menerima materi teoritis yang berat.
-
-Simulasi interaktif yang dikembangkan pada proyek akhir ini menggunakan konsep visual berbasis buku sketsa. Konsep tersebut dipilih karena aktivitas menggambar dekat dengan proses eksplorasi visual dan sesuai dengan karakteristik bidang multimedia. Siswa berinteraksi dengan sistem melalui gerakan jari menggunakan \textit{finger tracking} berbasis MediaPipe. Teknologi MediaPipe digunakan karena mampu mendukung pemantauan gerakan tangan secara \textit{real-time} dan dapat diterapkan pada interaksi berbasis kamera \cite{ref10}. Dengan pendekatan ini, siswa dapat berinteraksi tanpa perangkat tambahan khusus, sehingga pengalaman belajar menjadi lebih natural dan aktif.
-
-Selain interaksi berbasis gerakan, sistem ini juga menggunakan mekanisme \textit{Human-in-the-Loop} dalam simulasi berlevel. Pada setiap proses interaksi, siswa tidak hanya menjalankan simulasi, tetapi juga diarahkan untuk mengamati, memilih, atau memvalidasi hasil yang ditampilkan sistem. Karakter pendamping sederhana digunakan untuk memberikan instruksi dan umpan balik. Penggunaan \textit{pedagogical agent} dalam lingkungan belajar dapat membantu proses pembelajaran melalui dukungan instruksi dan interaksi yang lebih terarah \cite{ref9}. Dalam sistem ini, karakter pendamping tidak berfungsi sebagai chatbot, melainkan sebagai pemberi umpan balik berbasis kondisi simulasi.
-
-Pengembangan sistem ini diharapkan dapat menjadi media pembelajaran literasi kecerdasan buatan yang lebih visual, interaktif, dan sesuai untuk siswa SMP. Sistem tidak ditujukan sebagai produk permainan penuh, tetapi sebagai \textit{prototype} simulasi edukatif yang menekankan pengalaman belajar bertahap. Melalui \textit{finger tracking}, simulasi berlevel, dan mekanisme \textit{Human-in-the-Loop}, siswa diharapkan dapat memahami bahwa kecerdasan buatan dapat membantu proses pengambilan keputusan, tetapi tetap membutuhkan keterlibatan manusia dalam pengamatan, koreksi, dan validasi.
-
-% ============================================================
-\section{PERMASALAHAN}
-\label{sec:permasalahan}
-% ============================================================
-
-Sistem kecerdasan buatan dalam pembelajaran sering kali dipahami sebagai alat yang memberikan jawaban akhir, sehingga pengguna berpotensi menerima keluaran sistem tanpa mempertimbangkan proses, tingkat keyakinan, maupun kemungkinan kesalahan. Pada tingkat SMP, konsep seperti prediksi, \textit{confidence}, koreksi, validasi, dan pengambilan keputusan masih dapat terasa abstrak apabila hanya disampaikan melalui teks atau penjelasan satu arah. Kondisi ini menunjukkan adanya kebutuhan terhadap media berbasis teknologi yang mampu menyajikan pengalaman interaktif, memperlihatkan hubungan antara input pengguna, keluaran sistem, keputusan manusia, dan konsekuensi yang terjadi setelah keputusan tersebut diambil. Oleh karena itu, diperlukan pengembangan simulasi interaktif berlevel berbasis \textit{finger tracking} MediaPipe dengan mekanisme \textit{Human-in-the-Loop} agar siswa dapat memahami peran manusia dalam proses pengamatan, koreksi, validasi, dan pengambilan keputusan pada sistem kecerdasan buatan.
-
-% ============================================================
-\section{BATASAN MASALAH}
-\label{sec:batasan-masalah}
-% ============================================================
-
-\begin{enumerate}
-    \item Penelitian ini dibatasi pada pengembangan \textit{prototype} simulasi interaktif berlevel berbasis web untuk mendukung literasi kecerdasan buatan bagi siswa SMP kelas 7 sampai 9.
-    \item Sistem berfokus pada perancangan antarmuka, alur interaksi, \textit{finger tracking} berbasis kamera menggunakan MediaPipe, mekanisme \textit{Human-in-the-Loop}, dan umpan balik sistem.
-    \item Materi literasi kecerdasan buatan dibatasi pada konsep dasar mengenai keluaran sistem, pengamatan, koreksi, validasi, dan pengambilan keputusan manusia dalam sistem kecerdasan buatan.
-    \item Penelitian ini tidak berfokus pada pengembangan model kecerdasan buatan kompleks, pelatihan ulang model, optimasi arsitektur model, maupun penerapan \textit{Human-in-the-Loop} sebagai sistem produksi industri.
-    \item Simulasi yang dikembangkan tidak difokuskan pada unsur gamifikasi atau fitur game lanjutan seperti \textit{multiplayer}, \textit{leaderboard}, \textit{badge}, sistem skor kompetitif, \textit{level procedural}, \textit{adaptive difficulty}, \textit{chatbot}, \textit{Large Language Model}, \textit{Retrieval-Augmented Generation}, maupun \textit{Natural Language Processing}. Pengujian difokuskan pada fungsi sistem, keterbacaan alur interaksi, dan \textit{usability} awal, sehingga penelitian ini tidak menggunakan \textit{pre-test} dan \textit{post-test} sebagai evaluasi utama serta tidak mengklaim peningkatan kemampuan siswa secara kuantitatif.
-\end{enumerate}
-
-% ============================================================
-\section{TUJUAN}
-\label{sec:tujuan}
-% ============================================================
-
-Penelitian proyek akhir ini bertujuan untuk mengembangkan \textit{prototype} simulasi interaktif berlevel berbasis web untuk mendukung literasi kecerdasan buatan pada siswa SMP dengan menggunakan \textit{finger tracking} berbasis MediaPipe dan mekanisme \textit{Human-in-the-Loop}. Tujuan khusus penelitian ini adalah merancang alur interaksi yang memungkinkan siswa menggambar, membaca keluaran sistem, menentukan keputusan, dan melihat konsekuensi keputusan tersebut di dalam simulasi. Penelitian ini juga bertujuan menguji kelayakan awal sistem dari sisi fungsi, keterbacaan alur interaksi, dan \textit{usability} awal sebagai dasar pengembangan lebih lanjut.
-
-% ============================================================
-\section{MANFAAT}
-\label{sec:manfaat}
-% ============================================================
-
-\begin{enumerate}
-    \item Bagi siswa, sistem ini dapat menjadi media pembelajaran interaktif yang membantu memahami bahwa kecerdasan buatan tidak hanya memberikan hasil akhir, tetapi juga melibatkan proses, kemungkinan, dan keputusan manusia.
-    \item Bagi guru atau sekolah, sistem ini dapat menjadi alternatif media pembelajaran literasi kecerdasan buatan yang lebih visual dan interaktif.
-    \item Bagi peneliti atau mahasiswa, penelitian ini dapat menjadi dasar pengembangan sistem edukasi berbasis interaksi natural, \textit{finger tracking}, dan \textit{Human-in-the-Loop} pada bidang multimedia interaktif.
-    \item Bagi pengembangan media pembelajaran, proyek ini dapat memberikan contoh rancangan simulasi interaktif berlevel yang menggabungkan teknologi \textit{computer vision}, antarmuka pengguna, dan konsep literasi kecerdasan buatan.
-\end{enumerate}
-
-% ============================================================
-\section{SISTEMATIKA PENULISAN}
-\label{sec:sistematika-penulisan}
-% ============================================================
-
-BAB I Pendahuluan: membahas latar belakang, permasalahan, batasan masalah, tujuan, manfaat, dan sistematika penulisan. BAB II Kajian Pustaka: membahas deskripsi permasalahan, teori penunjang, penelitian terkait, dan \textit{state of the art}. BAB III Deskripsi Sistem: membahas deskripsi solusi, metodologi penelitian, desain sistem, rancangan pengujian, dan jadwal penelitian.
-
-% ============================================================
-% BAB 2 — KAJIAN PUSTAKA
-% ============================================================
-\chapter{KAJIAN PUSTAKA}
-\label{chap:bab2}
-
-Bab ini menyajikan kajian pustaka yang menjadi landasan teoretis bagi perancangan sistem \textit{Sketchbook Universe}. Kajian dimulai dari deskripsi permasalahan yang menjelaskan mengapa media yang ada saat ini belum memadai untuk memfasilitasi interaksi reflektif siswa SMP terhadap keluaran kecerdasan buatan, dilanjutkan dengan teori penunjang yang mendasari setiap keputusan desain, serta ditutup dengan penelitian terkait dan analisis \textit{state of the art} yang memosisikan proyek ini di antara kajian-kajian sebelumnya. Pembahasan teori pada bab ini bersifat ringkas; rincian implementasi teknis akan diuraikan pada Bab III.
-
-% ============================================================
-\section{DESKRIPSI PERMASALAHAN}
-\label{sec:deskripsi-permasalahan}
-% ============================================================
-
-Perkembangan kecerdasan buatan (KB) telah mengubah cara masyarakat berinteraksi dengan teknologi digital. Siswa SMP kelas 7--9, yang berada dalam rentang usia 13--15 tahun, merupakan generasi yang tumbuh di lingkungan jenuh sistem berbasis KB---mulai dari rekomendasi konten hingga asisten virtual. Namun, keterpaparan terhadap penggunaan sistem KB tidak serta-merta berbanding lurus dengan kemampuan mengevaluasi keluaran yang dihasilkan oleh sistem tersebut. Ng et al. \cite{ref1} menegaskan bahwa literasi KB bukan sekadar kemampuan menggunakan alat berbasis KB, melainkan mencakup pemahaman tentang bagaimana sistem KB menghasilkan keluaran, mengapa keluaran tersebut bisa keliru, dan bagaimana manusia seharusnya berinteraksi dengan keluaran yang bersifat probabilistik.
-
-Media edukasi KB yang tersedia saat ini umumnya memiliki dua kelemahan utama. Pertama, sebagian besar media bersifat informatif-ekspositif---menyajikan penjelasan konseptual tentang KB tanpa menyediakan momen di mana siswa secara langsung menghadapi keluaran KB yang ambigu atau keliru \cite{ref2}. Kedua, media yang bersifat interaktif seringkali memposisikan KB sebagai \textit{oracle} yang selalu benar, sehingga justru memperkuat kecenderungan penerimaan otomatis (\textit{automation bias}) tanpa memberikan ruang bagi siswa untuk mempertanyakan atau mengkoreksi keluaran yang diberikan \cite{ref4}\cite{ref5}. Kondisi ini bertentangan dengan prinsip \textit{Human-in-the-Loop} (HITL) yang menekankan perlunya keterlibatan manusia sebagai evaluator pada titik-titik keputusan kritis \cite{ref4}.
-
-Selain itu, desain antarmuka untuk siswa SMP memerlukan perhatian khusus terhadap aspek perkembangan kognitif dan motivasi. Casal-Otero et al. \cite{ref2} menemukan bahwa strategi literasi KB untuk kalangan K-12 harus bersifat sesuai usia (\textit{age-appropriate}), berbasis pengalaman langsung, dan menghindari abstraksi yang berlebihan. Siswa SMP membutuhkan media yang konkret, bertahap, dan memberikan umpan balik kontekstual---bukan media yang hanya menyajikan teori tentang KB. Dengan demikian, dibutuhkan sebuah sistem interaktif dengan konsekuensi nyata yang memfasilitasi interaksi reflektif siswa SMP terhadap keluaran KB, di mana siswa diberikan kesempatan untuk mengevaluasi, menolak, atau mengkoreksi keluaran tersebut dalam konteks simulasi yang terstruktur.
-
-% ============================================================
-\section{TEORI PENUNJANG}
-\label{sec:teori-penunjang}
-% ============================================================
-
-Bagian ini membahas teori-teori yang menjadi dasar perancangan sistem \textit{Sketchbook Universe}. Setiap sub-bagian menjelaskan teori secara konseptual dan menghubungkannya dengan keputusan desain yang diambil dalam proyek ini. Pembahasan bersifat ringkas; rincian implementasi teknis akan diuraikan pada Bab III.
-
-% ------------------------------------------------------------
-\subsection{Literasi Kecerdasan Buatan}
-\label{subsec:literasi-kb}
-% ------------------------------------------------------------
-
-Literasi kecerdasan buatan didefinisikan oleh Ng et al. \cite{ref1} sebagai seperangkat kompetensi yang memungkinkan individu untuk memahami, menggunakan, mengevaluasi, dan mengkomunikasikan mengenai sistem KB secara kritis. Kerangka konseptual tersebut mencakup empat dimensi utama: (1) mengetahui dan memahami KB, (2) menggunakan dan menerapkan KB, (3) mengevaluasi dan mencipta KB, serta (4) etika KB. Dimensi evaluatif menjadi sangat relevan dalam konteks proyek ini karena mencakup kemampuan menilai apakah keluaran yang dihasilkan sistem KB layak diterima, perlu dipertanyakan, atau harus ditolak. Aspek penting yang sering terabaikan adalah penalaran probabilistik---pemahaman bahwa keluaran sistem KB modern bersifat probabilistik dan bukan jawaban deterministik \cite{ref1}\cite{ref2}.
-
-Dalam konteks K-12, Wang \& Lester \cite{ref11} menegaskan bahwa literasi KB harus diperkenalkan sejak usia sekolah melalui pendekatan yang sesuai dengan tahap perkembangan kognitif siswa. Casal-Otero et al. \cite{ref2} memperkuat temuan tersebut dengan menunjukkan bahwa kurikulum literasi KB yang efektif harus memasukkan pengalaman langsung di mana siswa dihadapkan pada keluaran KB yang tidak pasti, sehingga siswa memiliki data empiris untuk mengevaluasi keluaran KB secara konkret. Dalam proyek ini, literasi KB diwujudkan melalui simulasi di mana siswa SMP berinteraksi langsung dengan keluaran klasifikasi sketsa yang bersifat probabilistik. Siswa tidak hanya melihat hasil klasifikasi, tetapi juga melihat \textit{confidence score} dan beberapa prediksi teratas (\textit{top-3 predictions}) yang memperlihatkan bahwa keluaran KB bukan jawaban tunggal yang pasti.
-
-% ------------------------------------------------------------
-\subsection{Human-in-the-Loop}
-\label{subsec:hitl}
-% ------------------------------------------------------------
-
-\textit{Human-in-the-Loop} (HITL) merupakan paradigma di mana manusia dilibatkan secara aktif dalam alur kerja sistem kecerdasan buatan, khususnya pada titik-titik di mana keputusan sistem bersifat tidak pasti atau berpotensi keliru \cite{ref4}. Mosqueira-Rey et al. \cite{ref4} mendefinisikan HITL sebagai kerangka kerja yang menempatkan manusia sebagai agen evaluatif yang memiliki otoritas untuk menerima, menolak, atau mengoreksi keluaran yang dihasilkan oleh model KB. Berbeda dengan sistem KB yang sepenuhnya otonom, sistem HITL mengakui bahwa terdapat batasan fundamental pada kemampuan prediktif model dan bahwa keterlibatan manusia merupakan mekanisme esensial untuk menjaga kualitas keputusan.
-
-Salah satu masalah utama yang menjadi rasionalisasi bagi penerapan HITL adalah \textit{automation bias}---kecenderungan manusia untuk menerima keluaran sistem otomatis tanpa evaluasi kritis yang memadai \cite{ref4}. Dalam konteks pendidikan, Memarian \& Doleck \cite{ref5} menemukan bahwa \textit{automation bias} menjadi hambatan signifikan bagi literasi KB karena mendorong siswa untuk menerima keluaran AI secara pasif. Feldman-Maggor et al. \cite{ref25} menambahkan bahwa kepercayaan guru dan siswa terhadap sistem AI EdTech sangat dipengaruhi oleh transparansi proses keputusan; tanpa mekanisme yang memungkinkan manusia menginterrogasi keluaran, keterlibatan manusia cenderung bersifat simbolis. Dalam proyek ini, mekanisme HITL diwujudkan melalui \textit{Probe UI}---antarmuka yang menghentikan sementara alur simulasi (\textit{pause-and-evaluate}) dan meminta siswa memilih antara menerima prediksi KB (\textit{Accept}), mengoreksi label (\textit{Correct}), atau menolak sepenuhnya (\textit{Override}). Keputusan siswa memiliki konsekuensi langsung dalam simulasi sehingga keterlibatan manusia bersifat substantif, bukan formalitas.
-
-% ------------------------------------------------------------
-\subsection{Explainable Interface dan Confidence Score}
-\label{subsec:explainable-interface}
-% ------------------------------------------------------------
-
-\textit{Explainable Artificial Intelligence} (XAI) dalam konteks pendidikan menekankan pentingnya membuat proses dan keluaran sistem KB dapat dipahami oleh pengguna awam, termasuk siswa. Khosravi et al. \cite{ref3} mengargumentasikan bahwa transparansi sistem KB di lingkungan pendidikan bukan hanya kebutuhan teknis, melainkan prasyarat pedagogis: tanpa kemampuan untuk melihat mengapa dan seberapa yakin sistem menghasilkan keluaran tertentu, pengguna tidak memiliki dasar untuk melakukan evaluasi. Karran et al. \cite{ref8} menunjukkan bahwa visualisasi \textit{confidence score}---penyajian tingkat keyakinan model secara eksplisit---memberikan dampak signifikan terhadap cara pengguna menilai keluaran KB. Ketika \textit{confidence score} rendah, pengguna cenderung lebih berhati-hati; sebaliknya, ketika \textit{confidence score} tinggi tanpa visualisasi yang memadai, pengguna cenderung menerima keluaran tanpa pertanyaan.
-
-Konsep kunci yang mendasari desain antarmuka dalam proyek ini adalah \textbf{ambiguitas terkontrol} (\textit{controlled ambiguity}). Sistem KB dalam simulasi sengaja dirancang agar tidak selalu menghasilkan prediksi yang sempurna, sehingga siswa memiliki kesempatan untuk mengevaluasi \cite{ref3}. Dalam praktiknya, ambiguitas terkontrol diwujudkan melalui pengaturan \textit{confidence threshold} pada setiap level simulasi: Level 1 menggunakan \textit{confidence} tinggi ($>85\%$) untuk membangun kepercayaan awal, Level 2 menurunkan \textit{confidence} ke rentang 55--70\% untuk menghadirkan ambiguitas yang membutuhkan evaluasi, dan Level 3 menempatkan \textit{confidence} di rentang 35--51\% di mana siswa hampir selalu perlu melakukan \textit{override}. Dengan demikian, desain antarmuka tidak hanya menyajikan informasi, tetapi secara sengaja mengatur derajat ketidakpastian untuk menciptakan momen-momen HITL yang bermakna.
-
-% ------------------------------------------------------------
-\subsection{Simulasi Interaktif Berlevel}
-\label{subsec:simulasi-interaktif}
-% ------------------------------------------------------------
-
-Simulasi interaktif berbasis permainan (\textit{game-based learning}/GBL) telah menunjukkan potensi signifikan dalam mendukung keterlibatan aktif siswa dalam konteks pendidikan sains komputer. Videnovik et al. \cite{ref6} menemukan bahwa GBL secara konsisten meningkatkan keterlibatan siswa, terutama ketika elemen permainan dirancang untuk mendukung tujuan pembelajaran secara langsung. Lee et al. \cite{ref13} menerapkan GBL AI literacy untuk siswa \textit{upper elementary} dan menemukan bahwa pendekatan kolaboratif-inquiry berbasis permainan efektif dalam memperkenalkan konsep KB secara konkret. Gupta et al. \cite{ref14} memperluas pendekatan tersebut dengan narasi berbasis cerita (\textit{story-driven GBL}) yang terbukti mendukung siswa dalam mempelajari konsep KB yang abstrak melalui konteks naratif.
-
-Prinsip pedagogis yang mendasari desain tiga level dalam proyek ini adalah \textbf{scaffolding}---pemberian bantuan yang melimpah pada tahap awal yang kemudian dikurangi secara bertahap seiring meningkatnya kompetensi siswa \cite{ref6}. Selaras dengan scaffolding, desain level juga didasarkan pada Teori Flow yang menyatakan bahwa individu mencapai pengalaman optimal ketika tingkat tantangan seimbang dengan tingkat keterampilan yang dimilikinya. Chan et al. \cite{ref7} secara empiris menemukan bahwa keseimbangan tantangan-keterampilan merupakan prediktor utama pengalaman \textit{flow} dalam lingkungan GBL non-kompetitif. Dalam proyek ini, Level 1 menyajikan tantangan rendah sesuai keterampilan awal siswa, Level 2 meningkatkan tantangan secara terukur seiring meningkatnya pemahaman siswa, dan Level 3 menyajikan tantangan tertinggi yang menuntut keterampilan evaluatif yang telah terbangun pada dua level sebelumnya. Kombinasi scaffolding dan Teori Flow memastikan bahwa progresi tidak hanya bertahap secara pedagogis tetapi juga terjaga secara pengalaman.
-
-% ------------------------------------------------------------
-\subsection{Pedagogical Agent --- Maskot Momo}
-\label{subsec:pedagogical-agent}
-% ------------------------------------------------------------
-
-Agen pedagogis (\textit{pedagogical agent}) merupakan karakter virtual yang terintegrasi dalam lingkungan pembelajaran digital dan berfungsi memberikan panduan, umpan balik, atau motivasi kepada siswa. Schroeder, Davis \& Yang \cite{ref9} dalam tinjauan komprehensif mereka (\textit{umbrella review}) menemukan bahwa agen pedagogis dapat mendukung proses belajar jika desainnya memenuhi tiga kondisi: (1) relevansi kontekstual---agen merespons situasi spesifik yang dihadapi siswa, bukan memberikan pesan generik; (2) kesesuaian beban kognitif---agen tidak memberikan informasi yang membebani siswa secara berlebihan; serta (3) konsistensi persona---agen memiliki identitas dan gaya komunikasi yang konsisten sepanjang interaksi.
-
-Agen pedagogis dalam proyek ini, yaitu karakter Momo, dirancang sebagai agen berbasis aturan (\textit{rule-based}) yang non-NLP, bukan sebagai \textit{chatbot} berbasis pemrosesan bahasa alami. Keputusan desain ini didasarkan pada temuan Schroeder et al. \cite{ref9} yang menunjukkan bahwa agen pedagogis yang sederhana dan kontekstual seringkali lebih efektif daripada agen yang kompleks dan \textit{overwhelming}. Hsu et al. \cite{ref15} mendukung pendekatan ini dengan menunjukkan bahwa pola perilaku siswa dalam mempelajari KB dapat dipandu secara efektif melalui umpan balik kontekstual berbasis aturan, tanpa perlu interaksi percakapan bebas. Ocak et al. \cite{ref16} memperluas temuan tersebut dengan menunjukkan bahwa analisis pola interaksi anak (\textit{embodied interactions}) dapat menjadi dasar untuk merancang agen pedagogis yang adaptif terhadap kondisi pembelajaran. Dalam implementasinya, Momo muncul pada momen-momen tertentu sesuai kondisi sistem: saat \textit{onboarding} untuk menjelaskan aturan, saat \textit{Probe UI} untuk mengarahkan perhatian siswa pada \textit{confidence score}, dan saat siswa membuat keputusan berpotensi berisiko untuk memberikan peringatan kontekstual.
-
-% ------------------------------------------------------------
-\subsection{Child-Computer Interaction untuk Siswa SMP}
-\label{subsec:cci-smp}
-% ------------------------------------------------------------
-
-\textit{Child-Computer Interaction} (CCI) merupakan bidang kajian yang mempelajari bagaimana anak-anak dan remaja berinteraksi dengan teknologi digital, dengan fokus pada bagaimana karakteristik perkembangan kognitif, motorik, dan sosial memengaruhi desain interaksi yang sesuai. Dalam konteks literasi KB untuk kalangan K-12, Casal-Otero et al. \cite{ref2} menekankan bahwa strategi edukasi KB harus disesuaikan dengan tahap perkembangan usia siswa. Untuk siswa SMP yang berada pada tahap operasional formal menurut teori Piaget, siswa sudah mampu berpikir abstrak namun masih membutuhkan jembatan konkrit untuk memahami konsep yang kompleks. Wang et al. \cite{ref19} menemukan bahwa gaya kognitif siswa memengaruhi cara mereka memproses informasi dalam kursus berbasis AI, sehingga desain antarmuka harus mengakomodasi variasi tersebut. Wu \& Su \cite{ref20} mempelajari siswa kelas 5--6 dan menemukan bahwa kompleksitas antarmuka visual harus disesuaikan dengan kapasitas pemrosesan kognitif anak.
-
-Implikasi desain dari prinsip CCI untuk siswa SMP meliputi beberapa aspek. Pertama, antarmuka harus sederhana namun tidak kekanak-kanakan---siswa SMP menolak desain yang terlalu infantil namun juga dapat mengalami \textit{choice paralysis} jika dihadapkan pada terlalu banyak pilihan \cite{ref2}. Oleh karena itu, alur simulasi dalam proyek ini dirancang secara linear tanpa percabangan, agar fokus siswa tetap pada momen keputusan HITL. Kedua, umpan balik harus bersifat non-menghukum---ketika siswa membuat keputusan yang kurang tepat, sistem memberikan kesempatan untuk mencoba lagi (\textit{retry}) alih-alih memberikan penalti, sehingga mendorong eksplorasi tanpa tekanan. Ketiga, interaksi harus memanfaatkan modalitas yang familiar bagi remaja, seperti antarmuka visual dan input berbasis kanvas, yang menjadi dasar pemilihan kanvas gambar sebagai mekanisme input utama.
-
-% ------------------------------------------------------------
-\subsection{Usability Testing}
-\label{subsec:usability-testing}
-% ------------------------------------------------------------
-
-\textit{Usability testing} merupakan metode evaluasi yang mengukur sejauh mana sebuah sistem interaktif dapat digunakan secara efektif, efisien, dan memuaskan oleh pengguna target dalam konteks penggunaan tertentu. Dalam lingkup proyek ini, \textit{usability testing} dipilih sebagai metode evaluasi utama---bukan metode pre-post test yang mengklaim peningkatan kemampuan---karena tujuan evaluasi adalah mengukur keterbacaan alur interaksi, kejelasan mekanisme HITL, dan kesesuaian desain antarmuka dengan kemampuan siswa SMP. Brooke \cite{ref31} mengembangkan \textit{System Usability Scale} (SUS) sebagai instrumen \textit{quick-and-dirty} yang efektif untuk evaluasi awal sistem interaktif, dan Bangor et al. \cite{ref32} memvalidasi SUS secara empiris sebagai instrumen yang reliabel di berbagai domain aplikasi.
-
-Aspek \textit{usability} yang diukur dalam proyek ini meliputi: (1) \textit{learnability}---seberapa mudah siswa memahami mekanisme simulasi setelah tahap \textit{onboarding}; (2) \textit{efficiency}---seberapa cepat siswa dapat menyelesaikan alur simulasi dan membuat keputusan di setiap \textit{Probe UI}; (3) \textit{error rate}---seberapa sering siswa membuat kesalahan dalam navigasi atau interpretasi \textit{confidence score}; serta (4) \textit{satisfaction}---tingkat kepuasan subjektif siswa terhadap pengalaman interaksi. Pengukuran aspek-aspek ini dilakukan melalui kombinasi observasi terstruktur, analisis log interaksi, dan kuesioner SUS pasca-simulasi. Dengan pendekatan ini, evaluasi menghasilkan data empiris mengenai kualitas desain interaksi tanpa membuat klaim yang melampaui cakupan metode yang digunakan.
-
-% ============================================================
-\section{PENELITIAN TERKAIT}
-\label{sec:penelitian-terkait}
-% ============================================================
-
-Bagian ini menyajikan kajian terhadap penelitian-penelitian sebelumnya yang relevan dengan proyek \textit{Sketchbook Universe}. Setiap sub-bagian membahas temuan utama dari penelitian tersebut serta hubungannya dengan desain sistem ini.
-
-% ------------------------------------------------------------
-\subsection{AI Literacy in K-12}
-\label{subsec:penelitian-ai-literacy-k12}
-% ------------------------------------------------------------
-
-Casal-Otero et al. \cite{ref2} melakukan tinjauan literatur sistematis terhadap 37 studi literasi KB pada jenjang K-12 dan menemukan bahwa strategi berbasis pengalaman langsung (\textit{experience-based}) lebih efektif dibandingkan strategi ekspositif murni. Wang \& Lester \cite{ref11} menegaskan bahwa literasi KB K-12 merupakan panggilan aksi (\textit{call to action}) yang memerlukan integrasi konsep KB ke dalam kurikulum sejak usia dini dengan pendekatan age-appropriate. Yim \& Su \cite{ref12} memperluas kajian tersebut ke konteks sekolah dasar dan menemukan bahwa alat bantu pembelajaran KB harus dirancang dengan mempertimbangkan kapasitas kognitif anak, terutama dalam memahami konsep probabilistik. Ng et al. \cite{ref1} menyediakan kerangka konseptual literasi KB yang mencakup kemampuan mengevaluasi keluaran probabilistik---aspek yang menjadi inti dari desain \textit{Sketchbook Universe}, yang menempatkan siswa dalam posisi evaluator aktif terhadap keluaran klasifikasi KB.
-
-% ------------------------------------------------------------
-\subsection{Human-in-the-Loop Machine Learning}
-\label{subsec:penelitian-hitl-ml}
-% ------------------------------------------------------------
-
-Mosqueira-Rey et al. \cite{ref4} menyajikan tinjauan komprehensif terhadap \textit{state of the art} dalam \textit{Human-in-the-Loop Machine Learning} (HITL-ML) dan mengidentifikasi pola interaksi HITL yang umum, termasuk \textit{active learning}, \textit{interactive machine learning}, dan \textit{human evaluation}. Mereka secara khusus menekankan bahwa \textit{automation bias} merupakan tantangan mendasar dalam desain sistem HITL: tanpa desain antarmuka yang secara eksplisit memaksa pengguna untuk mengevaluasi keluaran, keterlibatan manusia cenderung bersifat simbolis. Memarian \& Doleck \cite{ref5} memfokuskan kajian pada penerapan HITL dalam konteks pendidikan kecerdasan buatan (AIED) dan menemukan bahwa efektivitas HITL bergantung pada kualitas informasi yang diberikan kepada manusia. Videnovik et al. \cite{ref6} mengaitkan prinsip HITL dengan pendekatan GBL dalam pendidikan sains komputer, di mana keputusan pemain memiliki konsekuensi langsung terhadap kemajuan permainan---mekanisme yang menjadi dasar desain \textit{Probe UI} pada proyek ini.
-
-% ------------------------------------------------------------
-\subsection{Game-Based Learning in Computer Science Education}
-\label{subsec:penelitian-gbl-cs}
-% ------------------------------------------------------------
-
-Videnovik et al. \cite{ref6} melakukan tinjauan literatur berskala (\textit{scoping literature review}) terhadap penerapan GBL dalam pendidikan sains komputer dan mengidentifikasi bahwa GBL paling efektif ketika menerapkan \textit{consequence-driven learning}---di mana keputusan pemain memiliki konsekuensi langsung terhadap kemajuan permainan. Chan et al. \cite{ref7} mengkaji hubungan antara Teori Flow dan GBL secara empiris pada lingkungan non-kompetitif, dan menemukan bahwa keseimbangan tantangan-keterampilan merupakan prediktor yang lebih kuat terhadap pengalaman \textit{flow} dibandingkan elemen kompetisi. Lee et al. \cite{ref13} menerapkan GBL AI literacy untuk siswa \textit{upper elementary} dengan pendekatan \textit{collaborative inquiry} yang terbukti efektif dalam memperkenalkan konsep KB. Gupta et al. \cite{ref14} memperluas pendekatan tersebut dengan narasi berbasis cerita yang mendukung pemahaman konsep KB yang abstrak melalui konteks naratif. Temuan ini secara langsung mendukung desain tiga level dalam \textit{Sketchbook Universe}, yang meningkatkan tantangan evaluatif secara bertahap dari Level 1 hingga Level 3 tanpa elemen kompetisi antar pemain, serta memanfaatkan narasi visual berbasis buku sketsa sebagai konteks pembelajaran.
-
-% ------------------------------------------------------------
-\subsection{Children Behavioral Patterns in AI Learning}
-\label{subsec:penelitian-behavioral-patterns}
-% ------------------------------------------------------------
-
-Catatan: Sub-bab ini menggantikan ``Real-Time Hand Gesture Monitoring'' yang DEPRECATED pasca-pivot 16/6/26 (login gesture diganti nomor absen + superadmin). Fokus kajian dialihkan ke pola perilaku anak dalam mempelajari KB, yang lebih relevan dengan desain interaksi reflektif siswa terhadap keluaran KB pada proyek ini.
-
-Hsu et al. \cite{ref15} mengembangkan instrumen pembelajaran KB untuk anak dan mengeksplorasi pola perilaku siswa saat berinteraksi dengan sistem berbasis KB. Mereka menemukan bahwa pola perilaku siswa---seperti kecenderungan menerima keluaran sistem secara langsung versus mengevaluasi sebelum mengambil keputusan---dapat diidentifikasi melalui analisis log interaksi, dan bahwa pola ini berkorelasi dengan tingkat pemahaman siswa terhadap konsep probabilistik KB. Ocak et al. \cite{ref16} menggunakan pendekatan pengenalan pola berbasis AI untuk menganalisis interaksi \textit{embodied} anak (\textit{children's embodied interactions}) dan menemukan bahwa analisis pola spasial-temporal gerakan anak dapat memberikan indikasi tentang tingkat keterlibatan kognitif mereka. Temuan kedua penelitian ini sangat relevan dengan proyek \textit{Sketchbook Universe} karena sistem yang dikembangkan mencatat log keputusan siswa untuk analisis pola perilaku evaluatif terhadap keluaran KB. Dengan demikian, sub-bab ini memberikan landasan akademis untuk analisis data log interaksi siswa yang akan dilakukan pada tahap evaluasi.
-
-% ------------------------------------------------------------
-\subsection{State of The Art}
-\label{subsec:state-of-the-art}
-% ------------------------------------------------------------
-
-Untuk memosisikan proyek \textit{Sketchbook Universe} di antara penelitian-penelitian sebelumnya, dilakukan perbandingan terhadap beberapa sistem dan kajian terkait. Tabel~\ref{tab:sota} menyajikan perbandingan berdasarkan dimensi-dimensi yang relevan dengan fokus proyek ini.
-
-\begin{table}[H]
-\centering
-\caption{Perbandingan State of The Art}
-\label{tab:sota}
-\small
-\begin{tabular}{|p{3.8cm}|c|c|c|c|c|c|}
-\hline
-\textbf{Sistem / Kajian} & \textbf{Literasi KB} & \textbf{HITL} & \textbf{Conf. Vis.} & \textbf{GBL Berlevel} & \textbf{Ped. Agent} & \textbf{CCI SMP} \\
-\hline
-Ng et al. \cite{ref1} & \checkmark & -- & -- & -- & -- & -- \\
-\hline
-Casal-Otero et al. \cite{ref2} & \checkmark & -- & -- & -- & -- & \checkmark \\
-\hline
-Mosqueira-Rey et al. \cite{ref4} & -- & \checkmark & -- & -- & -- & -- \\
-\hline
-Videnovik et al. \cite{ref6} & -- & -- & -- & \checkmark & -- & -- \\
-\hline
-Lee et al. \cite{ref13} & \checkmark & -- & -- & \checkmark & -- & -- \\
-\hline
-Hsu et al. \cite{ref15} & \checkmark & -- & -- & -- & \checkmark & \checkmark \\
-\hline
-\textbf{Sketchbook Universe} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
-\hline
-\end{tabular}
-\end{table}
-
-Berdasarkan Tabel~\ref{tab:sota}, terlihat bahwa tidak ada satupun sistem atau kajian sebelumnya yang mengintegrasikan keenam dimensi secara bersamaan. Ng et al. \cite{ref1} dan Casal-Otero et al. \cite{ref2} membahas literasi KB secara konseptual tanpa mengimplementasikan mekanisme HITL atau visualisasi \textit{confidence}. Mosqueira-Rey et al. \cite{ref4} mengkaji HITL secara komprehensif namun tidak membahas implementasi untuk kalangan K-12. Videnovik et al. \cite{ref6} dan Lee et al. \cite{ref13} meneliti GBL dan progresi berlevel namun tidak mengintegrasikannya dengan mekanisme HITL untuk evaluasi keluaran KB. Hsu et al. \cite{ref15} membahas pola perilaku anak belajar KB tanpa implementasi sistem interaktif yang konkret.
-
-Proyek \textit{Sketchbook Universe} secara unik mengintegrasikan keenam dimensi tersebut: (1) literasi KB melalui pengalaman langsung berinteraksi dengan keluaran klasifikasi probabilistik; (2) mekanisme HITL melalui \textit{Probe UI} yang menghentikan simulasi untuk evaluasi; (3) visualisasi \textit{confidence score} yang memperlihatkan tingkat keyakinan model; (4) progresi berlevel berdasarkan prinsip scaffolding dan Teori Flow; (5) agen pedagogis Momo yang memberikan umpan balik kontekstual; serta (6) desain interaksi CCI yang sesuai dengan kemampuan kognitif siswa SMP. Integrasi ini merupakan kontribusi utama proyek terhadap ruang kajian yang ada, memposisikan \textit{Sketchbook Universe} sebagai sistem yang menjembatani kesenjangan antara teori literasi KB, mekanisme HITL, dan desain interaksi untuk siswa SMP.
-
-% ============================================================
-% BAB 3 — DESKRIPSI SISTEM
+% BAB 3 — DESKRIPSI SISTEM (SCOPE: CAN)
 % ============================================================
 \chapter{DESKRIPSI SISTEM}
 \label{chap:bab3}
@@ -522,12 +202,12 @@ Environment (Lingkungan) & (1) Kelas SMP memiliki keterbatasan device (tablet/la
 Diagram Fishbone 6M lengkap ditunjukkan pada Gambar~\ref{fig:fishbone-6m}. Diagram menampilkan \textit{root cause} (automation bias pada siswa SMP) di sisi kanan, dengan enam cabang utama 6M yang masing-masing memiliki 2--3 sub-cause.
 
 % Mermaid source (POLOSAN, no classDef/style) tersedia di:
-% /home/z/my-project/download/sketchbook-universe-ta/generate/06_diagram/fishbone_6m.mmd
+% ../../diagrams/generated_sketchbook_universe/fishbone_6m.mmd
 % Render ke PNG via: mmdc -i fishbone_6m.mmd -o fishbone_6m.png -b white -w 1600 -H 900
-% Output PNG: /home/z/my-project/download/sketchbook-universe-ta/generate/06_diagram/fishbone_6m.png
+% Output PNG: ../../diagrams/generated_sketchbook_universe/fishbone_6m.png
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]{/home/z/my-project/download/sketchbook-universe-ta/generate/06_diagram/fishbone_6m.png}
+    \includegraphics[width=0.85\textwidth]{../../diagrams/generated_sketchbook_universe/fishbone_6m.png}
     \caption{Fishbone Diagram 6M untuk Analisis Root Cause Automation Bias pada Siswa SMP}
     \label{fig:fishbone-6m}
 \end{figure}
@@ -1120,137 +800,5 @@ Jadwal penelitian disusun untuk periode 12 bulan dengan pembagian waktu mengikut
 Keterangan inisial: C = Can (Frontend, UI/UX, Maskot, HITL, Level Design); D = Dias (Backend, CNN, K-Means, API); CD = Both (kegiatan kolaboratif). Tanda X menunjukkan bulan pelaksanaan kegiatan tersebut.
 
 Fase studi literatur dan penyusunan proposal (Bulan 1--4) dilakukan oleh Can dan Dias secara paralel. Fase analisis kebutuhan dan desain sistem (Bulan 3--5) meliputi pengumpulan referensi tambahan, analisis Fishbone 6M, dan desain sistem global mengikuti Waterfall SDLC. Fase implementasi paralel Can-Dias (Bulan 5--10) dijalankan secara bersamaan: Can mengembangkan frontend Kaplay.js + React, desain maskot Momo, dan implementasi Level Design + HITL Top-6 Check; Dias mengumpulkan dan kurasi dataset Quick Draw, melatih model CNN MobileNet, konversi ke TF.js, mengimplementasi backend REST API, data logging SQLite, K-Means clustering, dan superadmin dashboard. Fase integrasi (Bulan 10--11) menyatukan Probe UI Can dengan endpoint logging Dias sesuai kontrak data. Fase pengujian (Bulan 11--12) meliputi black-box testing dan SUS. Penulisan laporan akhir (Bulan 11--12) dilakukan secara bertahap dan paralel dengan pengujian.
-
-% ============================================================
-% DAFTAR PUSTAKA
-% ============================================================
-% ============================================================
-% DAFTAR PUSTAKA — SCOPE: CAN (FRONTEND)
-% Farchan Deano Muhammad — D4 TRM PENS
-% Proyek: Sketchbook Universe — Interactive HITL AI Literacy Simulation
-%
-% Total: 32 referensi (20 General/Shared + 12 Can-specific)
-% Format: IEEE numbered, urut by appearance (Bab 1 -> Bab 3)
-%
-% Source: Sitasi_Final_v1.md (16 Juni 2026)
-% Catatan:
-%   - ref10 (B02 Meng et al. MediaPipe) tetap dimasukkan dengan catatan
-%     DEPRECATED post-pivot 16/6/26 (login gesture diganti nomor absen).
-%   - ref10 dipertahankan untuk dokumentasi historis canvas drawing input.
-%
-% Cara pakai:
-%   \input{daftar_pustaka_can_v1.tex}
-%   atau copy bagian thebibliography ke proposal master.
-% ============================================================
-
-\chapter*{DAFTAR PUSTAKA}
-\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
-
-\begin{thebibliography}{99}
-
-\bibitem{ref1}
-Ng, D.T.K., Leung, J.K.L., Chu, S.K.W., \& Qiao, M.S. (2021). Conceptualizing AI literacy: An exploratory review. \textit{Computers and Education: Artificial Intelligence}, 2, 100041.
-
-\bibitem{ref2}
-Casal-Otero, V., Catala, A., Fern\'andez-Morante, C., Taboada, M., Caeiro-Rodr\'iguez, M., \& Barro, S. (2023). AI literacy in K-12: A systematic literature review. \textit{International Journal of STEM Education}, 10, 29.
-
-\bibitem{ref3}
-Khosravi, H., Shum, S.B., Chen, G., Conati, C., Tsai, Y.-S., Kay, J., Knight, S., Martinez-Maldonado, R., Sadat-Milani, L., \& Ga\v{s}evi\'c, D. (2022). Explainable Artificial Intelligence in education. \textit{Computers and Education: Artificial Intelligence}, 3, 100074.
-
-\bibitem{ref4}
-Mosqueira-Rey, E., Hern\'andez-Pereira, E., Alonso-R\'ios, D., Bobillo-Ares, B., \& Moret-Bonillo, V. (2023). Human-in-the-loop machine learning: A state of the art. \textit{Artificial Intelligence Review}, 56(4), 3005--3054.
-
-\bibitem{ref5}
-Memarian, B., \& Doleck, T. (2024). Human-in-the-loop in artificial intelligence in education: A review and entity-relationship (ER) analysis. \textit{Computers in Human Behavior: Artificial Humans}, 2, 100053.
-
-\bibitem{ref6}
-Videnovik, M., Vlahovi\v{c}-Steti\'c, V., Kišiček, S., \& Vošner, H.B. (2023). Game-based learning in computer science education: A scoping literature review. \textit{International Journal of STEM Education}, 10, 54.
-
-\bibitem{ref7}
-Chan, K.K., Wan, K.M., \& King, R.B. (2021). Performance over enjoyment? Effect of game-based learning on learning outcome and flow experience. \textit{Frontiers in Education}, 6, 660376.
-
-\bibitem{ref8}
-Karran, A.J., Demazure, T., \& Hudelot, C. (2022). Designing for confidence: The impact of visualizing artificial intelligence decisions. \textit{Frontiers in Neuroscience}, 16.
-
-% --- Can-specific (Kategori B) ---
-
-\bibitem{ref9}
-Schroeder, N.L., Davis, C.S., \& Yang, Y. (2025). Designing and learning with pedagogical agents: An umbrella review. \textit{Journal of Educational Computing Research}, 62(8).
-
-\bibitem{ref10}
-Meng, Z., Fu, Z., Liu, J., Wang, H., \& Pan, Y. (2024). Real-Time Hand Gesture Monitoring Model Based on MediaPipe's Registerable System. \textit{Sensors}, 24(19), 6262. \textit{[Catatan: DEPRECATED post-pivot 16/6/26 --- login gesture diganti nomor absen + superadmin. Dipertahankan untuk dokumentasi historis canvas drawing input.]}
-
-\bibitem{ref11}
-Wang, N., \& Lester, J. (2023). K-12 education in the age of AI: A call to action for K-12 AI literacy. \textit{International Journal of Artificial Intelligence in Education}, 33(3), 631--640.
-
-\bibitem{ref12}
-Yim, I. H. Y., \& Su, J. (2025). Artificial intelligence literacy education in primary schools: A review. \textit{International Journal of Technology and Design Education}, 35, Article 57.
-
-\bibitem{ref13}
-Lee, S., Mott, B., Ottenbreit-Leftwich, A., Scribner, A., Taylor, S., Glazewski, K., \& Lester, J. (2021). AI-infused collaborative inquiry in upper elementary school: A game-based learning approach. \textit{Proceedings of the AAAI Conference on Artificial Intelligence}, 35(17), 15653--15661.
-
-\bibitem{ref14}
-Gupta, A., Lee, S., Mott, B., Chakraburty, S., Scribner, A., Glazewski, K., Ottenbreit-Leftwich, A., \& Lester, J. (2024). Supporting upper elementary students in learning AI concepts with story-driven game-based learning. \textit{Proceedings of the AAAI Conference on Artificial Intelligence}, 38(21), 23321--23329.
-
-\bibitem{ref15}
-Hsu, T. C., Abelson, H., Lao, N., Tseng, Y. H., \& Lin, Y. T. (2021). Behavioral-pattern exploration and development of an instructional tool for young children to learn AI. \textit{Computers and Education: Artificial Intelligence}, 2, Article 100060.
-
-\bibitem{ref16}
-Ocak, C., Kopcha, T. J., \& Dey, R. (2023). An AI-enhanced pattern recognition approach to temporal and spatial analysis of children's embodied interactions. \textit{Computers and Education: Artificial Intelligence}, 4, Article 100155.
-
-\bibitem{ref17}
-Shokeen, E., Katirci, N., Williams-Pierce, C., \& Fan, C. (2022). Children learning to sketch: Sketching to learn. \textit{Information and Learning Sciences}, 123(7/8), 482--497.
-
-\bibitem{ref18}
-Chen, Z., Duan, Z., Qi, Y., \& Wang, W. (2025). From line sketches to contextualized scenes: An AR scaffold for narrative drawing based on sketch recognition and its motivational effects. \textit{Proceedings of the 2025 ACM/IEEE International Conference on Human-Robot Interaction (HRI)}, 1--10.
-
-\bibitem{ref19}
-Wang, C. J., Zhong, H. X., Chiu, P. S., Chang, J. H., \& Chen, M. Y. (2022). Research on the impacts of cognitive style and computational thinking on college students in a visual artificial intelligence course. \textit{Frontiers in Psychology}, 13, Article 864416.
-
-\bibitem{ref20}
-Wu, S. Y., \& Su, Y. S. (2021). Visual programming environments and computational thinking performance of fifth-and sixth-grade students. \textit{Journal of Educational Computing Research}, 59(7), 1413--1441.
-
-% --- General/Shared additions (Kategori A baru) ---
-
-\bibitem{ref21}
-Yin, M., Wortman Vaughan, J., \& Wallach, H. (2019). Understanding the effect of accuracy on trust in machine learning models. \textit{Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems}, 1--12.
-
-\bibitem{ref22}
-Batanero, C., \& \'Alvarez-Arroyo, R. (2023). Teaching and learning of probability. \textit{ZDM -- Mathematics Education}, 56, 5--17.
-
-\bibitem{ref23}
-Zhan, Z., Tong, Y., Lan, X., \& Zhong, B. (2024). A systematic literature review of game-based learning in artificial intelligence education. \textit{Interactive Learning Environments}, 32(4), 1189--1212.
-
-\bibitem{ref24}
-Liao, Q. V., Gruen, D., \& Miller, S. (2020). Questioning the AI: Informing design practices for explainable AI user experiences. \textit{Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems}, 1--15.
-
-\bibitem{ref25}
-Feldman-Maggor, Y., Cukurova, M., Kent, C., Luckin, R., \& Baur-Wolfson, M. (2025). The impact of explainable AI on teachers' trust and acceptance of AI EdTech recommendations. \textit{International Journal of Artificial Intelligence in Education}, 35(1), 1--25.
-
-% --- Methodology (Kategori A existing, methodology) ---
-
-\bibitem{ref26}
-Pressman, R.S. (2014). \textit{Software Engineering: A Practitioner's Approach} (8th ed.). New York: McGraw-Hill.
-
-\bibitem{ref27}
-Sommerville, I. (2015). \textit{Software Engineering} (10th ed.). Pearson.
-
-\bibitem{ref28}
-Sugiyono. (2020). \textit{Metode Penelitian Kuantitatif, Kualitatif, dan R\&D}. Bandung: Alfabeta.
-
-\bibitem{ref29}
-Creswell, J.W. (2014). \textit{Research Design: Qualitative, Quantitative, and Mixed Methods Approaches} (4th ed.). Sage Publications.
-
-\bibitem{ref30}
-Ishikawa, K. (1986). \textit{Guide to Quality Control} (2nd ed.). Tokyo: Asian Productivity Organization.
-
-\bibitem{ref31}
-Brooke, J. (1996). SUS: A `Quick and Dirty' Usability Scale. In \textit{Usability Evaluation in Industry} (pp. 189--194). Taylor \& Francis.
-
-\bibitem{ref32}
-Bangor, A., Kortum, P.T., \& Miller, J.T. (2008). An empirical evaluation of the System Usability Scale. \textit{International Journal of Human-Computer Interaction}, 24(6), 574--594.
-
-\end{thebibliography}
-
 
 \end{document}

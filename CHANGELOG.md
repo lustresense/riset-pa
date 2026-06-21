@@ -1,42 +1,18 @@
 # Changelog
 
-Semua perubahan signifikan pada project **Sketchbook-Universe** akan didokumentasikan di file ini.
-Format berdasarkan [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) dan mengikuti [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to Sketchbook Universe are documented here.
 
----
+## [2.0.0] - Major Restructuring
 
-## [Unreleased]
-### Added
-- Struktur folder baru (`00_RESEARCH`, `01_CORE_SYSTEM`, `02_ARTIFACTS`, `03_DOCS`).
-- File `.agent_protocol.md` untuk panduan AI Agent (Recursive Self-Improvement Mode).
-- Sistem deteksi persetujuan otomatis ("ACC", "Gas", dll).
-
-### Changed
-- **RESTRUCTURING**: Pemindahan seluruh file riset ke `00_RESEARCH`.
-- **RESTRUCTURING**: Pemindahan kode produksi ke `01_CORE_SYSTEM`.
-- Dokumentasi dipusatkan di `README.md`, `MEMORY.md`, dan `.agent_protocol.md`.
-
-### Deprecated
-- Struktur folder lama yang tercampur antara riset dan kode produksi.
-
----
-
-## [2.0.0] - 2024-06-XX (Major Restructuring & RSI Protocol)
-### Added
-- Protokol AI Agent untuk self-correction dan context maintenance.
-- Pemisahan tegas antara "Bahan Mentah Riset" dan "Artefak Final".
-
-### Changed
-- Seluruh alur kerja dokumentasi mengikuti siklus: `READ MEMORY -> EXECUTE -> UPDATE`.
-- File `MEMORY.md` kini menjadi sumber kebenaran tunggal untuk state terkini.
-
-### Fixed
-- Ketidakjelasan lokasi file proposal dan notulensi.
-
----
+- Moved all files to 4-zone architecture (Research, Core, Artifacts, Docs).
+- Cleaned up root directory.
+- Moved research materials to `00_RESEARCH/`.
+- Organized source code placeholders into `01_CORE_SYSTEM/`.
+- Separated final artifacts to `02_ARTIFACTS/`.
+- Centralized documentation in `03_DOCS/` and root.
+- Updated `README.md`, `MEMORY.md`, and `CHANGELOG.md`.
 
 ## [1.0.0] - Initial Research Phase
-### Added
-- Proposal awal Sketchbook-Universe.
-- Notulensi bimbingan pertama.
-- Prototipe awal deteksi ambiguity.
+
+- Collected early research material, proposal drafts, diagrams, transcripts, and
+  supporting references for Sketchbook Universe.

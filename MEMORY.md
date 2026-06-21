@@ -1,72 +1,95 @@
-# Memory — Escape the Sketchbook Project
+# MEMORY.md - Operational Context
 
-> Living document untuk memahami project & tracking keputusan
+This file is the required first-read context for any AI agent or teammate working on
+Sketchbook Universe.
 
----
+## Current Project
 
-## Pemahaman Project
+- Project name: Sketchbook Universe
+- Research theme: Controlled Ambiguity in AI Sketching
+- Core concept: Human-in-the-Loop (HITL) sketching where AI uncertainty is designed
+  as part of the learning experience.
+- Audience: junior high school students, grades 7-9.
+- Institution context: PA / Sidang preparation for PENS D4 TRM.
 
-**Nama Project:** Simulasi Interaktif Literasi AI untuk Siswa SMP Kelas 7-9  
-**Judul Utama (Pak TB):** Sistem Literasi Kecerdasan Buatan untuk Siswa Sekolah  
-**Format:** Interactive HITL AI Playground — game 2D berbasis browser  
-**Engine:** Kaboom.js (bukan Unity — alasan: integrasi JS dengan MediaPipe & TF.js)  
+## Team
 
-**Tim:**
-| Anggota | Fokus | Warna |
-|---------|-------|-------|
-| Can (Farchan Deano M.) | Frontend, UI/UX, Kaplay.js, MediaPipe, Maskot Momo, Gameplay, Narrative, Probe UI, Animation | 🔵 BIRU |
-| Dias (Muhammad Dias Al-I.) | Backend, CNN MobileNet, TensorFlow.js, Data Logging, K-Means Clustering, Dashboard, REST API | 🟢 HIJAU |
+| Member | Scope | Notes |
+| --- | --- | --- |
+| Farchan Deano Muhammad (Can) | Frontend, UI/UX, HITL, gameplay, mascot | Blue scope |
+| Muhammad Dias Al-Izzat | Backend, AI model, API, logging, analytics | Green scope |
 
-**Prinsip Core:** "Controlled Ambiguity" — AI sengaja tidak sempurna agar momen HITL terjadi  
-**Prinsip Edukasi (Pak TB):** "Mengajari tanpa terasa menggurui" — prioritas: UI dulu, gameplay, baru edukasi disisipkan  
-**Arsitektur:** Hybrid — Browser-Based Inference (TF.js) + Server-Side Active Services (REST API, SQLite, K-Means)
+## Active Repository Structure
 
----
+The repository now uses a 4-zone professional architecture:
 
-## Keputusan Bu Hesti 15/6/26 (Bimbingan Terbaru)
+```text
+/
+|-- 00_RESEARCH/
+|   |-- meetings/
+|   |-- literature/
+|   |-- data_raw/
+|   |-- experiments/
+|   `-- ideation/
+|-- 01_CORE_SYSTEM/
+|   |-- extension/
+|   |-- web-client/
+|   |-- backend/
+|   |-- shared/
+|   `-- tests/
+|-- 02_ARTIFACTS/
+|   |-- proposal/
+|   |-- reports/
+|   |-- presentations/
+|   |-- diagrams/
+|   `-- demo/
+|-- 03_DOCS/
+|   |-- technical/
+|   |-- user-manual/
+|   `-- policy/
+`-- scripts/
+```
 
-### Desain Sistem
-1. **SATU diagram global** pakai WARNA (BIRU=Can, HIJAU=Dias) — jangan pecah jadi banyak diagram kecil
-2. **Shape flowchart:** Input = parallelogram, Proses = rectangle, Decision = diamond, Output = parallelogram
-3. **Hapus kata "from"** di diagram — langsung "Fase 1", bukan "From Fase 1"
-4. **Font diperbesar** — Bu Hesti komplain tulisan kecil
-5. **Warna harus konsisten** antar fase
-6. **Desain sistem = INPUT–PROSES–OUTPUT** (referensi gambar teman yang pakai format ini)
-7. **Hapus decorative** — benda berbahaya/dekorasi tembus pandang dihapus, fokus ke mekanisme HITL
-8. **3 level saja** — jangan tambah level decorative
+## Zone Rules
 
-### User Flow
-9. User flow dibagi **3 fase** — sudah di-approve
-10. **Wajib login** (perubahan dari sebelumnya yang session-only) — karena butuh history data
-11. **Use case = aktor + aktivitas** — bukan sekadar daftar fitur
+- `00_RESEARCH/`: raw discussion, literature, data dumps, experiments, and early ideas.
+- `01_CORE_SYSTEM/`: production application code only. It is intentionally ready for
+  Chrome extension, web client, backend, shared utilities, and tests.
+- `02_ARTIFACTS/`: final or presentation-ready outputs: proposal, reports, slides,
+  diagrams, and demo media.
+- `03_DOCS/`: technical docs, user manuals, and policy/consent documents.
+- `scripts/`: automation utilities for rendering, capture, build, deploy, or tests.
 
-### API & Data
-12. **API logging:** POST /api/log, GET /api/sessions, POST /api/analyze
-13. **Data yang dicatat:** user_id, level, top1_label, top1_conf, decision, latency
+If a file is ambiguous, place it in `00_RESEARCH/ideation/` first. Promote it to
+`02_ARTIFACTS/` only when it is explicitly final or presentation-ready.
 
-### Metodologi
-14. **Metodologi MIX** (Kuantitatif + Kualitatif) — disetujui
-15. **Fishbone** untuk analisis data (4 tulang: Manusia, Metode, Media, Materi)
-16. **Kuantitatif = matriks log** (tabel data), **Kualitatif = narasi** (interpretasi)
+## Current Research Decisions
 
-### Level Design
-17. **Level 1:** prompt terbatas, Top-1 only (AI akurat, siswa belajar percaya)
-18. **Level 2:** Top-3 + confidence, cognitive friction (AI ragu, siswa evaluasi)
-19. **Level 3:** AI overconfident salah, wajib override (AI tipu, siswa HARUNG koreksi)
+- Controlled Ambiguity remains the main research mechanism.
+- HITL is the interaction layer: users evaluate, correct, and override AI predictions.
+- System architecture is hybrid: browser-side inference plus server-side logging and
+  analytics.
+- Login and history are required because the research needs user/session data.
+- The agent must keep `README.md`, `MEMORY.md`, and `CHANGELOG.md` aligned with any
+  major structural or research decision.
 
-### Maskot
-20. Momo = auto-text dasar, **tanpa NLP/voice** (jangan over-engineering)
-21. Momo = coretan hidup dari illustrator sebelumnya di universe Sketchbook (IP story)
+## Recursive Self-Improvement Rule
 
----
+This repo uses a lightweight Recursive Self-Improvement workflow:
 
-## Changelog
+1. Read `.agent_protocol.md`.
+2. Read this `MEMORY.md`.
+3. Execute the task.
+4. Update `MEMORY.md` and `CHANGELOG.md` if the task changes repository state,
+   research direction, or operating rules.
 
-| Tanggal | Perubahan | Sumber |
-|---------|-----------|--------|
-| 2026-06-16 | Buat memory.md awal | Can request |
-| 2026-06-16 | Audit semua file, pindah ke folder structure | Main agent |
-| 2026-06-15 | Keputusan Bu Hesti 15/6 tercatat | Notulensi Bimbingan.txt |
-| 2026-06-15 | Target user berubah: SD → SMP Kelas 7-9 | Pak TB + Bu Hesti |
-| 2026-06-14 | Arsitektur hybrid final: browser TF.js + server REST/SQLite | Merged Context |
-| 2026-06-14 | Metodologi: Mixed Methods + R&D + Fishbone + SUS | Riset Metode Penelitian |
+## Latest Structural Decision
+
+- Date: 2026-06-21
+- Decision: Adopt the 4-zone architecture for PA/Sidang readiness.
+- Impact:
+  - Research materials are centralized under `00_RESEARCH/`.
+  - Application code has dedicated placeholders under `01_CORE_SYSTEM/`.
+  - Final artifacts are separated under `02_ARTIFACTS/`.
+  - Technical/user/policy documentation is centralized under `03_DOCS/`.
+  - Root directory is reserved for project-level files only.
